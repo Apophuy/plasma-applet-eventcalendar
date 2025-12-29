@@ -2,7 +2,7 @@
 
 import QtQuick
 import org.kde.kirigami as Kirigami
-import QtQuick.Controls 1.2
+import QtQuick.Controls
 import QtQuick.Layouts
 import org.kde.kirigami as Kirigami
 
@@ -185,7 +185,7 @@ Rectangle {
 		ToolButton {
 			id: closeButton
 			Layout.alignment: Qt.AlignVCenter
-			iconName: "dialog-close"
+			icon.name: "dialog-close"
 
 			onClicked: {
 				messageWidget.close()

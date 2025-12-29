@@ -1,9 +1,9 @@
 // Version 5
 
 import QtQuick
-import QtQuick.Controls 1.0
+import QtQuick.Controls
 import QtQuick.Layouts
-import QtQuick.Dialogs 1.2
+import QtQuick.Dialogs
 import QtQuick.Window
 import org.kde.kirigami as Kirigami
 

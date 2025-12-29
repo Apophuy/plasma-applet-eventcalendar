@@ -5,9 +5,9 @@ import QtQuick.Window
 import org.kde.plasma.core as PlasmaCore
 import org.kde.plasma.components as PlasmaComponents3
 
-import QtQuick.Templates 2.1 as T
+import QtQuick.Templates as T
 import QtQuick.Controls as Controls
-import QtGraphicalEffects 1.0 // DropShadow
+import Qt5Compat.GraphicalEffects // DropShadow
 
 // Based on:
 // https://github.com/KDE/plasma-framework/blob/master/src/declarativeimports/plasmacomponents3/ComboBox.qml

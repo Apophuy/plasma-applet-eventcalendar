@@ -19,7 +19,7 @@ CalendarManager {
 
 	// Note: Not in use
 	// Used to load dumped json events found in debug logs from file.
-	// fetchJsonEventsFile(plasmoid.file('', 'testevents.json'), 'testevents@gmail.com') // .../contents/testevents.json
+	// fetchJsonEventsFile(Plasmoid.file('', 'testevents.json'), 'testevents@gmail.com') // .../contents/testevents.json
 	function fetchJsonEventsFile(filename, calendarId) {
 		logger.debug('fetchJsonEventsFile', calendarId)
 		debugCalendarManager.asyncRequests += 1

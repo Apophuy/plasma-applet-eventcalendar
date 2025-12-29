@@ -21,7 +21,7 @@ import org.kde.kirigami as Kirigami
 import org.kde.plasma.core as PlasmaCore
 import org.kde.plasma.extras as PlasmaExtras
 
-import org.kde.plasma.calendar 2.0
+import org.kde.plasma.calendar
 
 import "LocaleFuncs.js" as LocaleFuncs
 
@@ -89,7 +89,7 @@ MouseArea {
 				return 0
 			}
 		}
-		Behavior on opacity { NumberAnimation { duration: units.shortDuration*2 } }
+		Behavior on opacity { NumberAnimation { duration: Kirigami.Units.shortDuration*2 } }
 		color: Kirigami.Theme.textColor
 		radius: dayStyle.radius
 	}
@@ -111,7 +111,7 @@ MouseArea {
 			}
 		}
 		// visible: !today
-		Behavior on opacity { NumberAnimation { duration: units.shortDuration*2 } }
+		Behavior on opacity { NumberAnimation { duration: Kirigami.Units.shortDuration*2 } }
 		color: Kirigami.Theme.highlightColor
 		radius: dayStyle.radius
 		z: todayRect.z - 1
@@ -207,7 +207,7 @@ MouseArea {
 			}
 		}
 		Behavior on color {
-			ColorAnimation { duration: units.shortDuration * 2 }
+			ColorAnimation { duration: Kirigami.Units.shortDuration * 2 }
 		}
 	}
 

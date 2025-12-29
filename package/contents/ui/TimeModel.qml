@@ -33,7 +33,7 @@ Item {
 		connectedSources: timeModel.allTimezones
 		interval: 1000
 		intervalAlignment: Plasma5Support.Types.NoAlignment
-		onNewData: {
+		onNewData: (sourceName, data) => {
 			if (sourceName === 'Local') {
 				timeModel.tick()
 			}

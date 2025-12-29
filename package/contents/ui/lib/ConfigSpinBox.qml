@@ -1,7 +1,7 @@
 // Version 3
 
 import QtQuick
-import QtQuick.Controls 1.0
+import QtQuick.Controls
 import QtQuick.Layouts
 
 RowLayout {

@@ -1,6 +1,6 @@
 import QtQuick
 import org.kde.kirigami as Kirigami
-import QtQuick.Controls 1.1
+import QtQuick.Controls
 import QtQuick.Controls as QQC2
 import QtQuick.Layouts
 import org.kde.kirigami as Kirigami
@@ -223,7 +223,7 @@ LinkRect {
 							return i18n("Hangout")
 						}
 					}
-					icon.source: plasmoid.file("", "icons/hangouts.svg")
+					icon.source: Plasmoid.file("", "icons/hangouts.svg")
 					onClicked: Qt.openUrlExternally(externalLink)
 				}
 			}

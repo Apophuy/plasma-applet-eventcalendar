@@ -5,7 +5,6 @@ import org.kde.kirigami as Kirigami
 import org.kde.plasma.core as PlasmaCore
 import org.kde.plasma.extras as PlasmaExtras
 import org.kde.plasma.components as PlasmaComponents3
-import org.kde.plasma.components as PlasmaComponents3
 
 import "LocaleFuncs.js" as LocaleFuncs
 
@@ -87,15 +86,15 @@ Item {
 					acceptedButtons: Qt.RightButton
 					anchors.fill: parent
 
-					// onClicked: contextMenu.show(mouse.x, mouse.y)
-					onClicked: contextMenu.showBelow(timerLabel)
+					// onClicked: (mouse) => contextMenu.show(mouse.x, mouse.y)
+					onClicked: (mouse) => contextMenu.showBelow(timerLabel)
 				}
 
 				MouseArea {
 					anchors.fill: parent
 					acceptedButtons: Qt.MiddleButton
 
-					onWheel: {
+					onWheel: (wheel) => {
 						var delta = wheel.angleDelta.y || wheel.angleDelta.x
 						if (delta > 0) {
 							timerModel.increaseDuration()
@@ -107,7 +106,7 @@ Item {
 					}
 				}
 			}
-			
+
 			ColumnLayout {
 				id: toggleButtonColumn
 				Layout.alignment: Qt.AlignBottom
@@ -119,11 +118,11 @@ Item {
 					text: "Test"
 					visible: false
 				}
-				
+
 				PlasmaComponents3.ToolButton {
 					id: timerRepeatsButton
 					readonly property bool isChecked: Plasmoid.configuration.timerRepeats // New property to avoid checked=pressed theming.
-					icon.name: isChecked ? 'media-playlist-repeat' : 'gtk-stop'
+					icon.name: isChecked ? 'media-playlist-repeat' : 'process-stop'
 					text: topRow.contentsFit ? i18n("Repeat") : ""
 					onClicked: {
 						Plasmoid.configuration.timerRepeats = !isChecked
@@ -152,7 +151,7 @@ Item {
 					}
 				}
 			}
-			
+
 		}
 
 		RowLayout {
@@ -217,16 +216,21 @@ Item {
 	}
 
 
-	// https://github.com/KDE/plasma-framework/blob/master/src/declarativeimports/plasmacomponents/qmenu.cpp
-	// Example: https://github.com/KDE/plasma-desktop/blob/master/applets/taskmanager/package/contents/ui/ContextMenu.qml
-	PlasmaComponents.ContextMenu {
+	// Context menu using QtQuick.Controls Menu for Plasma 6
+	QQC2.Menu {
 		id: contextMenu
 
+		function clearMenuItems() {
+			while (contextMenu.count > 0) {
+				contextMenu.removeItem(contextMenu.itemAt(0))
+			}
+		}
+
 		function newSeperator() {
-			return Qt.createQmlObject("import org.kde.plasma.components as PlasmaComponents3; PlasmaComponents.MenuItem { separator: true }", contextMenu)
+			return Qt.createQmlObject("import QtQuick.Controls as QQC2; QQC2.MenuSeparator {}", contextMenu)
 		}
 		function newMenuItem() {
-			return Qt.createQmlObject("import org.kde.plasma.components as PlasmaComponents3; PlasmaComponents.MenuItem {}", contextMenu)
+			return Qt.createQmlObject("import QtQuick.Controls as QQC2; QQC2.MenuItem {}", contextMenu)
 		}
 
 		function loadDynamicActions() {
@@ -234,59 +238,57 @@ Item {
 
 			// Repeat
 			var menuItem = newMenuItem()
-			menuItem.icon = Plasmoid.configuration.timerRepeats ? 'media-playlist-repeat' : 'gtk-stop'
+			menuItem.icon.name = Plasmoid.configuration.timerRepeats ? 'media-playlist-repeat' : 'process-stop'
 			menuItem.text = i18n("Repeat")
-			menuItem.clicked.connect(function() {
+			menuItem.triggered.connect(function() {
 				timerRepeatsButton.clicked()
 			})
-			contextMenu.addMenuItem(menuItem)
+			contextMenu.addItem(menuItem)
 
 			// Sound
-			var menuItem = newMenuItem()
-			menuItem.icon = Plasmoid.configuration.timerSfxEnabled ? 'audio-volume-high' : 'gtk-stop'
+			menuItem = newMenuItem()
+			menuItem.icon.name = Plasmoid.configuration.timerSfxEnabled ? 'audio-volume-high' : 'process-stop'
 			menuItem.text = i18n("Sound")
-			menuItem.clicked.connect(function() {
+			menuItem.triggered.connect(function() {
 				timerSfxEnabledButton.clicked()
 			})
-			contextMenu.addMenuItem(menuItem)
+			contextMenu.addItem(menuItem)
 
 			//
-			contextMenu.addMenuItem(newSeperator())
+			contextMenu.addItem(newSeperator())
 
 			// Set Timer
-			var menuItem = newMenuItem()
-			menuItem.icon = 'text-field'
+			menuItem = newMenuItem()
+			menuItem.icon.name = 'chronometer'
 			menuItem.text = i18n("Set Timer")
-			menuItem.clicked.connect(function() {
+			menuItem.triggered.connect(function() {
 				timerView.isSetTimerViewVisible = true
 			})
-			contextMenu.addMenuItem(menuItem)
+			contextMenu.addItem(menuItem)
 
 			//
-			contextMenu.addMenuItem(newSeperator())
+			contextMenu.addItem(newSeperator())
 
 			for (var i = 0; i < timerModel.defaultTimers.length; i++) {
 				var presetItem = timerModel.defaultTimers[i]
 
-				var menuItem = newMenuItem()
-				menuItem.icon = 'chronometer'
+				menuItem = newMenuItem()
+				menuItem.icon.name = 'chronometer'
 				menuItem.text = LocaleFuncs.durationShortFormat(presetItem.seconds)
-				menuItem.clicked.connect(timerModel.setDurationAndStart.bind(timerModel, presetItem.seconds))
-				contextMenu.addMenuItem(menuItem)
+				menuItem.triggered.connect(timerModel.setDurationAndStart.bind(timerModel, presetItem.seconds))
+				contextMenu.addItem(menuItem)
 			}
 
 		}
 
 		function show(x, y) {
 			loadDynamicActions()
-			open(x, y)
+			contextMenu.popup(x, y)
 		}
 
 		function showBelow(item) {
-			visualParent = item
-			placement = PlasmaCore.Types.BottomPosedLeftAlignedPopup
 			loadDynamicActions()
-			openRelative()
+			contextMenu.popup(item, 0, item.height)
 		}
 	}
 }

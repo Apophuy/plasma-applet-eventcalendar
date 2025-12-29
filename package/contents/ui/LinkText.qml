@@ -1,6 +1,6 @@
 import QtQuick
 import org.kde.kirigami as Kirigami
-import QtQuick.Controls 1.0
+import QtQuick.Controls
 import org.kde.plasma.core as PlasmaCore
 
 Label {

@@ -1,7 +1,7 @@
 // Version 2
 
 import QtQuick
-import QtQuick.Controls 1.0
+import QtQuick.Controls
 import QtQuick.Layouts
 
 TextField {
@@ -22,7 +22,7 @@ TextField {
 	onTextChanged: serializeTimer.restart()
 
 	ToolButton {
-		iconName: "edit-clear"
+		icon.name: "edit-clear"
 		onClicked: configString.value = defaultValue
 
 		anchors.top: parent.top

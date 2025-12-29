@@ -22,7 +22,7 @@ import QtQuick.Layouts
 import QtQuick.Controls as QQC2
 
 import org.kde.kirigami as Kirigami
-import org.kde.plasma.calendar 2.0
+import org.kde.plasma.calendar
 import org.kde.plasma.core as PlasmaCore
 import org.kde.ksvg as KSvg
 import org.kde.plasma.components as PlasmaComponents3
@@ -83,7 +83,7 @@ Item {
 	Behavior on scale {
 		id: scaleBehavior
 		ScaleAnimator {
-			duration: units.longDuration
+			duration: Kirigami.Units.longDuration
 		}
 	}
 
@@ -120,13 +120,13 @@ Item {
 				property int previousPixelDelta
 
 				anchors.fill: parent
-				onClicked: {
+				onClicked: (mouse) => {
 					if (!stack.busy) {
 						daysCalendar.headerClicked()
 					}
 				}
 				onExited: previousPixelDelta = 0
-				onWheel: {
+				onWheel: (wheel) => {
 					var delta = wheel.angleDelta.y || wheel.angleDelta.x
 					var pixelDelta = wheel.pixelDelta.y || wheel.pixelDelta.x
 

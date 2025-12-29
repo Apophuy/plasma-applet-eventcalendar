@@ -20,8 +20,9 @@ import QtQuick
 import QtQuick.Controls as QQC2
 import QtQuick.Layouts
 
-import org.kde.plasma.calendar 2.0
+import org.kde.plasma.calendar
 import org.kde.plasma.core as PlasmaCore
+import org.kde.kirigami as Kirigami
 
 PinchArea {
 	id: root
@@ -316,13 +317,13 @@ PinchArea {
 
 		pushEnter: Transition {
 			NumberAnimation {
-				duration: units.longDuration
+				duration: Kirigami.Units.longDuration
 				property: "opacity"
 				from: 0
 				to: 1
 			}
 			NumberAnimation {
-				duration: units.longDuration
+				duration: Kirigami.Units.longDuration
 				property: "transformScale"
 				from: 1.5
 				to: 1
@@ -330,7 +331,7 @@ PinchArea {
 		}
 		pushExit: Transition {
 			NumberAnimation {
-				duration: units.longDuration
+				duration: Kirigami.Units.longDuration
 				property: "opacity"
 				from: 1
 				to: 0
@@ -339,7 +340,7 @@ PinchArea {
 
 		popEnter: Transition {
 			NumberAnimation {
-				duration: units.longDuration
+				duration: Kirigami.Units.longDuration
 				property: "opacity"
 				from: 0
 				to: 1
@@ -348,13 +349,13 @@ PinchArea {
 		popExit: Transition {
 			id: popExit
 			NumberAnimation {
-				duration: units.longDuration
+				duration: Kirigami.Units.longDuration
 				property: "opacity"
 				from: 1
 				to: 0
 			}
 			NumberAnimation {
-				duration: units.longDuration
+				duration: Kirigami.Units.longDuration
 				property: "transformScale"
 				// so no matter how much you scaled, it would still fly towards you
 				to: popExit.ViewTransition.item.transformScale * 1.5

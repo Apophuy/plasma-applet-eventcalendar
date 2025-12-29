@@ -1,8 +1,8 @@
 import QtQuick
-import QtQuick.Controls 1.0
+import QtQuick.Controls
 import QtQuick.Layouts
 
-import org.kde.plasma.private.digitalclock 1.0 as DigitalClock
+import org.kde.plasma.private.digitalclock as DigitalClock
 
 import ".."
 import "../lib"

@@ -158,7 +158,7 @@ Item {
 	states: [
 		State {
 			name: "horizontalPanel"
-			when: plasmoid.formFactor == PlasmaCore.Types.Horizontal
+			when: Plasmoid.formFactor == PlasmaCore.Types.Horizontal
 
 			PropertyChanges { target: clock
 				targetHeight: clock.horizontalHeight
@@ -178,7 +178,7 @@ Item {
 
 		State {
 			name: "verticalPanel"
-			when: plasmoid.formFactor == PlasmaCore.Types.Vertical
+			when: Plasmoid.formFactor == PlasmaCore.Types.Vertical
 
 			PropertyChanges { target: clock
 				targetHeight: clock.verticalHeight
@@ -205,7 +205,7 @@ Item {
 
 		State {
 			name: "floating"
-			when: plasmoid.formFactor == PlasmaCore.Types.Planar
+			when: Plasmoid.formFactor == PlasmaCore.Types.Planar
 
 			PropertyChanges { target: clock
 				targetHeight: clock.verticalFixedLineHeight

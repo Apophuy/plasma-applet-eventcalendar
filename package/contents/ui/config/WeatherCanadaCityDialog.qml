@@ -1,9 +1,9 @@
 import QtQuick
 import org.kde.kirigami as Kirigami
-import QtQuick.Dialogs 1.2
+import QtQuick.Dialogs
 import QtQuick.Layouts
 import org.kde.kirigami as Kirigami
-import QtQuick.Controls 1.4
+import QtQuick.Controls
 import org.kde.plasma.core as PlasmaCore
 
 import "../lib/Requests.js" as Requests

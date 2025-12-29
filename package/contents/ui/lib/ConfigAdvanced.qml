@@ -1,29 +1,12 @@
 // Version 6
 
 import QtQuick
-import QtQuick.Controls 1.0
-import QtQuick.Controls.Styles 1.0
+import QtQuick.Controls
 import QtQuick.Layouts
 import org.kde.kirigami as Kirigami
 
 ColumnLayout {
 	id: page
-
-	SystemPalette { id: systemPalette }
-
-	Component {
-		id: textFieldStyle
-		TextFieldStyle {
-			textColor: control.activeFocus ? systemPalette.text : systemPalette.text
-
-			background: Rectangle {
-				radius: 2
-				color: control.activeFocus ? systemPalette.base : "transparent"
-				border.color: control.activeFocus ? systemPalette.highlight : "transparent"
-				border.width: 1
-			}
-		}
-	}
 
 	ScrollView {
 		Layout.fillWidth: true
@@ -120,7 +103,6 @@ ColumnLayout {
 					// Layout.fillWidth: true
 					text: model.key
 					readOnly: true
-					style: textFieldStyle
 					Layout.preferredWidth: 200 * Kirigami.Units.devicePixelRatio
 					font.bold: !isDefault
 				}
@@ -128,7 +110,6 @@ ColumnLayout {
 					Layout.alignment: Qt.AlignTop | Qt.AlignLeft
 					text: model.stringType || model.configType || model.valueType
 					readOnly: true
-					style: textFieldStyle
 					Layout.preferredWidth: 80 * Kirigami.Units.devicePixelRatio
 				}
 				Loader {
@@ -152,10 +133,10 @@ ColumnLayout {
 								return stringControl
 							}
 						}
-						
+
 					}
 				}
-				
+
 			}
 		}
 	}
@@ -170,7 +151,7 @@ ColumnLayout {
 
 		property bool loading: false
 		property bool error: false
-		property string source: plasmoid.file("", "config/main.xml")
+		property string source: Plasmoid.file("", "config/main.xml")
 
 		signal updated()
 
@@ -285,7 +266,7 @@ ColumnLayout {
 				}
 
 				var value = Plasmoid.configuration[key]
-				
+
 				configTableModel.append({
 					key: key,
 					valueType: typeof value,

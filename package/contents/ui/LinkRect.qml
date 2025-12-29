@@ -23,7 +23,7 @@ Rectangle {
 	signal leftClicked(var mouse)
 	signal doubleClicked(var mouse)
 	signal loadContextMenu(var contextMenu)
-	
+
 	PlasmaExtras.ToolTip {
 		id: tooltip
 		anchors.fill: parent
@@ -37,7 +37,7 @@ Rectangle {
 			acceptedButtons: Qt.LeftButton | Qt.RightButton
 			cursorShape: linkRect.enabled && containsMouse ? Qt.PointingHandCursor : Qt.ArrowCursor
 			enabled: linkRect.enabled
-			onClicked: {
+			onClicked: (mouse) => {
 				mouse.accepted = false
 				linkRect.clicked(mouse)
 				if (!mouse.accepted) {
@@ -49,7 +49,7 @@ Rectangle {
 					}
 				}
 			}
-			onDoubleClicked: linkRect.doubleClicked(mouse)
+			onDoubleClicked: (mouse) => linkRect.doubleClicked(mouse)
 		}
 	}
 

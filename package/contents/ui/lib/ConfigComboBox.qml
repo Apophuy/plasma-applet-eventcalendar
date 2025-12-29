@@ -1,7 +1,7 @@
 // Version 5
 
 import QtQuick
-import QtQuick.Controls 1.0
+import QtQuick.Controls
 import QtQuick.Layouts
 
 /*

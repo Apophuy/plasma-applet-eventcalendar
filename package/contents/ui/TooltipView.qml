@@ -5,7 +5,7 @@ import org.kde.kirigami as Kirigami
 import org.kde.plasma.core as PlasmaCore
 import org.kde.plasma.components as PlasmaComponents3
 import org.kde.plasma.extras as PlasmaExtras
-import org.kde.plasma.private.digitalclock 1.0 as DigitalClock
+import org.kde.plasma.private.digitalclock as DigitalClock
 
 Item {
 	id: tooltipContentItem
@@ -22,7 +22,7 @@ Item {
 	readonly property string timezoneTimeFormat: Qt.locale().timeFormat(Locale.ShortFormat)
 
 	function timeForZone(zone) {
-		var compactRepresentationItem = plasmoid.compactRepresentationItem
+		var compactRepresentationItem = Plasmoid.compactRepresentationItem
 		if (!compactRepresentationItem) {
 			return ""
 		}

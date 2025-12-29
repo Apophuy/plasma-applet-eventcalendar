@@ -1,8 +1,8 @@
 import QtQuick
-import QtQuick.Controls 1.0
+import QtQuick.Controls
 import QtQuick.Layouts
 import org.kde.kirigami as Kirigami
-import QtGraphicalEffects 1.0 // Colorize
+import Qt5Compat.GraphicalEffects // Colorize
 
 import ".."
 import "../lib"
@@ -85,7 +85,7 @@ ConfigPage {
 			Image {
 				id: twoColumnsImage
 				anchors.fill: parent
-				source: plasmoid.file("", "images/twocolumns.svg")
+				source: Plasmoid.file("", "images/twocolumns.svg")
 				smooth: true
 				visible: false
 			}
@@ -169,7 +169,7 @@ ConfigPage {
 			Image {
 				id: singleColumnImage
 				anchors.fill: parent
-				source: plasmoid.file("", "images/singlecolumn.svg")
+				source: Plasmoid.file("", "images/singlecolumn.svg")
 				smooth: true
 				visible: false
 			}
