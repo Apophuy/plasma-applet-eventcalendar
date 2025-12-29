@@ -67,18 +67,7 @@ sudo apt install kde-plasma-desktop qml6-module-qt5compat-graphicaleffects git
 sudo zypper install plasma6-desktop qt6-qt5compat-imports git
 ```
 
-## Installation
-
-### A) Install via KDE Store
-
-1. Right Click Panel > Panel Options > Add Widgets
-2. Get New Widgets > Download New Widgets
-3. Search: **Event Calendar**
-4. Install
-5. Right Click your current calendar widget > Alternatives
-6. Select **Event Calendar**
-
-### B) Install via GitHub
+## Installation via GitHub
 
 ```bash
 git clone https://github.com/Apophuy/plasma-applet-eventcalendar.git eventcalendar
@@ -87,14 +76,6 @@ sh ./install
 ```
 
 The install script uses `kpackagetool6` to install the plasmoid. If the widget is already installed, it will upgrade it automatically and restart plasmashell.
-
-### C) Install via Package Manager
-
-Community-maintained packages may be available:
-
-- **Arch Linux (AUR):** `plasma6-applets-eventcalendar` (community)
-
-> **Note:** Package availability depends on community maintainers. Check your distribution's package repository.
 
 ## Update
 
@@ -165,13 +146,3 @@ When finished testing, uninstall with `sh ./uninstall` and reinstall your prefer
 
 - Restart plasmashell: `systemctl --user restart plasma-plasmashell.service`
 - Or: `killall plasmashell && kstart plasmashell`
-
-### Google Calendar sync issues
-
-- Ensure you're logged in and the access token is valid
-- Try logging out and logging back in via settings
-
-### Weather not loading
-
-- Verify your OpenWeatherMap city ID is correct
-- Check your internet connection
