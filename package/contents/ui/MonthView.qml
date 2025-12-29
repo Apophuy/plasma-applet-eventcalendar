@@ -16,12 +16,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import QtQuick 2.2
-import QtQuick.Controls 2.0 as QQC2
-import QtQuick.Layouts 1.1
+import QtQuick
+import QtQuick.Controls as QQC2
+import QtQuick.Layouts
 
 import org.kde.plasma.calendar 2.0
-import org.kde.plasma.core 2.0 as PlasmaCore
+import org.kde.plasma.core as PlasmaCore
 
 PinchArea {
 	id: root
@@ -222,10 +222,10 @@ PinchArea {
 		days: 7
 		weeks: 6
 		firstDayOfWeek: {
-			if (plasmoid.configuration.firstDayOfWeek === -1) {
+			if (Plasmoid.configuration.firstDayOfWeek === -1) {
 				return Qt.locale().firstDayOfWeek
 			} else {
-				return plasmoid.configuration.firstDayOfWeek
+				return Plasmoid.configuration.firstDayOfWeek
 			}
 		}
 
@@ -367,8 +367,8 @@ PinchArea {
 				var dateFormat, text
 				if (calendarBackend.displayedDate.getFullYear() === today.getFullYear()) {
 					if (showTodaysDate && calendarBackend.displayedDate.getMonth() === today.getMonth()) {
-						if (plasmoid.configuration.monthCurrentCustomTitleFormat) {
-							dateFormat = plasmoid.configuration.monthCurrentCustomTitleFormat
+						if (Plasmoid.configuration.monthCurrentCustomTitleFormat) {
+							dateFormat = Plasmoid.configuration.monthCurrentCustomTitleFormat
 						} else {
 							dateFormat = i18nc("calendar title format for current month", "MMMM d, yyyy")
 						}
@@ -389,8 +389,8 @@ PinchArea {
 			rows: calendarBackend.weeks
 
 			showWeekNumbers: root.showWeekNumbers
-			eventBadgeType: plasmoid.configuration.monthEventBadgeType
-			todayStyle: plasmoid.configuration.monthTodayStyle
+			eventBadgeType: Plasmoid.configuration.monthEventBadgeType
+			todayStyle: Plasmoid.configuration.monthTodayStyle
 
 			headerModel: calendarBackend.days
 			// gridModel: calendarBackend.daysModel

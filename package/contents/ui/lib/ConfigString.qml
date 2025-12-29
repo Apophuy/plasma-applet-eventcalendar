@@ -1,8 +1,8 @@
 // Version 2
 
-import QtQuick 2.0
+import QtQuick
 import QtQuick.Controls 1.0
-import QtQuick.Layouts 1.0
+import QtQuick.Layouts
 
 TextField {
 	id: configString
@@ -10,7 +10,7 @@ TextField {
 
 	property string configKey: ''
 	property alias value: configString.text
-	readonly property string configValue: configKey ? plasmoid.configuration[configKey] : ""
+	readonly property string configValue: configKey ? Plasmoid.configuration[configKey] : ""
 	onConfigValueChanged: {
 		if (!configString.focus && value != configValue) {
 			value = configValue
@@ -37,7 +37,7 @@ TextField {
 		interval: 300
 		onTriggered: {
 			if (configKey) {
-				plasmoid.configuration[configKey] = value
+				Plasmoid.configuration[configKey] = value
 			}
 		}
 	}

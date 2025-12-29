@@ -1,6 +1,6 @@
-import QtQuick 2.0
+import QtQuick
 import QtQuick.Controls 1.0
-import QtQuick.Layouts 1.0
+import QtQuick.Layouts
 
 import org.kde.plasma.private.digitalclock 1.0 as DigitalClock
 
@@ -18,8 +18,8 @@ ColumnLayout { // ConfigPage creates a binding loop when a child uses fillHeight
 	DigitalClock.TimeZoneModel {
 		id: timeZoneModel
 
-		selectedTimeZones: plasmoid.configuration.selectedTimeZones
-		onSelectedTimeZonesChanged: plasmoid.configuration.selectedTimeZones = selectedTimeZones
+		selectedTimeZones: Plasmoid.configuration.selectedTimeZones
+		onSelectedTimeZonesChanged: Plasmoid.configuration.selectedTimeZones = selectedTimeZones
 	}
 
 	MessageWidget {
@@ -104,16 +104,16 @@ ColumnLayout { // ConfigPage creates a binding loop when a child uses fillHeight
 			id: timezoneCityRadio
 			text: digitalclock_i18n("Time zone city")
 			exclusiveGroup: timezoneDisplayType
-			checked: !plasmoid.configuration.displayTimezoneAsCode
-			onClicked: plasmoid.configuration.displayTimezoneAsCode = false
+			checked: !Plasmoid.configuration.displayTimezoneAsCode
+			onClicked: Plasmoid.configuration.displayTimezoneAsCode = false
 		}
 
 		RadioButton {
 			id: timezoneCodeRadio
 			text: digitalclock_i18n("Time zone code")
 			exclusiveGroup: timezoneDisplayType
-			checked: plasmoid.configuration.displayTimezoneAsCode
-			onClicked: plasmoid.configuration.displayTimezoneAsCode = true
+			checked: Plasmoid.configuration.displayTimezoneAsCode
+			onClicked: Plasmoid.configuration.displayTimezoneAsCode = true
 		}
 	}
 }

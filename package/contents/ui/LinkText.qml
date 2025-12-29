@@ -1,9 +1,10 @@
-import QtQuick 2.0
+import QtQuick
+import org.kde.kirigami as Kirigami
 import QtQuick.Controls 1.0
-import org.kde.plasma.core 2.0 as PlasmaCore
+import org.kde.plasma.core as PlasmaCore
 
 Label {
-	linkColor: PlasmaCore.ColorScope.highlightColor
+	linkColor: Kirigami.Theme.highlightColor
 	onLinkActivated: Qt.openUrlExternally(link)
 	MouseArea {
 		anchors.fill: parent

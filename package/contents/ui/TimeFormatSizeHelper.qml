@@ -1,5 +1,5 @@
-import QtQuick 2.4
-import org.kde.plasma.components 3.0 as PlasmaComponents3
+import QtQuick
+import org.kde.plasma.components as PlasmaComponents3
 
 Item {
 	id: timeFormatSizeHelper

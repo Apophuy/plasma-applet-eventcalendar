@@ -1,6 +1,8 @@
-import QtQuick 2.0
-import QtQuick.Layouts 1.0
-import org.kde.plasma.core 2.0 as PlasmaCore
+import QtQuick
+import org.kde.kirigami as Kirigami
+import QtQuick.Layouts
+import org.kde.kirigami as Kirigami
+import org.kde.plasma.core as PlasmaCore
 
 Item {
 	id: eventColorsBarColor
@@ -11,7 +13,7 @@ Item {
 		anchors.bottom: eventColorsBarColor.bottom
 		height: parent.height / 8
 		
-		property bool usePadding: !plasmoid.configuration.monthShowBorder
+		property bool usePadding: !Plasmoid.configuration.monthShowBorder
 		anchors.leftMargin: usePadding ? parent.width/8 : 0
 		anchors.rightMargin: usePadding ? parent.width/8 : 0
 		anchors.bottomMargin: usePadding ? parent.height/16 : 0
@@ -21,7 +23,7 @@ Item {
 			spacing: 0
 
 			Repeater {
-				model: dayStyle.useHightlightColor ? [theme.highlightColor] : dayStyle.eventColors
+				model: dayStyle.useHightlightColor ? [Kirigami.Theme.highlightColor] : dayStyle.eventColors
 
 				Rectangle {
 					Layout.fillHeight: true
@@ -32,7 +34,7 @@ Item {
 						anchors.fill: parent
 						color: "transparent"
 						border.width: 1
-						border.color: theme.backgroundColor
+						border.color: Kirigami.Theme.backgroundColor
 						opacity: 0.5
 					}
 				}

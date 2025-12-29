@@ -1,14 +1,14 @@
 // Version 3
 
-import QtQuick 2.0
+import QtQuick
 import QtQuick.Controls 1.0
-import QtQuick.Layouts 1.0
+import QtQuick.Layouts
 
 RowLayout {
 	id: configSpinBox
 
 	property string configKey: ''
-	readonly property var configValue: configKey ? plasmoid.configuration[configKey] : 0
+	readonly property var configValue: configKey ? Plasmoid.configuration[configKey] : 0
 	property alias decimals: spinBox.decimals
 	property alias horizontalAlignment: spinBox.horizontalAlignment
 	property alias maximumValue: spinBox.maximumValue
@@ -46,7 +46,7 @@ RowLayout {
 		interval: 300
 		onTriggered: {
 			if (configKey) {
-				plasmoid.configuration[configKey] = value
+				Plasmoid.configuration[configKey] = value
 			}
 		}
 	}

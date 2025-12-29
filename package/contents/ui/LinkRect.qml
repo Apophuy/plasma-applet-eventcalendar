@@ -1,5 +1,6 @@
-import QtQuick 2.0
-import org.kde.plasma.core 2.0 as PlasmaCore
+import QtQuick
+import org.kde.plasma.core as PlasmaCore
+import org.kde.plasma.extras as PlasmaExtras
 
 import "lib"
 
@@ -23,7 +24,7 @@ Rectangle {
 	signal doubleClicked(var mouse)
 	signal loadContextMenu(var contextMenu)
 	
-	PlasmaCore.ToolTipArea {
+	PlasmaExtras.ToolTip {
 		id: tooltip
 		anchors.fill: parent
 		mainText: linkRect.tooltipMainText

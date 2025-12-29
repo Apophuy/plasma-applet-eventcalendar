@@ -1,4 +1,4 @@
-import QtQuick 2.0
+import QtQuick
 
 import "../lib"
 import "../lib/Requests.js" as Requests
@@ -8,15 +8,15 @@ Item {
 
 	Logger {
 		id: logger
-		showDebug: plasmoid.configuration.debugging
+		showDebug: Plasmoid.configuration.debugging
 	}
 
 	// Active Session
-	readonly property bool isLoggedIn: !!plasmoid.configuration.accessToken
+	readonly property bool isLoggedIn: !!Plasmoid.configuration.accessToken
 	readonly property bool needsRelog: {
-		if (plasmoid.configuration.accessToken && plasmoid.configuration.latestClientId != plasmoid.configuration.sessionClientId) {
+		if (Plasmoid.configuration.accessToken && Plasmoid.configuration.latestClientId != Plasmoid.configuration.sessionClientId) {
 			return true
-		} else if (!plasmoid.configuration.accessToken && plasmoid.configuration.access_token) {
+		} else if (!Plasmoid.configuration.accessToken && Plasmoid.configuration.access_token) {
 			return true
 		} else {
 			return false
@@ -37,7 +37,7 @@ Item {
 		defaultValue: []
 
 		function serialize() {
-			plasmoid.configuration[configKey] = value.join(',')
+			Plasmoid.configuration[configKey] = value.join(',')
 		}
 		function deserialize() {
 			value = configValue.split(',')
@@ -58,7 +58,7 @@ Item {
 		defaultValue: []
 
 		function serialize() {
-			plasmoid.configuration[configKey] = value.join(',')
+			Plasmoid.configuration[configKey] = value.join(',')
 		}
 		function deserialize() {
 			value = configValue.split(',')
@@ -79,7 +79,7 @@ Item {
 		url += '?scope=' + encodeURIComponent('https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/tasks')
 		url += '&response_type=code'
 		url += '&redirect_uri=' + encodeURIComponent('urn:ietf:wg:oauth:2.0:oob')
-		url += '&client_id=' + encodeURIComponent(plasmoid.configuration.latestClientId)
+		url += '&client_id=' + encodeURIComponent(Plasmoid.configuration.latestClientId)
 		return url
 	}
 
@@ -88,8 +88,8 @@ Item {
 		Requests.post({
 			url: url,
 			data: {
-				client_id: plasmoid.configuration.latestClientId,
-				client_secret: plasmoid.configuration.latestClientSecret,
+				client_id: Plasmoid.configuration.latestClientId,
+				client_secret: Plasmoid.configuration.latestClientSecret,
 				code: args.authorizationCode,
 				grant_type: 'authorization_code',
 				redirect_uri: 'urn:ietf:wg:oauth:2.0:oob',
@@ -119,12 +119,12 @@ Item {
 	}
 
 	function updateAccessToken(data) {
-		plasmoid.configuration.sessionClientId = plasmoid.configuration.latestClientId
-		plasmoid.configuration.sessionClientSecret = plasmoid.configuration.latestClientSecret
-		plasmoid.configuration.accessToken = data.access_token
-		plasmoid.configuration.accessTokenType = data.token_type
-		plasmoid.configuration.accessTokenExpiresAt = Date.now() + data.expires_in * 1000
-		plasmoid.configuration.refreshToken = data.refresh_token
+		Plasmoid.configuration.sessionClientId = Plasmoid.configuration.latestClientId
+		Plasmoid.configuration.sessionClientSecret = Plasmoid.configuration.latestClientSecret
+		Plasmoid.configuration.accessToken = data.access_token
+		Plasmoid.configuration.accessTokenType = data.token_type
+		Plasmoid.configuration.accessTokenExpiresAt = Date.now() + data.expires_in * 1000
+		Plasmoid.configuration.refreshToken = data.refresh_token
 		newAccessToken()
 	}
 
@@ -137,9 +137,9 @@ Item {
 
 	function updateCalendarList() {
 		logger.debug('updateCalendarList')
-		logger.debug('accessToken', plasmoid.configuration.accessToken)
+		logger.debug('accessToken', Plasmoid.configuration.accessToken)
 		fetchGCalCalendars({
-			accessToken: plasmoid.configuration.accessToken,
+			accessToken: Plasmoid.configuration.accessToken,
 		}, function(err, data, xhr) {
 			// Check for errors
 			if (err || data.error) {
@@ -169,9 +169,9 @@ Item {
 
 	function updateTasklistList() {
 		logger.debug('updateTasklistList')
-		logger.debug('accessToken', plasmoid.configuration.accessToken)
+		logger.debug('accessToken', Plasmoid.configuration.accessToken)
 		fetchGoogleTasklistList({
-			accessToken: plasmoid.configuration.accessToken,
+			accessToken: Plasmoid.configuration.accessToken,
 		}, function(err, data, xhr) {
 			// Check for errors
 			if (err || data.error) {
@@ -200,17 +200,17 @@ Item {
 	}
 
 	function logout() {
-		plasmoid.configuration.sessionClientId = ''
-		plasmoid.configuration.sessionClientSecret = ''
-		plasmoid.configuration.accessToken = ''
-		plasmoid.configuration.accessTokenType = ''
-		plasmoid.configuration.accessTokenExpiresAt = 0
-		plasmoid.configuration.refreshToken = ''
+		Plasmoid.configuration.sessionClientId = ''
+		Plasmoid.configuration.sessionClientSecret = ''
+		Plasmoid.configuration.accessToken = ''
+		Plasmoid.configuration.accessTokenType = ''
+		Plasmoid.configuration.accessTokenExpiresAt = 0
+		Plasmoid.configuration.refreshToken = ''
 
 		// Delete relevant data
 		// TODO: only target google calendar data
 		// TODO: Make a signal?
-		plasmoid.configuration.agendaNewEventLastCalendarId = ''
+		Plasmoid.configuration.agendaNewEventLastCalendarId = ''
 		calendarList = []
 		calendarIdList = []
 		tasklistList = []

@@ -1,7 +1,7 @@
-import QtQuick 2.0
+import QtQuick
 import QtQuick.Controls 1.0
-import QtQuick.Layouts 1.0
-import org.kde.kirigami 2.0 as Kirigami
+import QtQuick.Layouts
+import org.kde.kirigami as Kirigami
 import QtGraphicalEffects 1.0 // Colorize
 
 import ".."
@@ -19,8 +19,8 @@ ConfigPage {
 	RadioButton {
 		text: i18n("Calendar to the left of the Agenda (Two Columns)")
 		exclusiveGroup: layoutGroup
-		checked: plasmoid.configuration.twoColumns
-		onClicked: plasmoid.configuration.twoColumns = true
+		checked: Plasmoid.configuration.twoColumns
+		onClicked: Plasmoid.configuration.twoColumns = true
 		Layout.fillWidth: false
 		Layout.alignment: Qt.AlignHCenter
 	}
@@ -108,8 +108,8 @@ ConfigPage {
 	RadioButton {
 		text: i18n("Agenda below the Calendar (Single Column)")
 		exclusiveGroup: layoutGroup
-		checked: !plasmoid.configuration.twoColumns
-		onClicked: plasmoid.configuration.twoColumns = false
+		checked: !Plasmoid.configuration.twoColumns
+		onClicked: Plasmoid.configuration.twoColumns = false
 		Layout.fillWidth: false
 		Layout.alignment: Qt.AlignHCenter
 	}

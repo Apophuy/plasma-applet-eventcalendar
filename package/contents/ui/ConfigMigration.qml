@@ -1,4 +1,4 @@
-import QtQuick 2.0
+import QtQuick
 
 import "./calendars/PlasmaCalendarUtils.js" as PlasmaCalendarUtils
 
@@ -6,27 +6,27 @@ QtObject {
 	signal migrate()
 
 	function copy(oldKey, newKey) {
-		if (typeof plasmoid.configuration[oldKey] === 'undefined') return
-		if (typeof plasmoid.configuration[newKey] === 'undefined') return
-		if (plasmoid.configuration[oldKey] === plasmoid.configuration[newKey]) return
-		plasmoid.configuration[newKey] = plasmoid.configuration[oldKey]
-		console.log('[eventcalendar:migrate] copy ' + oldKey + ' => ' + newKey + ' (value: ' + plasmoid.configuration[oldKey] + ')')
+		if (typeof Plasmoid.configuration[oldKey] === 'undefined') return
+		if (typeof Plasmoid.configuration[newKey] === 'undefined') return
+		if (Plasmoid.configuration[oldKey] === Plasmoid.configuration[newKey]) return
+		Plasmoid.configuration[newKey] = Plasmoid.configuration[oldKey]
+		console.log('[eventcalendar:migrate] copy ' + oldKey + ' => ' + newKey + ' (value: ' + Plasmoid.configuration[oldKey] + ')')
 	}
 
 	Component.onCompleted: migrate()
 	onMigrate: {
 		// Modified in: v72
-		if (!plasmoid.configuration.v72Migration) {
-			var oldValue = plasmoid.configuration.enabledCalendarPlugins
-			var newValue = PlasmaCalendarUtils.pluginPathToFilenameList(plasmoid.configuration.enabledCalendarPlugins)
-			plasmoid.configuration.enabledCalendarPlugins = newValue
+		if (!Plasmoid.configuration.v72Migration) {
+			var oldValue = Plasmoid.configuration.enabledCalendarPlugins
+			var newValue = PlasmaCalendarUtils.pluginPathToFilenameList(Plasmoid.configuration.enabledCalendarPlugins)
+			Plasmoid.configuration.enabledCalendarPlugins = newValue
 			console.log('[eventcalendar:migrate] convert enabledCalendarPlugins (' + oldValue + ' => ' + newValue + ')')
 
-			plasmoid.configuration.v72Migration = true
+			Plasmoid.configuration.v72Migration = true
 		}
 
 		// Renamed in: v71
-		if (!plasmoid.configuration.v71Migration) {
+		if (!Plasmoid.configuration.v71Migration) {
 			copy('widget_show_meteogram', 'widgetShowMeteogram')
 			copy('widget_show_timer', 'widgetShowTimer')
 			copy('widget_show_agenda', 'widgetShowAgenda')
@@ -76,7 +76,7 @@ QtObject {
 			copy('meteogram_negativeTempColor', 'meteogramNegativeTempColor')
 			copy('meteogram_iconColor', 'meteogramIconColor')
 
-			plasmoid.configuration.v71Migration = true
+			Plasmoid.configuration.v71Migration = true
 		}
 	}
 

@@ -1,7 +1,9 @@
-import QtQuick 2.0
+import QtQuick
+import org.kde.kirigami as Kirigami
 import QtQuick.Controls 1.1
-import QtQuick.Layouts 1.1
-import org.kde.plasma.core 2.0 as PlasmaCore
+import QtQuick.Layouts
+import org.kde.kirigami as Kirigami
+import org.kde.plasma.core as PlasmaCore
 
 import "Shared.js" as Shared
 import "LocaleFuncs.js" as LocaleFuncs
@@ -14,7 +16,7 @@ Item {
 	property color inProgressColor: appletConfig.agendaInProgressColor
 	property int inProgressFontWeight: Font.Bold
 
-	property color isOverdueColor: PlasmaCore.ColorScope.negativeTextColor
+	property color isOverdueColor: Kirigami.Theme.negativeTextColor
 	property int isOverdueFontWeight: Font.Bold
 
 	signal newEventFormOpened(var agendaItem, var calendarSelector)

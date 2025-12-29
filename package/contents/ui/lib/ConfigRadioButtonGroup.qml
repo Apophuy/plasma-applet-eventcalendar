@@ -1,8 +1,8 @@
 // Version 4
 
-import QtQuick 2.0
+import QtQuick
 import QtQuick.Controls 1.0
-import QtQuick.Layouts 1.0
+import QtQuick.Layouts
 
 /*
 ** Example:
@@ -26,7 +26,7 @@ RowLayout {
 	property var exclusiveGroup: ExclusiveGroup { id: radioButtonGroup }
 
 	property string configKey: ''
-	readonly property var configValue: configKey ? plasmoid.configuration[configKey] : ""
+	readonly property var configValue: configKey ? Plasmoid.configuration[configKey] : ""
 
 	property alias model: buttonRepeater.model
 
@@ -50,7 +50,7 @@ RowLayout {
 				onClicked: {
 					focus = true
 					if (configKey) {
-						plasmoid.configuration[configKey] = modelData.value
+						Plasmoid.configuration[configKey] = modelData.value
 					}
 				}
 			}

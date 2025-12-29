@@ -1,11 +1,12 @@
-import QtQuick 2.0
-import QtQuick.Window 2.2
+import QtQuick
+import org.kde.kirigami as Kirigami
+import QtQuick.Window
 
-import org.kde.plasma.core 2.0 as PlasmaCore
-import org.kde.plasma.components 3.0 as PlasmaComponents3
+import org.kde.plasma.core as PlasmaCore
+import org.kde.plasma.components as PlasmaComponents3
 
 import QtQuick.Templates 2.1 as T
-import QtQuick.Controls 2.1 as Controls
+import QtQuick.Controls as Controls
 import QtGraphicalEffects 1.0 // DropShadow
 
 // Based on:
@@ -17,7 +18,7 @@ PlasmaComponents3.TextField {
 	id: timeSelector
 	readonly property Item control: timeSelector
 
-	property int defaultMinimumWidth: 80 * units.devicePixelRatio
+	property int defaultMinimumWidth: 80 * Kirigami.Units.devicePixelRatio
 	readonly property int implicitContentWidth: contentWidth + leftPadding + rightPadding
 	implicitWidth: Math.max(defaultMinimumWidth, implicitContentWidth)
 
@@ -112,12 +113,12 @@ PlasmaComponents3.TextField {
 	property T.Popup popup: T.Popup {
 		x: control.mirrored ? control.width - width : 0
 		y: control.height
-		property int minWidth: 120 * units.devicePixelRatio
-		property int maxHeight: 150 * units.devicePixelRatio
+		property int minWidth: 120 * Kirigami.Units.devicePixelRatio
+		property int maxHeight: 150 * Kirigami.Units.devicePixelRatio
 		width: Math.max(control.width, minWidth)
 		implicitHeight: Math.min(contentItem.implicitHeight, maxHeight)
-		topMargin: 6 * units.devicePixelRatio
-		bottomMargin: 6 * units.devicePixelRatio
+		topMargin: 6 * Kirigami.Units.devicePixelRatio
+		bottomMargin: 6 * Kirigami.Units.devicePixelRatio
 
 		contentItem: ListView {
 			id: listView
@@ -142,8 +143,8 @@ PlasmaComponents3.TextField {
 				margins: -1
 			}
 			radius: 2
-			color: theme.viewBackgroundColor
-			border.color: Qt.rgba(theme.textColor.r, theme.textColor.g, theme.textColor.b, 0.3)
+			color: Kirigami.Theme.backgroundColor
+			border.color: Qt.rgba(Kirigami.Theme.textColor.r, Kirigami.Theme.textColor.g, Kirigami.Theme.textColor.b, 0.3)
 			layer.enabled: true
 
 			layer.effect: DropShadow {

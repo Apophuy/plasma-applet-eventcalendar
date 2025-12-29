@@ -1,4 +1,4 @@
-import QtQuick 2.0
+import QtQuick
 // import org.kde.plasma.networkmanagement 0.2 as PlasmaNM
 
 QtObject {

@@ -1,4 +1,4 @@
-import QtQuick 2.0
+import QtQuick
 
 import "../lib/Requests.js" as Requests
 
@@ -8,23 +8,23 @@ CalendarManager {
 	calendarManagerId: "DebugGoogleCalendar"
 
 	function fetchDebugGoogleSession() {
-		if (plasmoid.configuration.accessToken) {
+		if (Plasmoid.configuration.accessToken) {
 			return
 		}
 		// Steal accessToken from our current user's config.
 		fetchCurrentUserConfig(function(err, metadata) {
-			plasmoid.configuration.sessionClientId = metadata['sessionClientId']
-			plasmoid.configuration.sessionClientSecret = metadata['sessionClientSecret']
-			plasmoid.configuration.accessToken = metadata['accessToken']
-			plasmoid.configuration.refreshToken = metadata['refreshToken']
-			plasmoid.configuration.accessToken = metadata['accessToken']
-			plasmoid.configuration.accessTokenType = metadata['accessTokenType']
-			plasmoid.configuration.accessTokenExpiresAt = metadata['accessTokenExpiresAt']
-			plasmoid.configuration.calendarIdList = metadata['calendarIdList']
-			plasmoid.configuration.calendarList = metadata['calendarList']
-			plasmoid.configuration.tasklistIdList = metadata['tasklistIdList']
-			plasmoid.configuration.tasklistList = metadata['tasklistList']
-			plasmoid.configuration.agendaNewEventLastCalendarId = metadata['agendaNewEventLastCalendarId']
+			Plasmoid.configuration.sessionClientId = metadata['sessionClientId']
+			Plasmoid.configuration.sessionClientSecret = metadata['sessionClientSecret']
+			Plasmoid.configuration.accessToken = metadata['accessToken']
+			Plasmoid.configuration.refreshToken = metadata['refreshToken']
+			Plasmoid.configuration.accessToken = metadata['accessToken']
+			Plasmoid.configuration.accessTokenType = metadata['accessTokenType']
+			Plasmoid.configuration.accessTokenExpiresAt = metadata['accessTokenExpiresAt']
+			Plasmoid.configuration.calendarIdList = metadata['calendarIdList']
+			Plasmoid.configuration.calendarList = metadata['calendarList']
+			Plasmoid.configuration.tasklistIdList = metadata['tasklistIdList']
+			Plasmoid.configuration.tasklistList = metadata['tasklistList']
+			Plasmoid.configuration.agendaNewEventLastCalendarId = metadata['agendaNewEventLastCalendarId']
 		})
 	}
 

@@ -1,8 +1,8 @@
-import QtQuick 2.0
+import QtQuick
 
 QtObject {
 	property string configKey
-	readonly property string configValue: plasmoid.configuration[configKey]
+	readonly property string configValue: Plasmoid.configuration[configKey]
 	property var value: null
 
 	onConfigValueChanged: deserialize()
@@ -14,6 +14,6 @@ QtObject {
 
 	function serialize() {
 		var v = Qt.btoa(JSON.stringify(value))
-		plasmoid.configuration[configKey] = v
+		Plasmoid.configuration[configKey] = v
 	}
 }

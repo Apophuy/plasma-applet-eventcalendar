@@ -1,4 +1,4 @@
-import QtQuick 2.0
+import QtQuick
 
 import "../ErrorType.js" as ErrorType
 import "../Shared.js" as Shared
@@ -14,7 +14,7 @@ CalendarManager {
 	calendarManagerId: "GoogleCalendar"
 
 	property var session
-	readonly property var calendarIdList: plasmoid.configuration.calendarIdList ? plasmoid.configuration.calendarIdList.split(',') : []
+	readonly property var calendarIdList: Plasmoid.configuration.calendarIdList ? Plasmoid.configuration.calendarIdList.split(',') : []
 
 	onFetchAllCalendars: {
 		fetchGoogleAccountData()
@@ -262,7 +262,7 @@ CalendarManager {
 		event.description = event.description || ""
 		event.backgroundColor = parseColor(calendar, event)
 		event.canEdit = (calendar.accessRole == 'writer' || calendar.accessRole == 'owner') && !event.recurringEventId // We cannot currently edit repeating events.
-		if (plasmoid.configuration.googleHideGoalsDesc
+		if (Plasmoid.configuration.googleHideGoalsDesc
 			&& event.organizer.email == "unknownorganizer@calendar.google.com"
 			&& event.organizer.displayName == "Google Calendar"
 		) {
@@ -274,7 +274,7 @@ CalendarManager {
 			// user to click the edit icon after loading the page.
 			// Example htmlLink: "https://www.google.com/calendar/event?eid=...&ctz=Etc/UTC"
 			// Which redirects to: "https://calendar.google.com/calendar/u/0/r/month/2021/12/31?eid=...&sf=true"
-			if (plasmoid.configuration.googleEventClickAction == 'WebEventView') {
+			if (Plasmoid.configuration.googleEventClickAction == 'WebEventView') {
 				var eidRegex = /eid=(\w+)(\&|$)/
 				var eidMatch = eidRegex.exec(event.htmlLink)
 				if (eidMatch) {
@@ -283,7 +283,7 @@ CalendarManager {
 						event.htmlLink = 'https://calendar.google.com/calendar/r/eventedit/' + eid
 					}
 				}
-			} else if (plasmoid.configuration.googleEventClickAction == 'WebMonthView') {
+			} else if (Plasmoid.configuration.googleEventClickAction == 'WebMonthView') {
 				// Default behavior
 			}
 		}
@@ -581,8 +581,8 @@ CalendarManager {
 
 	//--- CalendarManager
 	function getCalendarList() {
-		if (session.accessToken && plasmoid.configuration.calendarList) {
-			var calendarList = JSON.parse(Qt.atob(plasmoid.configuration.calendarList))
+		if (session.accessToken && Plasmoid.configuration.calendarList) {
+			var calendarList = JSON.parse(Qt.atob(Plasmoid.configuration.calendarList))
 			for (var i = 0; i < calendarList.length; i++) {
 				var calendar = calendarList[i]
 				calendar.isTasklist = false

@@ -1,8 +1,10 @@
-import QtQuick 2.0
+import QtQuick
+import org.kde.kirigami as Kirigami
 import QtQuick.Controls 1.1
-import QtQuick.Layouts 1.1
-import org.kde.plasma.core 2.0 as PlasmaCore
-import org.kde.plasma.components 3.0 as PlasmaComponents3
+import QtQuick.Layouts
+import org.kde.kirigami as Kirigami
+import org.kde.plasma.core as PlasmaCore
+import org.kde.plasma.components as PlasmaComponents3
 
 import "Shared.js" as Shared
 
@@ -228,7 +230,7 @@ Loader {
 					text: (event && event.description) || ""
 
 					Layout.fillWidth: true
-					Layout.preferredHeight: contentHeight + (20 * units.devicePixelRatio)
+					Layout.preferredHeight: contentHeight + (20 * Kirigami.Units.devicePixelRatio)
 
 					Keys.onEscapePressed: editEventItem.cancel()
 
@@ -248,7 +250,7 @@ Loader {
 
 				RowLayout {
 					Layout.columnSpan: 2
-					spacing: 4 * units.devicePixelRatio
+					spacing: 4 * Kirigami.Units.devicePixelRatio
 					Item {
 						Layout.fillWidth: true
 					}

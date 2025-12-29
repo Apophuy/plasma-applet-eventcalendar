@@ -1,16 +1,16 @@
-import QtQuick 2.0
+import QtQuick
 
 import "../lib/Requests.js" as Requests
 
 QtObject {
 	id: googleApiSession
 
-	readonly property string accessToken: plasmoid.configuration.accessToken
+	readonly property string accessToken: Plasmoid.configuration.accessToken
 
 	//--- Refresh Credentials
 	function checkAccessToken(callback) {
 		logger.debug('checkAccessToken')
-		if (plasmoid.configuration.accessTokenExpiresAt < Date.now() + 5000) {
+		if (Plasmoid.configuration.accessTokenExpiresAt < Date.now() + 5000) {
 			updateAccessToken(callback)
 		} else {
 			callback(null)
@@ -18,10 +18,10 @@ QtObject {
 	}
 
 	function updateAccessToken(callback) {
-		// logger.debug('accessTokenExpiresAt', plasmoid.configuration.accessTokenExpiresAt)
+		// logger.debug('accessTokenExpiresAt', Plasmoid.configuration.accessTokenExpiresAt)
 		// logger.debug('                 now', Date.now())
-		// logger.debug('refreshToken', plasmoid.configuration.refreshToken)
-		if (plasmoid.configuration.refreshToken) {
+		// logger.debug('refreshToken', Plasmoid.configuration.refreshToken)
+		if (Plasmoid.configuration.refreshToken) {
 			logger.debug('updateAccessToken')
 			fetchNewAccessToken(function(err, data, xhr) {
 				if (err || (!err && data && data.error)) {
@@ -47,9 +47,9 @@ QtObject {
 	onTransactionError: logger.log(msg)
 
 	function applyAccessToken(data) {
-		plasmoid.configuration.accessToken = data.access_token
-		plasmoid.configuration.accessTokenType = data.token_type
-		plasmoid.configuration.accessTokenExpiresAt = Date.now() + data.expires_in * 1000
+		Plasmoid.configuration.accessToken = data.access_token
+		Plasmoid.configuration.accessTokenType = data.token_type
+		Plasmoid.configuration.accessTokenExpiresAt = Date.now() + data.expires_in * 1000
 		newAccessToken()
 	}
 
@@ -59,9 +59,9 @@ QtObject {
 		Requests.post({
 			url: url,
 			data: {
-				client_id: plasmoid.configuration.sessionClientId,
-				client_secret: plasmoid.configuration.sessionClientSecret,
-				refresh_token: plasmoid.configuration.refreshToken,
+				client_id: Plasmoid.configuration.sessionClientId,
+				client_secret: Plasmoid.configuration.sessionClientSecret,
+				refresh_token: Plasmoid.configuration.refreshToken,
 				grant_type: 'refresh_token',
 			},
 		}, callback)
@@ -81,7 +81,7 @@ QtObject {
 	}
 	// https://stackoverflow.com/questions/28507619/how-to-create-delay-function-in-qml
 	function delay(delayTime, callback) {
-		var timer = Qt.createQmlObject("import QtQuick 2.0; Timer {}", googleCalendarManager)
+		var timer = Qt.createQmlObject("import QtQuick; Timer {}", googleCalendarManager)
 		timer.interval = delayTime
 		timer.repeat = false
 		timer.triggered.connect(callback)

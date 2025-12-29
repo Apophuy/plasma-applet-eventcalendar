@@ -1,6 +1,6 @@
-import QtQuick 2.0
+import QtQuick
 import QtQuick.Controls 1.0
-import QtQuick.Layouts 1.0
+import QtQuick.Layouts
 
 import "../lib"
 
@@ -89,9 +89,9 @@ ConfigPage {
 					}
 
 					// The firstDayOfWeek enum starts at -1 instead of 0
-					currentIndex = plasmoid.configuration.firstDayOfWeek + 1
+					currentIndex = Plasmoid.configuration.firstDayOfWeek + 1
 					currentIndexChanged.connect(function(){
-						plasmoid.configuration.firstDayOfWeek = currentIndex - 1
+						Plasmoid.configuration.firstDayOfWeek = currentIndex - 1
 					})
 				}
 			}

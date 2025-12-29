@@ -1,14 +1,14 @@
-import QtQuick 2.0
+import QtQuick
 
 QtObject {
 	id: obj
 	property string configKey: ''
-	readonly property string configValue: configKey ? plasmoid.configuration[configKey] : ''
+	readonly property string configValue: configKey ? Plasmoid.configuration[configKey] : ''
 	property var value: null
 	property var defaultValue: ({}) // Empty Map
 
 	function serialize() {
-		plasmoid.configuration[configKey] = Qt.btoa(JSON.stringify(value))
+		Plasmoid.configuration[configKey] = Qt.btoa(JSON.stringify(value))
 	}
 
 	function deserialize() {
