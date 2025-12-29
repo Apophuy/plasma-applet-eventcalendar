@@ -1,7 +1,8 @@
-import QtQuick 2.0
-import QtQuick.Layouts 1.1
+import QtQuick
+import QtQuick.Layouts
 
-import org.kde.plasma.core 2.0 as PlasmaCore
+import org.kde.plasma.core as PlasmaCore
+import org.kde.plasma.plasma5support as Plasma5Support
 
 Item {
 	id: timeModel
@@ -9,7 +10,7 @@ Item {
 	property var currentTime: dataSource.data[timezone]["DateTime"]
 	property alias dataSource: dataSource
 	property var allTimezones: {
-		var timezones = plasmoid.configuration.selectedTimeZones.toString()
+		var timezones = Plasmoid.configuration.selectedTimeZones.toString()
 		if (timezones.length > 0) {
 			timezones = timezones.split(',')
 		} else {
@@ -26,13 +27,13 @@ Item {
 	signal dateChanged()
 	signal loaded()
 
-	PlasmaCore.DataSource {
+	Plasma5Support.DataSource {
 		id: dataSource
 		engine: "time"
 		connectedSources: timeModel.allTimezones
 		interval: 1000
-		intervalAlignment: PlasmaCore.Types.NoAlignment
-		onNewData: {
+		intervalAlignment: Plasma5Support.Types.NoAlignment
+		onNewData: (sourceName, data) => {
 			if (sourceName === 'Local') {
 				timeModel.tick()
 			}

@@ -1,5 +1,7 @@
-import QtQuick 2.0
-import org.kde.plasma.core 2.0 as PlasmaCore
+import QtQuick
+import org.kde.kirigami as Kirigami
+import org.kde.plasma.core as PlasmaCore
+import org.kde.plasma.extras as PlasmaExtras
 
 import "Shared.js" as Shared
 import "./weather/WeatherApi.js" as WeatherApi
@@ -29,7 +31,7 @@ Item {
 
 	Rectangle {
 		visible: typeof root === 'undefined'
-		color: PlasmaCore.ColorScope.backgroundColor
+		color: Kirigami.Theme.backgroundColor
 		anchors.fill: parent
 	}
 
@@ -61,9 +63,9 @@ Item {
 		property string rainUnits: 'mm'
 
 		property double freezingPoint: {
-			if (plasmoid.configuration.weatherUnits === "kelvin") {
+			if (Plasmoid.configuration.weatherUnits === "kelvin") {
 				return 273.15 // https://en.wikipedia.org/wiki/Kelvin
-			} else if (plasmoid.configuration.weatherUnits === "imperial") {
+			} else if (Plasmoid.configuration.weatherUnits === "imperial") {
 				return 32 // https://en.wikipedia.org/wiki/Fahrenheit
 			} else { // "metric"
 				return 0
@@ -398,13 +400,12 @@ Item {
 					// color: ["#880", "#008"][index % 2]
 					color: "transparent"
 
-					PlasmaCore.ToolTipArea {
+					PlasmaExtras.ToolTip {
 						id: tooltip
 						anchors.fill: parent
 						icon: modelData.gridItem.weatherIcon
 						mainText: modelData.gridItem.tooltipMainText
 						subText: modelData.gridItem.tooltipSubText
-						location: PlasmaCore.Types.BottomEdge
 					}
 
 					FontIcon {

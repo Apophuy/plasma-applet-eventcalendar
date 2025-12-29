@@ -1,10 +1,10 @@
-import QtQuick 2.0
-import org.kde.plasma.plasmoid 2.0 // root.Plasmoid.___
+import QtQuick
+import org.kde.plasma.plasmoid
 import "./ErrorType.js" as ErrorType
 import "./weather/WeatherApi.js" as WeatherApi
 
 Item {
-	readonly property Item popup: root.Plasmoid.fullRepresentationItem
+	readonly property Item popup: root.fullRepresentationItem
 
 	//--- Weather
 	property var dailyWeatherData: { "list": [] }
@@ -23,10 +23,10 @@ Item {
 	//--- Update
 	Timer {
 		id: pollTimer
-		
+
 		repeat: true
 		triggeredOnStart: true
-		interval: plasmoid.configuration.eventsPollInterval * 60000
+		interval: Plasmoid.configuration.eventsPollInterval * 60000
 		onTriggered: logic.update()
 	}
 
@@ -65,7 +65,7 @@ Item {
 
 	//--- Weather
 	function updateWeather(force) {
-		if (WeatherApi.weatherIsSetup(plasmoid.configuration)) {
+		if (WeatherApi.weatherIsSetup(Plasmoid.configuration)) {
 			// update every hour
 			var shouldUpdate = false
 			if (lastForecastAt) {
@@ -79,7 +79,7 @@ Item {
 			} else {
 				shouldUpdate = true
 			}
-			
+
 			if (force || shouldUpdate) {
 				updateWeatherTimer.restart()
 			}
@@ -130,7 +130,7 @@ Item {
 
 	function updateDailyWeather() {
 		logger.debug('updateDailyWeather', lastForecastAt, Date.now())
-		WeatherApi.updateDailyWeather(plasmoid.configuration, function(err, data, xhr) {
+		WeatherApi.updateDailyWeather(Plasmoid.configuration, function(err, data, xhr) {
 			if (err) return handleWeatherError('updateDailyWeather', err, data, xhr)
 			logger.debugJSON('updateDailyWeather.response', data)
 
@@ -143,7 +143,7 @@ Item {
 
 	function updateHourlyWeather() {
 		logger.debug('updateHourlyWeather', lastForecastAt, Date.now())
-		WeatherApi.updateHourlyWeather(plasmoid.configuration, function(err, data, xhr) {
+		WeatherApi.updateHourlyWeather(Plasmoid.configuration, function(err, data, xhr) {
 			if (err) return handleWeatherError('updateHourlyWeather', err, data, xhr)
 			logger.debugJSON('updateHourlyWeather.response', data)
 
@@ -157,7 +157,7 @@ Item {
 
 	//---
 	Connections {
-		target: plasmoid.configuration
+		target: Plasmoid.configuration
 
 		//--- Events
 		onAccessTokenChanged: logic.updateEvents()
@@ -173,7 +173,7 @@ Item {
 		onWeatherCanadaCityIdChanged: logic.resetWeatherAndUpdate()
 		onWeatherUnitsChanged: logic.updateWeather(true)
 		onWidgetShowMeteogramChanged: {
-			if (plasmoid.configuration.widgetShowMeteogram) {
+			if (Plasmoid.configuration.widgetShowMeteogram) {
 				logic.updateHourlyWeather()
 			}
 		}
@@ -192,9 +192,9 @@ Item {
 	//---
 	property int currentErrorType: ErrorType.UnknownError
 	property string currentErrorMessage: {
-		if (plasmoid.configuration.accessToken && plasmoid.configuration.latestClientId != plasmoid.configuration.sessionClientId) {
+		if (Plasmoid.configuration.accessToken && Plasmoid.configuration.latestClientId != Plasmoid.configuration.sessionClientId) {
 			return i18n("Widget has been updated. Please logout and login to Google Calendar again.")
-		} else if (!plasmoid.configuration.accessToken && plasmoid.configuration.access_token) {
+		} else if (!Plasmoid.configuration.accessToken && Plasmoid.configuration.access_token) {
 			return i18n("Logged out of Google. Please login again.")
 		} else {
 			return ""

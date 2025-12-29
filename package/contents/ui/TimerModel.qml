@@ -1,13 +1,13 @@
-import QtQuick 2.0
+import QtQuick
 
 QtObject {
 	id: timerModel
 
 	property int secondsLeft: 0
 	property int duration: 0
-	readonly property bool timerRepeats: plasmoid.configuration.timerRepeats
-	readonly property bool timerSfxEnabled: plasmoid.configuration.timerSfxEnabled
-	readonly property string timerSfxFilepath:  plasmoid.configuration.timerSfxFilepath
+	readonly property bool timerRepeats: Plasmoid.configuration.timerRepeats
+	readonly property bool timerSfxEnabled: Plasmoid.configuration.timerSfxEnabled
+	readonly property string timerSfxFilepath:  Plasmoid.configuration.timerSfxFilepath
 	property alias running: timerTicker.running
 	property date finished: new Date()
 

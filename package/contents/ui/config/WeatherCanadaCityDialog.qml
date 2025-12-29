@@ -1,8 +1,10 @@
-import QtQuick 2.1
-import QtQuick.Dialogs 1.2
-import QtQuick.Layouts 1.2
-import QtQuick.Controls 1.4
-import org.kde.plasma.core 2.0 as PlasmaCore
+import QtQuick
+import org.kde.kirigami as Kirigami
+import QtQuick.Dialogs
+import QtQuick.Layouts
+import org.kde.kirigami as Kirigami
+import QtQuick.Controls
+import org.kde.plasma.core as PlasmaCore
 
 import "../lib/Requests.js" as Requests
 import ".."
@@ -114,7 +116,7 @@ Dialog {
 				title: i18n("City Webpage")
 				delegate: LinkText {
 					text: '<a href="https://weather.gc.ca/city/pages/' + styleData.value + '_metric_e.html">' + i18n("Open Link") + '</a>'
-					linkColor: styleData.selected ? theme.textColor : theme.highlightColor
+					linkColor: styleData.selected ? Kirigami.Theme.textColor : Kirigami.Theme.highlightColor
 				}
 			}
 

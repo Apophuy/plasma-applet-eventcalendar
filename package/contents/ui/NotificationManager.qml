@@ -1,5 +1,5 @@
-import QtQuick 2.0
-import org.kde.plasma.core 2.0 as PlasmaCore
+import QtQuick
+import org.kde.plasma.core as PlasmaCore
 
 import "./lib"
 
@@ -14,7 +14,7 @@ QtObject {
 
 		var cmd = [
 			'python3',
-			plasmoid.file("", "scripts/notification.py"),
+			Plasmoid.file("", "scripts/notification.py"),
 		]
 		if (args.appName) {
 			cmd.push('--app-name', args.appName)

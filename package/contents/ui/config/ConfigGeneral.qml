@@ -1,17 +1,17 @@
-import QtQuick 2.0
-import QtQuick.Controls 1.0
-import QtQuick.Controls.Styles 1.0
-import QtQuick.Dialogs 1.0
-import QtQuick.Layouts 1.0
-import org.kde.kirigami 2.0 as Kirigami
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Dialogs
+import QtQuick.Layouts
+import org.kde.kirigami as Kirigami
+import org.kde.kcmutils as KCM
+import org.kde.plasma.plasmoid
 
 import ".."
 import "../lib"
 import "../lib/Requests.js" as Requests
 
-ConfigPage {
+KCM.SimpleKCM {
 	id: page
-	showAppletVersion: true
 
 	readonly property string localeTimeFormat: Qt.locale().timeFormat(Locale.ShortFormat)
 	readonly property string localeDateFormat: Qt.locale().dateFormat(Locale.ShortFormat)
@@ -21,22 +21,25 @@ ConfigPage {
 	property string timeFormat24hour: 'hh:mm'
 	property string timeFormat12hour: 'h:mm AP'
 
-	property bool showDebug: plasmoid.configuration.debugging
+	property bool showDebug: Plasmoid.configuration.debugging
 	property int indentWidth: 24 * Kirigami.Units.devicePixelRatio
 
 	function setMouseWheelCommands(up, down) {
-		plasmoid.configuration.clockMouseWheel == 'RunCommands'
+		Plasmoid.configuration.clockMouseWheel == 'RunCommands'
 		clockMousewheelGroupRunCommands.checked = true
-		plasmoid.configuration.clockMouseWheelUp = up
-		plasmoid.configuration.clockMouseWheelDown = down
+		Plasmoid.configuration.clockMouseWheelUp = up
+		Plasmoid.configuration.clockMouseWheelDown = down
 	}
 
 
 
 	//---
 
-	HeaderText {
-		text: i18n("Widgets")
+	Kirigami.FormLayout {
+
+	Kirigami.Separator {
+		Kirigami.FormData.isSection: true
+		Kirigami.FormData.label: i18n("Widgets")
 	}
 
 	Label {
@@ -45,39 +48,23 @@ ConfigPage {
 		text: i18n("Show/Hide widgets above the calendar. Toggle Agenda/Calendar on their respective tabs.")
 	}
 
-	ConfigSection {
-		ConfigCheckBox {
-			configKey: 'widgetShowMeteogram'
-			text: i18n("Meteogram")
-		}
+	CheckBox {
+		Kirigami.FormData.label: i18n("Meteogram")
+		checked: Plasmoid.configuration.widgetShowMeteogram
+		onCheckedChanged: Plasmoid.configuration.widgetShowMeteogram = checked
 	}
 
-	ConfigSection {
-		ConfigCheckBox {
-			id: widgetShowTimer
-			configKey: 'widgetShowTimer'
-			text: i18n("Timer")
-		}
-		RowLayout {
-			Text { width: indentWidth } // indent
-			ConfigSound {
-				label: i18n("SFX:")
-				sfxEnabledKey: 'timerSfxEnabled'
-				sfxPathKey: 'timerSfxFilepath'
-				sfxPathDefaultValue: '/usr/share/sounds/freedesktop/stereo/complete.oga'
-				enabled: widgetShowTimer.checked
-			}
-		}
+	CheckBox {
+		id: widgetShowTimer
+		Kirigami.FormData.label: i18n("Timer")
+		checked: Plasmoid.configuration.widgetShowTimer
+		onCheckedChanged: Plasmoid.configuration.widgetShowTimer = checked
 	}
 
-	HeaderText {
-		text: i18n("Clock")
+	Kirigami.Separator {
+		Kirigami.FormData.isSection: true
+		Kirigami.FormData.label: i18n("Clock")
 	}
-	ColumnLayout {
-		HeaderText {
-			text: i18n("Time Format")
-			level: 3
-		}
 
 		LinkText {
 			text: '<a href="https://doc.qt.io/qt-5/qml-qtqml-qt.html#formatDateTime-method">' + i18n("Time Format Documentation") + '</a>'
@@ -106,7 +93,7 @@ ConfigPage {
 				Label {
 					text: i18n("Fixed Clock Height: ")
 				}
-				
+
 				ConfigSpinBox {
 					configKey: 'clockMaxHeight'
 					suffix: i18n("px")
@@ -281,8 +268,8 @@ ConfigPage {
 				id: clockMousewheelGroupRunCommands
 				text: i18n("Run Commands")
 				exclusiveGroup: clockMousewheelGroup
-				checked: plasmoid.configuration.clockMouseWheel == 'RunCommands'
-				onClicked: plasmoid.configuration.clockMouseWheel = 'RunCommands'
+				checked: Plasmoid.configuration.clockMouseWheel == 'RunCommands'
+				onClicked: Plasmoid.configuration.clockMouseWheel = 'RunCommands'
 			}
 			RowLayout {
 				Layout.fillWidth: true
@@ -315,7 +302,7 @@ ConfigPage {
 				property string downCommand: 'amixer -q sset Master 10%-'
 				onClicked: setMouseWheelCommands(upCommand, downCommand)
 			}
-			
+
 			RadioButton {
 				exclusiveGroup: clockMousewheelGroup
 				checked: false

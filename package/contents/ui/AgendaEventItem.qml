@@ -1,9 +1,11 @@
-import QtQuick 2.0
-import QtQuick.Controls 1.1
-import QtQuick.Controls 2.0 as QQC2
-import QtQuick.Layouts 1.1
-import org.kde.plasma.core 2.0 as PlasmaCore
-import org.kde.plasma.components 3.0 as PlasmaComponents3
+import QtQuick
+import org.kde.kirigami as Kirigami
+import QtQuick.Controls
+import QtQuick.Controls as QQC2
+import QtQuick.Layouts
+import org.kde.kirigami as Kirigami
+import org.kde.plasma.core as PlasmaCore
+import org.kde.plasma.components as PlasmaComponents3
 
 import "LocaleFuncs.js" as LocaleFuncs
 import "Shared.js" as Shared
@@ -43,7 +45,7 @@ LinkRect {
 		clock24h: appletConfig.clock24h,
 	})
 	readonly property bool isAllDay: eventTimestamp === i18n("All Day") // TODO: Remove string comparison.
-	readonly property bool isCondensed: plasmoid.configuration.agendaCondensedAllDayEvent && isAllDay
+	readonly property bool isCondensed: Plasmoid.configuration.agendaCondensedAllDayEvent && isAllDay
 
 
 	//---
@@ -52,7 +54,7 @@ LinkRect {
 	QQC2.ToolTip {
 		id: eventToolTip
 		x: 0
-		y: agendaEventItem.height + PlasmaCore.Units.smallSpacing
+		y: agendaEventItem.height + Kirigami.Units.smallSpacing
 		width: agendaEventItem.width
 		delay: 1000
 
@@ -102,12 +104,12 @@ LinkRect {
 		id: contents
 		anchors.left: parent.left
 		anchors.right: parent.right
-		spacing: 4 * units.devicePixelRatio
+		spacing: 4 * Kirigami.Units.devicePixelRatio
 
 		Rectangle {
 			implicitWidth: appletConfig.eventIndicatorWidth
 			Layout.fillHeight: true
-			color: model.backgroundColor || theme.textColor
+			color: model.backgroundColor || Kirigami.Theme.textColor
 		}
 
 		ColumnLayout {
@@ -124,7 +126,7 @@ LinkRect {
 						return model.summary
 					}
 				}
-				color: eventItemInProgress ? inProgressColor : PlasmaCore.ColorScope.textColor
+				color: eventItemInProgress ? inProgressColor : Kirigami.Theme.textColor
 				font.pointSize: -1
 				font.pixelSize: appletConfig.agendaFontSize
 				font.weight: eventItemInProgress ? inProgressFontWeight : Font.Normal
@@ -146,7 +148,7 @@ LinkRect {
 						return eventTimestamp
 					}
 				}
-				color: eventItemInProgress ? inProgressColor : PlasmaCore.ColorScope.textColor
+				color: eventItemInProgress ? inProgressColor : Kirigami.Theme.textColor
 				opacity: eventItemInProgress ? 1 : 0.75
 				font.pointSize: -1
 				font.pixelSize: appletConfig.agendaFontSize
@@ -157,15 +159,15 @@ LinkRect {
 			Item {
 				id: eventDescriptionSpacing
 				visible: eventDescription.visible
-				implicitHeight: 4 * units.devicePixelRatio
+				implicitHeight: 4 * Kirigami.Units.devicePixelRatio
 			}
 
 			PlasmaComponents3.Label {
 				id: eventDescription
-				readonly property bool showProperty: plasmoid.configuration.agendaShowEventDescription && text
+				readonly property bool showProperty: Plasmoid.configuration.agendaShowEventDescription && text
 				visible: showProperty && !editEventForm.visible
 				text: Shared.renderText(model.description)
-				color: PlasmaCore.ColorScope.textColor
+				color: Kirigami.Theme.textColor
 				opacity: 0.75
 				font.pointSize: -1
 				font.pixelSize: appletConfig.agendaFontSize
@@ -173,10 +175,10 @@ LinkRect {
 				wrapMode: Text.Wrap // See warning at eventSummary.wrapMode
 
 				readonly property bool showInTooltip: !showProperty || truncated
-				maximumLineCount: plasmoid.configuration.agendaMaxDescriptionLines
+				maximumLineCount: Plasmoid.configuration.agendaMaxDescriptionLines
 				elide: Text.ElideRight
 
-				linkColor: PlasmaCore.ColorScope.highlightColor
+				linkColor: Kirigami.Theme.highlightColor
 				onLinkActivated: Qt.openUrlExternally(link)
 				MouseArea {
 					anchors.fill: parent
@@ -188,7 +190,7 @@ LinkRect {
 			Item {
 				id: eventEditorSpacing
 				visible: editEventForm.visible
-				implicitHeight: 4 * units.devicePixelRatio
+				implicitHeight: 4 * Kirigami.Units.devicePixelRatio
 			}
 
 			EditEventForm {
@@ -199,12 +201,12 @@ LinkRect {
 			Item {
 				id: eventEditorSpacingBelow
 				visible: editEventForm.visible
-				implicitHeight: 4 * units.devicePixelRatio
+				implicitHeight: 4 * Kirigami.Units.devicePixelRatio
 			}
 
 			Loader {
 				id: eventHangoutLinkLoader
-				readonly property bool showProperty: plasmoid.configuration.agendaShowEventHangoutLink && !!externalLink
+				readonly property bool showProperty: Plasmoid.configuration.agendaShowEventHangoutLink && !!externalLink
 				readonly property string externalLink: model.hangoutLink || model.conferenceData && model.conferenceData.entryPoints && model.conferenceData.entryPoints[0].uri || ''
 				visible: showProperty && !editEventForm.visible
 				active: visible
@@ -221,7 +223,7 @@ LinkRect {
 							return i18n("Hangout")
 						}
 					}
-					icon.source: plasmoid.file("", "icons/hangouts.svg")
+					icon.source: Plasmoid.file("", "icons/hangouts.svg")
 					onClicked: Qt.openUrlExternally(externalLink)
 				}
 			}

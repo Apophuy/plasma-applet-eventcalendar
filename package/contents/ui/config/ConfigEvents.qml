@@ -1,8 +1,8 @@
-import QtQuick 2.0
-import QtQuick.Controls 1.0
-import QtQuick.Layouts 1.0
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
 
-import org.kde.plasma.calendar 2.0 as PlasmaCalendar
+import org.kde.plasma.calendar as PlasmaCalendar
 
 import "../lib"
 import "../calendars/PlasmaCalendarUtils.js" as PlasmaCalendarUtils
@@ -19,7 +19,7 @@ ConfigPage {
 			text: i18n("ICalendar (.ics)")
 			checked: true
 			enabled: false
-			visible: plasmoid.configuration.debugging
+			visible: Plasmoid.configuration.debugging
 		}
 		CheckBox {
 			text: i18n("Google Calendar")
@@ -51,10 +51,10 @@ ConfigPage {
 		}
 	}
 	function saveConfig() {
-		plasmoid.configuration.enabledCalendarPlugins = PlasmaCalendarUtils.pluginPathToFilenameList(PlasmaCalendar.EventPluginsManager.enabledPlugins)
+		Plasmoid.configuration.enabledCalendarPlugins = PlasmaCalendarUtils.pluginPathToFilenameList(PlasmaCalendar.EventPluginsManager.enabledPlugins)
 	}
 	Component.onCompleted: {
-		PlasmaCalendarUtils.populateEnabledPluginsByFilename(PlasmaCalendar.EventPluginsManager, plasmoid.configuration.enabledCalendarPlugins)
+		PlasmaCalendarUtils.populateEnabledPluginsByFilename(PlasmaCalendar.EventPluginsManager, Plasmoid.configuration.enabledCalendarPlugins)
 	}
 
 	HeaderText {

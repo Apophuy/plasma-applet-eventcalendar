@@ -1,11 +1,10 @@
-import QtQuick 2.0
-import QtQuick.Controls 1.0
-import QtQuick.Controls.Styles 1.1
-import QtQuick.Dialogs 1.2
-import QtQuick.Layouts 1.0
-import org.kde.kirigami 2.0 as Kirigami
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Dialogs
+import QtQuick.Layouts
+import org.kde.kirigami as Kirigami
 
-import org.kde.kcoreaddons 1.0 as KCoreAddons
+import org.kde.coreaddons as KCoreAddons
 
 import ".."
 import "../lib"
@@ -49,12 +48,12 @@ ConfigPage {
 			text: i18n("Calendars")
 		}
 		Button {
-			iconName: "resource-calendar-insert"
+			icon.name: "resource-calendar-insert"
 			text: i18n("Add Calendar")
 			onClicked: calendarsModel.addCalendar()
 		}
 		Button {
-			iconName: "resource-calendar-insert"
+			icon.name: "resource-calendar-insert"
 			text: i18n("New Calendar")
 			onClicked: calendarsModel.addNewCalendar()
 		}
@@ -94,7 +93,7 @@ ConfigPage {
 							placeholderText: i18n("Calendar Label")
 						}
 						Button {
-							iconName: "trash-empty"
+							icon.name: "trash-empty"
 							onClicked: calendarsModel.removeIndex(index)
 						}
 					}
@@ -107,7 +106,7 @@ ConfigPage {
 						}
 
 						Button {
-							iconName: "folder-open"
+							icon.name: "folder-open"
 							text: i18n("Browse")
 							onClicked: {
 								filePicker.open()

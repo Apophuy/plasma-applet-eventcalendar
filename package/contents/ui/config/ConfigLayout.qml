@@ -1,8 +1,8 @@
-import QtQuick 2.0
-import QtQuick.Controls 1.0
-import QtQuick.Layouts 1.0
-import org.kde.kirigami 2.0 as Kirigami
-import QtGraphicalEffects 1.0 // Colorize
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Layouts
+import org.kde.kirigami as Kirigami
+import Qt5Compat.GraphicalEffects // Colorize
 
 import ".."
 import "../lib"
@@ -19,8 +19,8 @@ ConfigPage {
 	RadioButton {
 		text: i18n("Calendar to the left of the Agenda (Two Columns)")
 		exclusiveGroup: layoutGroup
-		checked: plasmoid.configuration.twoColumns
-		onClicked: plasmoid.configuration.twoColumns = true
+		checked: Plasmoid.configuration.twoColumns
+		onClicked: Plasmoid.configuration.twoColumns = true
 		Layout.fillWidth: false
 		Layout.alignment: Qt.AlignHCenter
 	}
@@ -85,7 +85,7 @@ ConfigPage {
 			Image {
 				id: twoColumnsImage
 				anchors.fill: parent
-				source: plasmoid.file("", "images/twocolumns.svg")
+				source: Plasmoid.file("", "images/twocolumns.svg")
 				smooth: true
 				visible: false
 			}
@@ -108,8 +108,8 @@ ConfigPage {
 	RadioButton {
 		text: i18n("Agenda below the Calendar (Single Column)")
 		exclusiveGroup: layoutGroup
-		checked: !plasmoid.configuration.twoColumns
-		onClicked: plasmoid.configuration.twoColumns = false
+		checked: !Plasmoid.configuration.twoColumns
+		onClicked: Plasmoid.configuration.twoColumns = false
 		Layout.fillWidth: false
 		Layout.alignment: Qt.AlignHCenter
 	}
@@ -169,7 +169,7 @@ ConfigPage {
 			Image {
 				id: singleColumnImage
 				anchors.fill: parent
-				source: plasmoid.file("", "images/singlecolumn.svg")
+				source: Plasmoid.file("", "images/singlecolumn.svg")
 				smooth: true
 				visible: false
 			}

@@ -1,5 +1,6 @@
-import QtQuick 2.0
-import org.kde.plasma.core 2.0 as PlasmaCore
+import QtQuick
+import org.kde.kirigami as Kirigami
+import org.kde.plasma.core as PlasmaCore
 
 import "../Shared.js" as Shared
 import "../lib/Async.js" as Async
@@ -21,7 +22,7 @@ CalendarManager {
 	calendarManagerId: "GoogleTasks"
 
 	property var session
-	readonly property var tasklistIdList: plasmoid.configuration.tasklistIdList ? plasmoid.configuration.tasklistIdList.split(',') : []
+	readonly property var tasklistIdList: Plasmoid.configuration.tasklistIdList ? Plasmoid.configuration.tasklistIdList.split(',') : []
 
 	onFetchAllCalendars: {
 		fetchGoogleAccountData()
@@ -66,15 +67,15 @@ CalendarManager {
 	//-------------------------
 	// CalendarManager
 	function getCalendarList() {
-		if (session.accessToken && plasmoid.configuration.tasklistList) {
-			var tasklistList = JSON.parse(Qt.atob(plasmoid.configuration.tasklistList))
+		if (session.accessToken && Plasmoid.configuration.tasklistList) {
+			var tasklistList = JSON.parse(Qt.atob(Plasmoid.configuration.tasklistList))
 			var calendarList = []
 			for (var i = 0; i < tasklistList.length; i++) {
 				var tasklist = tasklistList[i]
 				calendarList.push({
 					id: tasklist.id,
 					summary: tasklist.title,
-					backgroundColor: theme.highlightColor.toString(),
+					backgroundColor: Kirigami.Theme.highlightColor.toString(),
 					accessRole: 'owner',
 					isTasklist: true,
 				})

@@ -1,9 +1,9 @@
-import QtQuick 2.0
-import QtQuick.Controls 1.1
-import QtQuick.Controls.Styles 1.1
-import QtQuick.Controls 2.0 as QQC2
-import QtQuick.Layouts 1.1
-import org.kde.kirigami 2.0 as Kirigami
+import QtQuick
+import QtQuick.Controls
+// QtQuick.Controls.Styles is deprecated in Qt6
+import QtQuick.Controls as QQC2
+import QtQuick.Layouts
+import org.kde.kirigami as Kirigami
 
 import ".."
 import "../lib"
@@ -195,7 +195,7 @@ ConfigPage {
 		}
 
 		Button {
-			iconName: "view-refresh"
+			icon.name: "view-refresh"
 			text: i18n("Refresh")
 			onClicked: googleLoginManager.updateCalendarList()
 		}
@@ -267,7 +267,7 @@ ConfigPage {
 			text: i18n("Tasks")
 
 			Image {
-				source: plasmoid.file("", "icons/google_tasks_96px.png")
+				source: Plasmoid.file("", "icons/google_tasks_96px.png")
 				smooth: true
 				anchors.leftMargin: parent.contentWidth + Kirigami.Units.smallSpacing
 				anchors.left: parent.left
@@ -278,7 +278,7 @@ ConfigPage {
 		}
 
 		Button {
-			iconName: "view-refresh"
+			icon.name: "view-refresh"
 			text: i18n("Refresh")
 			onClicked: googleLoginManager.updateTasklistList()
 		}

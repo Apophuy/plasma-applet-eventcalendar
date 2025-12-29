@@ -18,16 +18,18 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import QtQuick 2.2
-import QtQuick.Layouts 1.1
-import org.kde.plasma.core 2.0 as PlasmaCore
-import org.kde.plasma.components 3.0 as PlasmaComponents3
+import QtQuick
+import QtQuick.Layouts
+import org.kde.kirigami as Kirigami
+import org.kde.plasma.core as PlasmaCore
+import org.kde.plasma.components as PlasmaComponents3
+import org.kde.plasma.plasmoid
 
 Item {
 	id: clock
 
-	property int horizontalFixedLineWidth: 300 * units.devicePixelRatio
-	property int verticalFixedLineHeight: 24 * units.devicePixelRatio
+	property int horizontalFixedLineWidth: 300 * Kirigami.Units.devicePixelRatio
+	property int verticalFixedLineHeight: 24 * Kirigami.Units.devicePixelRatio
 
 	property int targetHeight: verticalFixedLineHeight
 
@@ -65,11 +67,11 @@ Item {
 
 	property date currentTime: new Date()
 
-	readonly property int fixedHeight: plasmoid.configuration.clockMaxHeight
+	readonly property int fixedHeight: Plasmoid.configuration.clockMaxHeight
 	readonly property bool useFixedHeight: fixedHeight > 0
 
-	readonly property bool showLine2: plasmoid.configuration.clockShowLine2
-	readonly property int lineHeight2: targetHeight * plasmoid.configuration.clockLine2HeightRatio
+	readonly property bool showLine2: Plasmoid.configuration.clockShowLine2
+	readonly property int lineHeight2: targetHeight * Plasmoid.configuration.clockLine2HeightRatio
 	readonly property int lineHeight1: showLine2 ? targetHeight - lineHeight2 : targetHeight
 
 	// readonly property int paintedWidth: showLine2 ? Math.max(timeLabel.paintedWidth, timeLabel2.paintedWidth) : timeLabel.paintedWidth
@@ -110,8 +112,8 @@ Item {
 			}
 
 			// Debugging
-			// Rectangle { border.color: "#ff0"; anchors.fill: parent; border.width: 1; color: "transparent"; visible: plasmoid.configuration.debugging }
-			// Rectangle { border.color: "#f00"; anchors.fill: timeLabel1; border.width: 1; color: "transparent"; visible: plasmoid.configuration.debugging }
+			// Rectangle { border.color: "#ff0"; anchors.fill: parent; border.width: 1; color: "transparent"; visible: Plasmoid.configuration.debugging }
+			// Rectangle { border.color: "#f00"; anchors.fill: timeLabel1; border.width: 1; color: "transparent"; visible: Plasmoid.configuration.debugging }
 		}
 		Item {
 			id: timeContainer2
@@ -138,8 +140,8 @@ Item {
 			}
 
 			// Debugging
-			// Rectangle { border.color: "#ff0"; anchors.fill: parent; border.width: 1; color: "transparent"; visible: plasmoid.configuration.debugging }
-			// Rectangle { border.color: "#f00"; anchors.fill: timeLabel2; border.width: 1; color: "transparent"; visible: plasmoid.configuration.debugging }
+			// Rectangle { border.color: "#ff0"; anchors.fill: parent; border.width: 1; color: "transparent"; visible: Plasmoid.configuration.debugging }
+			// Rectangle { border.color: "#f00"; anchors.fill: timeLabel2; border.width: 1; color: "transparent"; visible: Plasmoid.configuration.debugging }
 		}
 	}
 
@@ -156,7 +158,7 @@ Item {
 	states: [
 		State {
 			name: "horizontalPanel"
-			when: plasmoid.formFactor == PlasmaCore.Types.Horizontal
+			when: Plasmoid.formFactor == PlasmaCore.Types.Horizontal
 
 			PropertyChanges { target: clock
 				targetHeight: clock.horizontalHeight
@@ -176,7 +178,7 @@ Item {
 
 		State {
 			name: "verticalPanel"
-			when: plasmoid.formFactor == PlasmaCore.Types.Vertical
+			when: Plasmoid.formFactor == PlasmaCore.Types.Vertical
 
 			PropertyChanges { target: clock
 				targetHeight: clock.verticalHeight
@@ -203,7 +205,7 @@ Item {
 
 		State {
 			name: "floating"
-			when: plasmoid.formFactor == PlasmaCore.Types.Planar
+			when: Plasmoid.formFactor == PlasmaCore.Types.Planar
 
 			PropertyChanges { target: clock
 				targetHeight: clock.verticalFixedLineHeight

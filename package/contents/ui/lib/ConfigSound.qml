@@ -1,9 +1,9 @@
 // Version 5
 
-import QtQuick 2.0
-import QtQuick.Controls 1.0
-import QtQuick.Dialogs 1.0
-import QtQuick.Layouts 1.0
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Dialogs
+import QtQuick.Layouts
 
 RowLayout {
 	id: configSound
@@ -18,7 +18,7 @@ RowLayout {
 	// Importing QtMultimedia apparently segfaults both OpenSUSE and Kubuntu.
 	// https://github.com/Zren/plasma-applet-eventcalendar/issues/84
 	// https://github.com/Zren/plasma-applet-eventcalendar/issues/167
-	// property var sfxTest: Qt.createQmlObject("import QtMultimedia 5.4; Audio {}", configSound)
+	// property var sfxTest: Qt.createQmlObject("import QtMultimedia; Audio {}", configSound)
 	property var sfxTest: null
 
 	spacing: 0
@@ -26,7 +26,7 @@ RowLayout {
 		id: sfxEnabledCheckBox
 	}
 	Button {
-		iconName: "media-playback-start-symbolic"
+		icon.name: "media-playback-start-symbolic"
 		enabled: sfxEnabled && !!sfxTest
 		onClicked: {
 			sfxTest.source = sfxPath.value
@@ -39,7 +39,7 @@ RowLayout {
 		Layout.fillWidth: true
 	}
 	Button {
-		iconName: "folder-symbolic"
+		icon.name: "folder-symbolic"
 		enabled: sfxEnabled
 		onClicked: sfxPathDialog.visible = true
 

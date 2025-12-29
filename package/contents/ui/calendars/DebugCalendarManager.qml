@@ -1,4 +1,4 @@
-import QtQuick 2.0
+import QtQuick
 
 import "../Shared.js" as Shared
 import "../lib/Requests.js" as Requests
@@ -11,7 +11,7 @@ CalendarManager {
 	property var debugCalendar: null
 
 	function fetchDebugEvents() {
-		plasmoid.configuration.debugging = true
+		Plasmoid.configuration.debugging = true
 		debugCalendar = DebugFixtures.getCalendar()
 		var debugEventData = DebugFixtures.getEventData()
 		setCalendarData(debugCalendar.id, debugEventData)
@@ -19,7 +19,7 @@ CalendarManager {
 
 	// Note: Not in use
 	// Used to load dumped json events found in debug logs from file.
-	// fetchJsonEventsFile(plasmoid.file('', 'testevents.json'), 'testevents@gmail.com') // .../contents/testevents.json
+	// fetchJsonEventsFile(Plasmoid.file('', 'testevents.json'), 'testevents@gmail.com') // .../contents/testevents.json
 	function fetchJsonEventsFile(filename, calendarId) {
 		logger.debug('fetchJsonEventsFile', calendarId)
 		debugCalendarManager.asyncRequests += 1

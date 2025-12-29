@@ -1,10 +1,12 @@
 // Version 6
 
-import QtQuick 2.0
-import QtQuick.Controls 1.2
-import QtQuick.Layouts 1.0
+import QtQuick
+import org.kde.kirigami as Kirigami
+import QtQuick.Controls
+import QtQuick.Layouts
+import org.kde.kirigami as Kirigami
 
-import org.kde.plasma.core 2.0 as PlasmaCore
+import org.kde.plasma.core as PlasmaCore
 
 // Origionally from digitalclock's configTimeZones.qml
 // Recoloured with Bootstrap color scheme
@@ -17,7 +19,7 @@ Rectangle {
 	property alias wrapMode: label.wrapMode
 	property alias closeButtonVisible: closeButton.visible
 	property alias animate: visibleAnimation.enabled
-	property int iconSize: units.iconSizes.large
+	property int iconSize: Kirigami.Units.iconSizes.large
 
 	enum MessageType {
 		Positive,
@@ -45,7 +47,7 @@ Rectangle {
 
 	property color gradBaseColor: {
 		if (messageType == MessageWidget.MessageType.Information) {
-			// return theme.highlightColor
+			// return Kirigami.Theme.highlightColor
 			return "#d9edf7" // Bootstrap
 		} else if (messageType == MessageWidget.MessageType.Warning) {
 			// return Qt.rgba(176/255, 128/255, 0, 1) // KMessageWidget
@@ -62,7 +64,7 @@ Rectangle {
 
 	border.color: {
 		if (messageType == MessageWidget.MessageType.Information) {
-			// return theme.highlightColor
+			// return Kirigami.Theme.highlightColor
 			return "#bcdff1" // Bootstrap
 		} else if (messageType == MessageWidget.MessageType.Warning) {
 			// return "#79735B" // DigitalClock
@@ -75,7 +77,7 @@ Rectangle {
 	}
 
 	property color labelColor: {
-		// return PlasmaCore.ColorScope.textColor
+		// return Kirigami.Theme.textColor
 		if (messageType == MessageWidget.MessageType.Information) {
 			return "#31708f" // Bootstrap
 		} else if (messageType == MessageWidget.MessageType.Warning) {
@@ -160,10 +162,10 @@ Rectangle {
 	RowLayout {
 		id: layout
 		anchors.fill: parent
-		anchors.margins: units.smallSpacing
-		spacing: units.smallSpacing
+		anchors.margins: Kirigami.Units.smallSpacing
+		spacing: Kirigami.Units.smallSpacing
 
-		PlasmaCore.IconItem {
+		Kirigami.Icon {
 			id: iconItem
 			Layout.alignment: Qt.AlignVCenter
 			implicitHeight: messageWidget.iconSize
@@ -183,7 +185,7 @@ Rectangle {
 		ToolButton {
 			id: closeButton
 			Layout.alignment: Qt.AlignVCenter
-			iconName: "dialog-close"
+			icon.name: "dialog-close"
 
 			onClicked: {
 				messageWidget.close()

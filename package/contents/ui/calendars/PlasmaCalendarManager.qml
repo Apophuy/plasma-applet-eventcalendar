@@ -1,7 +1,8 @@
-import QtQuick 2.0
+import QtQuick
+import org.kde.kirigami as Kirigami
 
-import org.kde.plasma.core 2.0 as PlasmaCore
-import org.kde.plasma.calendar 2.0 as PlasmaCalendar
+import org.kde.plasma.core as PlasmaCore
+import org.kde.plasma.calendar as PlasmaCalendar
 
 import "../lib"
 import "../Shared.js" as Shared
@@ -13,7 +14,7 @@ CalendarManager {
 	calendarManagerId: "plasma"
 
 	property var executable: ExecUtil { id: executable }
-	property var calendarModel: Qt.createQmlObject("import org.kde.plasma.PimCalendars 1.0; PimCalendarsModel {}", plasmaCalendarManager)
+	property var calendarModel: Qt.createQmlObject("import org.kde.plasma.PimCalendars; PimCalendarsModel {}", plasmaCalendarManager)
 	function appendPimCalendars(calendarList) {
 		// https://github.com/KDE/kdepim-addons/blob/master/plugins/plasma/pimeventsplugin/PimEventsConfig.qml
 		// https://github.com/KDE/kdepim-addons/blob/master/plugins/plasma/pimeventsplugin/pimcalendarsmodel.cpp
@@ -73,7 +74,7 @@ CalendarManager {
 		// KHolidays
 		calendarList.push({
 			"calendarId": "plasma_Holidays",
-			"backgroundColor": "" + theme.highlightColor,
+			"backgroundColor": "" + Kirigami.Theme.highlightColor,
 			"accessRole": "reader",
 			"isTasklist": false,
 		})
@@ -102,12 +103,12 @@ CalendarManager {
 	// to get a list of events for a specific day.
 
 	Component.onCompleted: {
-		PlasmaCalendarUtils.setEnabledPluginsByFilename(PlasmaCalendar.EventPluginsManager, plasmoid.configuration.enabledCalendarPlugins)
+		PlasmaCalendarUtils.setEnabledPluginsByFilename(PlasmaCalendar.EventPluginsManager, Plasmoid.configuration.enabledCalendarPlugins)
 	}
 	Connections {
-		target: plasmoid.configuration
+		target: Plasmoid.configuration
 		onEnabledCalendarPluginsChanged: {
-			PlasmaCalendarUtils.setEnabledPluginsByFilename(PlasmaCalendar.EventPluginsManager, plasmoid.configuration.enabledCalendarPlugins)
+			PlasmaCalendarUtils.setEnabledPluginsByFilename(PlasmaCalendar.EventPluginsManager, Plasmoid.configuration.enabledCalendarPlugins)
 		}
 	}
 
@@ -118,10 +119,10 @@ CalendarManager {
 		days: 7
 		weeks: 6
 		firstDayOfWeek: {
-			if (plasmoid.configuration.firstDayOfWeek == -1) {
+			if (Plasmoid.configuration.firstDayOfWeek == -1) {
 				return Qt.locale().firstDayOfWeek
 			} else {
-				return plasmoid.configuration.firstDayOfWeek
+				return Plasmoid.configuration.firstDayOfWeek
 			}
 		}
 		today: timeModel.currentTime
@@ -169,7 +170,7 @@ CalendarManager {
 			var endDateTime = new Date(Shared.isValidDate(dayItem.endDateTime) ? dayItem.endDateTime : day)
 			// logger.log('\t startDateTime', dayItem.startDateTime, startDateTime)
 			// logger.log('\t endDateTime', dayItem.endDateTime, endDateTime)
-			
+
 			if (dayItem.isAllDay) {
 				start.date = Shared.localeDateString(startDateTime) // 2018-01-31
 				// Google Calendar has the event start at midnight, and end at midnight the next day
@@ -186,7 +187,7 @@ CalendarManager {
 			var calendarId = parseCalendarId(dayItem)
 			var eventId = calendarId + "_" + startDateTime.getTime() + "_" + endDateTime.getTime()
 
-			var eventColor = dayItem.eventColor || theme.highlightColor
+			var eventColor = dayItem.eventColor || Kirigami.Theme.highlightColor
 			eventColor = "" + eventColor // Cast to string, as dayItem.eventColor is a QColor which JSON treats as an object
 
 			var event = {
@@ -224,7 +225,7 @@ CalendarManager {
 		calendarBackend.displayedDate = middleDay
 
 		var items = []
-		
+
 		// 2018-05-24T00:00:00.000Z
 		var dateMinUtcStr = Shared.localeDateString(dateMin) + 'T00:00:00.000Z'
 		var dateMinUtc = new Date(dateMinUtcStr)
