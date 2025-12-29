@@ -84,7 +84,7 @@ Item {
 	}
 
 	function fetchAccessToken(args) {
-		var url = 'https://www.googleapis.com/oauth2/v4/token'
+		var url = 'https://oauth2.googleapis.com/token'
 		Requests.post({
 			url: url,
 			data: {
@@ -95,7 +95,7 @@ Item {
 				redirect_uri: 'urn:ietf:wg:oauth:2.0:oob',
 			},
 		}, function(err, data, xhr) {
-			logger.debug('/oauth2/v4/token Response', data)
+			logger.debug('/oauth2/token Response', data)
 
 			// Check for errors
 			if (err) {
@@ -105,7 +105,7 @@ Item {
 			try {
 				data = JSON.parse(data)
 			} catch (e) {
-				handleError('Error parsing /oauth2/v4/token data as JSON', null)
+				handleError('Error parsing /oauth2/token data as JSON', null)
 				return
 			}
 			if (data && data.error) {
