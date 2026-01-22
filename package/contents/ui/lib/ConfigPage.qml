@@ -1,28 +1,40 @@
-// Version 4
+// Version 6 - Plasma 6 compatible
+// Config pages must use cfg_* properties for configuration access
 
 import QtQuick
 import QtQuick.Layouts
+import org.kde.kirigami as Kirigami
+import org.kde.kcmutils as KCM
 
-Item {
+KCM.SimpleKCM {
 	id: page
-	Layout.fillWidth: true
 	default property alias _contentChildren: content.data
-	implicitHeight: content.implicitHeight
+
+	// Helper functions for Config* components to access cfg_* properties
+	// Components should call findConfigPage() to get the page reference
+	function getConfigValue(key) {
+		var propName = "cfg_" + key
+		if (typeof page[propName] !== "undefined") {
+			return page[propName]
+		}
+		console.warn("ConfigPage: property", propName, "not found")
+		return undefined
+	}
+
+	function setConfigValue(key, value) {
+		var propName = "cfg_" + key
+		if (typeof page[propName] !== "undefined") {
+			page[propName] = value
+			return true
+		}
+		console.warn("ConfigPage: property", propName, "not found, cannot set value")
+		return false
+	}
 
 	ColumnLayout {
 		id: content
 		anchors.left: parent.left
 		anchors.right: parent.right
-		anchors.top: parent.top
-
-		// Workaround for crash when using default on a Layout.
-		// https://bugreports.qt.io/browse/QTBUG-52490
-		// Still affecting Qt 5.7.0
-		Component.onDestruction: {
-			while (children.length > 0) {
-				children[children.length - 1].parent = page
-			}
-		}
 	}
 
 	property alias showAppletVersion: appletVersionLoader.active

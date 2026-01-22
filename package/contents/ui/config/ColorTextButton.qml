@@ -4,9 +4,9 @@ import org.kde.kirigami as Kirigami
 
 Button {
 	id: colorTextButton
-	property int padding: Kirigami.Units.smallSpacing
-	implicitWidth: padding + colorTextLabel.implicitWidth + padding
-	implicitHeight: padding + colorTextLabel.implicitHeight + padding
+	property int customPadding: Kirigami.Units.smallSpacing
+	implicitWidth: customPadding + colorTextLabel.implicitWidth + customPadding
+	implicitHeight: customPadding + colorTextLabel.implicitHeight + customPadding
 
 	property alias label: colorTextLabel.text
 

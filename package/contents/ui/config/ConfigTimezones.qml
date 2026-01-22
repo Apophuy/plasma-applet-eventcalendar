@@ -7,9 +7,13 @@ import org.kde.plasma.private.digitalclock as DigitalClock
 import ".."
 import "../lib"
 
-// Mostly copied from digitalclock
-ColumnLayout { // ConfigPage creates a binding loop when a child uses fillHeight
+// Mostly copied from digitalclock - updated for Qt 6
+ConfigPage {
 	id: page
+
+	// cfg_* properties for KCM binding
+	property var cfg_selectedTimeZones: []
+	property bool cfg_displayTimezoneAsCode: true
 
 	function digitalclock_i18n(message) {
 		return i18nd("plasma_applet_org.kde.plasma.digitalclock", message)
@@ -18,8 +22,8 @@ ColumnLayout { // ConfigPage creates a binding loop when a child uses fillHeight
 	DigitalClock.TimeZoneModel {
 		id: timeZoneModel
 
-		selectedTimeZones: Plasmoid.configuration.selectedTimeZones
-		onSelectedTimeZonesChanged: Plasmoid.configuration.selectedTimeZones = selectedTimeZones
+		selectedTimeZones: page.cfg_selectedTimeZones
+		onSelectedTimeZonesChanged: page.cfg_selectedTimeZones = selectedTimeZones
 	}
 
 	MessageWidget {
@@ -32,69 +36,95 @@ ColumnLayout { // ConfigPage creates a binding loop when a child uses fillHeight
 		placeholderText: digitalclock_i18n("Search Time Zones")
 	}
 
-	TableView {
+	// Header row
+	RowLayout {
+		Layout.fillWidth: true
+		spacing: 10
+
+		Label {
+			text: digitalclock_i18n("City")
+			Layout.preferredWidth: 150
+			font.bold: true
+		}
+		Label {
+			text: digitalclock_i18n("Region")
+			Layout.preferredWidth: 150
+			font.bold: true
+		}
+		Label {
+			text: digitalclock_i18n("Comment")
+			Layout.fillWidth: true
+			font.bold: true
+		}
+		Label {
+			text: i18n("Tooltip")
+			Layout.preferredWidth: 80
+			font.bold: true
+			horizontalAlignment: Text.AlignHCenter
+		}
+	}
+
+	Rectangle {
+		Layout.fillWidth: true
+		Layout.preferredHeight: 1
+		color: "gray"
+	}
+
+	ListView {
 		id: timeZoneView
 		Layout.fillWidth: true
 		Layout.fillHeight: true
-
-		signal toggleCurrent
-
-		Keys.onSpacePressed: toggleCurrent()
+		clip: true
 
 		model: DigitalClock.TimeZoneFilterProxy {
 			sourceModel: timeZoneModel
 			filterString: filter.text
 		}
 
-		TableViewColumn {
-			role: "city"
-			title: digitalclock_i18n("City")
-		}
-		TableViewColumn {
-			role: "region"
-			title: digitalclock_i18n("Region")
-		}
-		TableViewColumn {
-			role: "comment"
-			title: digitalclock_i18n("Comment")
-		}
-		TableViewColumn {
-			role: "checked"
-			title: i18n("Tooltip")
-			delegate: CheckBox {
+		delegate: RowLayout {
+			width: timeZoneView.width
+			height: 30
+			spacing: 10
+
+			Label {
+				text: model.city || ""
+				Layout.preferredWidth: 150
+				elide: Text.ElideRight
+			}
+			Label {
+				text: model.region || ""
+				Layout.preferredWidth: 150
+				elide: Text.ElideRight
+			}
+			Label {
+				text: model.comment || ""
+				Layout.fillWidth: true
+				elide: Text.ElideRight
+			}
+			CheckBox {
 				id: checkBox
-				anchors.centerIn: parent
-				checked: styleData.value
-				activeFocusOnTab: false // only let the TableView as a whole get focus
+				Layout.preferredWidth: 80
+				Layout.alignment: Qt.AlignHCenter
+				checked: model.checked
 
 				function setValue(checked) {
 					if (!checked && model.region == "Local") {
 						messageWidget.warn(i18n("Cannot deselect Local time from the tooltip"))
 					} else {
-						model.checked = checked // needed for model's setData to be called
+						model.checked = checked
 					}
-					checkBox.checked = Qt.binding(function(){ return styleData.value })
+					checkBox.checked = Qt.binding(function(){ return model.checked })
 				}
 
 				onClicked: checkBox.setValue(checked)
-
-				Connections {
-					target: timeZoneView
-					onToggleCurrent: {
-						if (styleData.row === timeZoneView.currentRow) {
-							checkBox.setValue(!checkBox.checked)
-						}
-					}
-				}
 			}
-
-			resizable: false
-			movable: false
 		}
+
+		ScrollBar.vertical: ScrollBar {}
 	}
 
 
-	ExclusiveGroup { id: timezoneDisplayType }
+	ButtonGroup { id: timezoneDisplayType }
 	RowLayout {
 		Label {
 			text: digitalclock_i18n("Display time zone as:")
@@ -103,17 +133,17 @@ ColumnLayout { // ConfigPage creates a binding loop when a child uses fillHeight
 		RadioButton {
 			id: timezoneCityRadio
 			text: digitalclock_i18n("Time zone city")
-			exclusiveGroup: timezoneDisplayType
-			checked: !Plasmoid.configuration.displayTimezoneAsCode
-			onClicked: Plasmoid.configuration.displayTimezoneAsCode = false
+			ButtonGroup.group: timezoneDisplayType
+			checked: !page.cfg_displayTimezoneAsCode
+			onClicked: page.cfg_displayTimezoneAsCode = false
 		}
 
 		RadioButton {
 			id: timezoneCodeRadio
 			text: digitalclock_i18n("Time zone code")
-			exclusiveGroup: timezoneDisplayType
-			checked: Plasmoid.configuration.displayTimezoneAsCode
-			onClicked: Plasmoid.configuration.displayTimezoneAsCode = true
+			ButtonGroup.group: timezoneDisplayType
+			checked: page.cfg_displayTimezoneAsCode
+			onClicked: page.cfg_displayTimezoneAsCode = true
 		}
 	}
 }

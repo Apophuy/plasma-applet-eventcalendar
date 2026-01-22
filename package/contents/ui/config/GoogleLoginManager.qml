@@ -6,65 +6,97 @@ import "../lib/Requests.js" as Requests
 Item {
 	id: session
 
+	// Configuration properties - must be bound from parent
+	property bool cfg_debugging: false
+	property string cfg_accessToken: ""
+	property string cfg_accessTokenType: ""
+	property int cfg_accessTokenExpiresAt: 0
+	property string cfg_refreshToken: ""
+	property string cfg_latestClientId: ""
+	property string cfg_latestClientSecret: ""
+	property string cfg_sessionClientId: ""
+	property string cfg_sessionClientSecret: ""
+	property string cfg_calendarList: ""
+	property string cfg_calendarIdList: ""
+	property string cfg_tasklistList: ""
+	property string cfg_tasklistIdList: ""
+	property string cfg_access_token: "" // legacy
+	property string cfg_agendaNewEventLastCalendarId: ""
+
 	Logger {
 		id: logger
-		showDebug: Plasmoid.configuration.debugging
+		showDebug: session.cfg_debugging
 	}
 
 	// Active Session
-	readonly property bool isLoggedIn: !!Plasmoid.configuration.accessToken
+	readonly property bool isLoggedIn: !!cfg_accessToken
 	readonly property bool needsRelog: {
-		if (Plasmoid.configuration.accessToken && Plasmoid.configuration.latestClientId != Plasmoid.configuration.sessionClientId) {
+		if (cfg_accessToken && cfg_latestClientId != cfg_sessionClientId) {
 			return true
-		} else if (!Plasmoid.configuration.accessToken && Plasmoid.configuration.access_token) {
+		} else if (!cfg_accessToken && cfg_access_token) {
 			return true
 		} else {
 			return false
 		}
 	}
 
-	// Data
-	property var m_calendarList: ConfigSerializedString {
-		id: m_calendarList
-		configKey: 'calendarList'
-		defaultValue: []
-	}
-	property alias calendarList: m_calendarList.value
-
-	property var m_calendarIdList: ConfigSerializedString {
-		id: m_calendarIdList
-		configKey: 'calendarIdList'
-		defaultValue: []
-
-		function serialize() {
-			Plasmoid.configuration[configKey] = value.join(',')
+	// Data - calendar list
+	property var calendarListValue: {
+		if (cfg_calendarList) {
+			try {
+				return JSON.parse(Qt.atob(cfg_calendarList))
+			} catch (e) {
+				return []
+			}
 		}
-		function deserialize() {
-			value = configValue.split(',')
-		}
+		return []
 	}
-	property alias calendarIdList: m_calendarIdList.value
 
-	property var m_tasklistList: ConfigSerializedString {
-		id: m_tasklistList
-		configKey: 'tasklistList'
-		defaultValue: []
+	property var calendarList: calendarListValue
+
+	function setCalendarListValue(value) {
+		cfg_calendarList = Qt.btoa(JSON.stringify(value))
+		calendarListChanged()
 	}
-	property alias tasklistList: m_tasklistList.value
 
-	property var m_tasklistIdList: ConfigSerializedString {
-		id: m_tasklistIdList
-		configKey: 'tasklistIdList'
-		defaultValue: []
+	// Data - calendar id list
+	property var calendarIdListValue: cfg_calendarIdList ? cfg_calendarIdList.split(',') : []
 
-		function serialize() {
-			Plasmoid.configuration[configKey] = value.join(',')
-		}
-		function deserialize() {
-			value = configValue.split(',')
-		}
+	property var calendarIdList: calendarIdListValue
+
+	function setCalendarIdList(value) {
+		cfg_calendarIdList = value.join(',')
+		// Signal emitted automatically when cfg_calendarIdList changes
 	}
-	property alias tasklistIdList: m_tasklistIdList.value
+
+	// Data - tasklist list
+	property var tasklistListValue: {
+		if (cfg_tasklistList) {
+			try {
+				return JSON.parse(Qt.atob(cfg_tasklistList))
+			} catch (e) {
+				return []
+			}
+		}
+		return []
+	}
+
+	property var tasklistList: tasklistListValue
+
+	function setTasklistListValue(value) {
+		cfg_tasklistList = Qt.btoa(JSON.stringify(value))
+		// Signal emitted automatically when cfg_tasklistList changes
+	}
+
+	// Data - tasklist id list
+	property var tasklistIdListValue: cfg_tasklistIdList ? cfg_tasklistIdList.split(',') : []
+
+	property var tasklistIdList: tasklistIdListValue
+
+	function setTasklistIdList(value) {
+		cfg_tasklistIdList = value.join(',')
+		// Signal emitted automatically when cfg_tasklistIdList changes
+	}
 
 
 	//--- Signals
@@ -79,7 +111,7 @@ Item {
 		url += '?scope=' + encodeURIComponent('https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/tasks')
 		url += '&response_type=code'
 		url += '&redirect_uri=' + encodeURIComponent('urn:ietf:wg:oauth:2.0:oob')
-		url += '&client_id=' + encodeURIComponent(Plasmoid.configuration.latestClientId)
+		url += '&client_id=' + encodeURIComponent(cfg_latestClientId)
 		return url
 	}
 
@@ -88,8 +120,8 @@ Item {
 		Requests.post({
 			url: url,
 			data: {
-				client_id: Plasmoid.configuration.latestClientId,
-				client_secret: Plasmoid.configuration.latestClientSecret,
+				client_id: cfg_latestClientId,
+				client_secret: cfg_latestClientSecret,
 				code: args.authorizationCode,
 				grant_type: 'authorization_code',
 				redirect_uri: 'urn:ietf:wg:oauth:2.0:oob',
@@ -119,12 +151,12 @@ Item {
 	}
 
 	function updateAccessToken(data) {
-		Plasmoid.configuration.sessionClientId = Plasmoid.configuration.latestClientId
-		Plasmoid.configuration.sessionClientSecret = Plasmoid.configuration.latestClientSecret
-		Plasmoid.configuration.accessToken = data.access_token
-		Plasmoid.configuration.accessTokenType = data.token_type
-		Plasmoid.configuration.accessTokenExpiresAt = Date.now() + data.expires_in * 1000
-		Plasmoid.configuration.refreshToken = data.refresh_token
+		cfg_sessionClientId = cfg_latestClientId
+		cfg_sessionClientSecret = cfg_latestClientSecret
+		cfg_accessToken = data.access_token
+		cfg_accessTokenType = data.token_type
+		cfg_accessTokenExpiresAt = Date.now() + data.expires_in * 1000
+		cfg_refreshToken = data.refresh_token
 		newAccessToken()
 	}
 
@@ -137,16 +169,16 @@ Item {
 
 	function updateCalendarList() {
 		logger.debug('updateCalendarList')
-		logger.debug('accessToken', Plasmoid.configuration.accessToken)
+		logger.debug('accessToken', cfg_accessToken)
 		fetchGCalCalendars({
-			accessToken: Plasmoid.configuration.accessToken,
+			accessToken: cfg_accessToken,
 		}, function(err, data, xhr) {
 			// Check for errors
 			if (err || data.error) {
 				handleError(err, data)
 				return
 			}
-			m_calendarList.value = data.items
+			setCalendarListValue(data.items)
 		})
 	}
 
@@ -169,16 +201,16 @@ Item {
 
 	function updateTasklistList() {
 		logger.debug('updateTasklistList')
-		logger.debug('accessToken', Plasmoid.configuration.accessToken)
+		logger.debug('accessToken', cfg_accessToken)
 		fetchGoogleTasklistList({
-			accessToken: Plasmoid.configuration.accessToken,
+			accessToken: cfg_accessToken,
 		}, function(err, data, xhr) {
 			// Check for errors
 			if (err || data.error) {
 				handleError(err, data)
 				return
 			}
-			m_tasklistList.value = data.items
+			setTasklistListValue(data.items)
 		})
 	}
 
@@ -200,21 +232,19 @@ Item {
 	}
 
 	function logout() {
-		Plasmoid.configuration.sessionClientId = ''
-		Plasmoid.configuration.sessionClientSecret = ''
-		Plasmoid.configuration.accessToken = ''
-		Plasmoid.configuration.accessTokenType = ''
-		Plasmoid.configuration.accessTokenExpiresAt = 0
-		Plasmoid.configuration.refreshToken = ''
+		cfg_sessionClientId = ''
+		cfg_sessionClientSecret = ''
+		cfg_accessToken = ''
+		cfg_accessTokenType = ''
+		cfg_accessTokenExpiresAt = 0
+		cfg_refreshToken = ''
 
 		// Delete relevant data
-		// TODO: only target google calendar data
-		// TODO: Make a signal?
-		Plasmoid.configuration.agendaNewEventLastCalendarId = ''
-		calendarList = []
-		calendarIdList = []
-		tasklistList = []
-		tasklistIdList = []
+		cfg_agendaNewEventLastCalendarId = ''
+		setCalendarListValue([])
+		setCalendarIdList([])
+		setTasklistListValue([])
+		setTasklistIdList([])
 		sessionReset()
 	}
 

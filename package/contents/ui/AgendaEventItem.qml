@@ -230,7 +230,7 @@ LinkRect {
 
 		} // eventColumn
 	}
-	
+
 	onLeftClicked: {
 		// logger.log('agendaItem.event.leftClicked', model.startDateTime, mouse)
 		if (false) {
@@ -271,7 +271,6 @@ LinkRect {
 			eventModel.deleteEvent(event.calendarId, event.id)
 		})
 		deleteMenuItem.enabled = event.canEdit
-		deleteMenuItem.subMenu.addMenuItem(menuItem)
 		contextMenu.addMenuItem(deleteMenuItem)
 
 		menuItem = contextMenu.newMenuItem()

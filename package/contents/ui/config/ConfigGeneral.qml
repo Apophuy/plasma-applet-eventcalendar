@@ -3,15 +3,31 @@ import QtQuick.Controls
 import QtQuick.Dialogs
 import QtQuick.Layouts
 import org.kde.kirigami as Kirigami
-import org.kde.kcmutils as KCM
-import org.kde.plasma.plasmoid
 
 import ".."
 import "../lib"
 import "../lib/Requests.js" as Requests
 
-KCM.SimpleKCM {
+ConfigPage {
 	id: page
+
+	// cfg_* properties that KCM injects and Config* components use
+	// These are automatically bound to configuration by KCM
+	property bool cfg_debugging: false
+	property bool cfg_widgetShowMeteogram: true
+	property bool cfg_widgetShowTimer: true
+	property bool cfg_showBackground: true
+	property string cfg_clockFontFamily: ""
+	property string cfg_clockTimeFormat1: ""
+	property string cfg_clockTimeFormat2: ""
+	property bool cfg_clockShowLine2: false
+	property double cfg_clockLine2HeightRatio: 0.4
+	property bool cfg_clockLineBold1: false
+	property bool cfg_clockLineBold2: false
+	property int cfg_clockMaxHeight: 0
+	property string cfg_clockMouseWheel: "RunCommands"
+	property string cfg_clockMouseWheelUp: ""
+	property string cfg_clockMouseWheelDown: ""
 
 	readonly property string localeTimeFormat: Qt.locale().timeFormat(Locale.ShortFormat)
 	readonly property string localeDateFormat: Qt.locale().dateFormat(Locale.ShortFormat)
@@ -21,14 +37,14 @@ KCM.SimpleKCM {
 	property string timeFormat24hour: 'hh:mm'
 	property string timeFormat12hour: 'h:mm AP'
 
-	property bool showDebug: Plasmoid.configuration.debugging
+	property bool showDebug: page.cfg_debugging
 	property int indentWidth: 24 * Kirigami.Units.devicePixelRatio
 
 	function setMouseWheelCommands(up, down) {
-		Plasmoid.configuration.clockMouseWheel == 'RunCommands'
+		page.cfg_clockMouseWheel = 'RunCommands'
 		clockMousewheelGroupRunCommands.checked = true
-		Plasmoid.configuration.clockMouseWheelUp = up
-		Plasmoid.configuration.clockMouseWheelDown = down
+		page.cfg_clockMouseWheelUp = up
+		page.cfg_clockMouseWheelDown = down
 	}
 
 
@@ -50,15 +66,15 @@ KCM.SimpleKCM {
 
 	CheckBox {
 		Kirigami.FormData.label: i18n("Meteogram")
-		checked: Plasmoid.configuration.widgetShowMeteogram
-		onCheckedChanged: Plasmoid.configuration.widgetShowMeteogram = checked
+		checked: page.cfg_widgetShowMeteogram
+		onCheckedChanged: page.cfg_widgetShowMeteogram = checked
 	}
 
 	CheckBox {
 		id: widgetShowTimer
 		Kirigami.FormData.label: i18n("Timer")
-		checked: Plasmoid.configuration.widgetShowTimer
-		onCheckedChanged: Plasmoid.configuration.widgetShowTimer = checked
+		checked: page.cfg_widgetShowTimer
+		onCheckedChanged: page.cfg_widgetShowTimer = checked
 	}
 
 	Kirigami.Separator {
@@ -262,14 +278,14 @@ KCM.SimpleKCM {
 			level: 3
 		}
 		ConfigSection {
-			ExclusiveGroup { id: clockMousewheelGroup }
+			ButtonGroup { id: clockMousewheelGroup }
 
 			RadioButton {
 				id: clockMousewheelGroupRunCommands
 				text: i18n("Run Commands")
-				exclusiveGroup: clockMousewheelGroup
-				checked: Plasmoid.configuration.clockMouseWheel == 'RunCommands'
-				onClicked: Plasmoid.configuration.clockMouseWheel = 'RunCommands'
+				ButtonGroup.group: clockMousewheelGroup
+				checked: page.cfg_clockMouseWheel == 'RunCommands'
+				onClicked: page.cfg_clockMouseWheel = 'RunCommands'
 			}
 			RowLayout {
 				Layout.fillWidth: true
@@ -295,7 +311,7 @@ KCM.SimpleKCM {
 			}
 
 			RadioButton {
-				exclusiveGroup: clockMousewheelGroup
+				ButtonGroup.group: clockMousewheelGroup
 				checked: false
 				text: i18n("Volume (No UI) (amixer)")
 				property string upCommand:   'amixer -q sset Master 10%+'
@@ -304,7 +320,7 @@ KCM.SimpleKCM {
 			}
 
 			RadioButton {
-				exclusiveGroup: clockMousewheelGroup
+				ButtonGroup.group: clockMousewheelGroup
 				checked: false
 				text: i18n("Volume (UI) (qdbus)")
 				property string upCommand:   'qdbus org.kde.kglobalaccel /component/kmix invokeShortcut "increase_volume"'

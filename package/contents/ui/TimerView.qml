@@ -2,8 +2,8 @@ import QtQuick
 import QtQuick.Controls as QQC2
 import QtQuick.Layouts
 import org.kde.kirigami as Kirigami
+import org.kde.plasma.plasmoid
 import org.kde.plasma.core as PlasmaCore
-import org.kde.plasma.extras as PlasmaExtras
 import org.kde.plasma.components as PlasmaComponents3
 
 import "LocaleFuncs.js" as LocaleFuncs
@@ -128,11 +128,9 @@ Item {
 						Plasmoid.configuration.timerRepeats = !isChecked
 					}
 
-					PlasmaExtras.ToolTip {
-						anchors.fill: parent
-						enabled: !topRow.contentsFit
-						mainText: i18n("Repeat")
-					}
+					PlasmaComponents3.ToolTip.visible: hovered && !topRow.contentsFit
+					PlasmaComponents3.ToolTip.text: i18n("Repeat")
+					PlasmaComponents3.ToolTip.delay: Kirigami.Units.toolTipDelay
 				}
 
 				PlasmaComponents3.ToolButton {
@@ -144,11 +142,9 @@ Item {
 						Plasmoid.configuration.timerSfxEnabled = !isChecked
 					}
 
-					PlasmaExtras.ToolTip {
-						anchors.fill: parent
-						enabled: !topRow.contentsFit
-						mainText: i18n("Sound")
-					}
+					PlasmaComponents3.ToolTip.visible: hovered && !topRow.contentsFit
+					PlasmaComponents3.ToolTip.text: i18n("Sound")
+					PlasmaComponents3.ToolTip.delay: Kirigami.Units.toolTipDelay
 				}
 			}
 

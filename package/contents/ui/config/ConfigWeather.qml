@@ -9,6 +9,22 @@ import "../lib"
 ConfigPage {
 	id: page
 
+	// cfg_* properties for KCM binding
+	property bool cfg_debugging: false
+	property string cfg_openWeatherMapAppId: ""
+	property string cfg_openWeatherMapCityId: ""
+	property string cfg_weatherCanadaCityId: ""
+	property string cfg_weatherService: "OpenWeatherMap"
+	property string cfg_weatherUnits: "metric"
+	property int cfg_weatherPollInterval: 60
+	property int cfg_meteogramHours: 30
+	property string cfg_meteogramTextColor: ""
+	property string cfg_meteogramGridColor: ""
+	property string cfg_meteogramRainColor: ""
+	property string cfg_meteogramPositiveTempColor: ""
+	property string cfg_meteogramNegativeTempColor: ""
+	property string cfg_meteogramIconColor: ""
+
 	HeaderText {
 		text: i18n("Data")
 	}
@@ -25,7 +41,7 @@ ConfigPage {
 
 	ConfigSection {
 		RowLayout {
-			visible: Plasmoid.configuration.debugging && weatherService.value === 'OpenWeatherMap'
+			visible: page.cfg_debugging && weatherService.value === 'OpenWeatherMap'
 			Label {
 				text: i18n("API App Id:")
 			}
@@ -51,6 +67,8 @@ ConfigPage {
 
 			OpenWeatherMapCityDialog {
 				id: openWeatherMapCityDialog
+				cfg_debugging: page.cfg_debugging
+				cfg_openWeatherMapAppId: page.cfg_openWeatherMapAppId
 				onAccepted: {
 					weatherCityId.value = selectedCityId
 				}

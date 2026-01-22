@@ -1,4 +1,5 @@
 import QtQuick
+import org.kde.plasma.plasmoid
 import org.kde.plasma.core as PlasmaCore
 
 import "LocaleFuncs.js" as LocaleFuncs

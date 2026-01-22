@@ -2,9 +2,7 @@ import QtQuick
 import org.kde.kirigami as Kirigami
 import QtQuick.Dialogs
 import QtQuick.Layouts
-import org.kde.kirigami as Kirigami
 import QtQuick.Controls
-import org.kde.plasma.core as PlasmaCore
 
 import "../lib/Requests.js" as Requests
 import ".."
@@ -21,40 +19,42 @@ Dialog {
 
 	ListModel { id: emptyListModel }
 	ListModel { id: cityListModel }
-	PlasmaCore.SortFilterModel {
-		id: filteredCityListModel
-		// sourceModel: cityListModel // Link after populating cityListModel so the UI doesn't freeze.
-		sourceModel: emptyListModel
-		filterRole: 'name'
-		sortRole: 'name'
-		sortCaseSensitivity: Qt.CaseInsensitive 
+
+	// Filtered list using JavaScript
+	property var filteredCityList: []
+	property string filterText: ""
+
+	function updateFilteredList() {
+		var newList = []
+		var filter = filterText.toLowerCase()
+		for (var i = 0; i < cityListModel.count; i++) {
+			var item = cityListModel.get(i)
+			if (filter === "" || item.name.toLowerCase().indexOf(filter) >= 0) {
+				newList.push({
+					id: item.id,
+					name: item.name
+				})
+			}
+		}
+		// Sort by name
+		newList.sort(function(a, b) {
+			return a.name.toLowerCase().localeCompare(b.name.toLowerCase())
+		})
+		// Assign to trigger filteredCityListChanged signal automatically
+		filteredCityList = newList
 	}
 
 	property string selectedCityId: ''
-	Connections {
-		target: tableView.selection
-		
-		onSelectionChanged: {
-			tableView.selection.forEach(function(row) {
-				var city = filteredCityListModel.get(row)
-				chooseCityDialog.selectedCityId = city.id
-				// console.log('selectedCityId', city.id, city.name)
-			})
-		}
-	}
-	Connections {
-		target: filteredCityListModel
-		
-		onFilterRegExpChanged: {
-			tableView.selection.clear()
-			chooseCityDialog.selectedCityId = ''
-		}
-	}
+	property int currentProvinceIndex: 0
+	property var provinceIdList: ['AB', 'BC', 'MB', 'NB', 'NL', 'NS', 'NT', 'NU', 'ON', 'PE', 'QC', 'SK', 'YT']
 
 	Timer {
-		id: debouceApplyFilter
-		interval: 1000
-		onTriggered: filteredCityListModel.filterRegExp = cityNameInput.text
+		id: debounceApplyFilter
+		interval: 300
+		onTriggered: {
+			chooseCityDialog.filterText = cityNameInput.text
+			chooseCityDialog.updateFilteredList()
+		}
 	}
 
 	onVisibleChanged: {
@@ -66,57 +66,90 @@ Dialog {
 
 	ColumnLayout {
 		anchors.fill: parent
+
 		LinkText {
 			text: i18n("Fetched from <a href=\"%1\">%1</a>", "https://weather.gc.ca/canada_e.html")
 		}
 
-		Item {
-			height: 21
+		// Province tabs using TabBar
+		TabBar {
+			id: provinceTabBar
 			Layout.fillWidth: true
-			TabView {
-				id: provinceTabView
-				width: parent.width
-				frameVisible: false
-				Repeater {
-					id: provinceRepeater
-					model: ['AB', 'BC', 'MB', 'NB', 'NL', 'NS', 'NT', 'NU', 'ON', 'PE', 'QC', 'SK', 'YT']
-					Tab { title: modelData }
+
+			Repeater {
+				model: chooseCityDialog.provinceIdList
+				TabButton {
+					text: modelData
+					width: implicitWidth
 				}
-				onCurrentIndexChanged: loadProvinceCityList()
+			}
+
+			onCurrentIndexChanged: {
+				chooseCityDialog.currentProvinceIndex = currentIndex
+				chooseCityDialog.loadProvinceCityList()
 			}
 		}
-		
+
 		TextField {
 			id: cityNameInput
 			Layout.fillWidth: true
 			text: ''
 			placeholderText: i18n("Search")
-			onTextChanged: debouceApplyFilter.restart()
+			onTextChanged: debounceApplyFilter.restart()
 		}
-		TableView {
-			id: tableView
+
+		// City list using ListView
+		ScrollView {
 			Layout.fillWidth: true
 			Layout.fillHeight: true
 			Layout.minimumHeight: 200
-			model: filteredCityListModel
 
-			TableViewColumn {
-				width: 240
-				role: 'name'
-				title: i18n("Name")
-			}
-			TableViewColumn {
-				width: 100
-				role: 'id'
-				title: i18n("Id")
-			}
-			TableViewColumn {
-				width: 100
-				role: 'id'
-				title: i18n("City Webpage")
-				delegate: LinkText {
-					text: '<a href="https://weather.gc.ca/city/pages/' + styleData.value + '_metric_e.html">' + i18n("Open Link") + '</a>'
-					linkColor: styleData.selected ? Kirigami.Theme.textColor : Kirigami.Theme.highlightColor
+			ListView {
+				id: cityListView
+				clip: true
+				model: chooseCityDialog.filteredCityList
+
+				delegate: ItemDelegate {
+					width: cityListView.width
+					highlighted: chooseCityDialog.selectedCityId === modelData.id
+
+					contentItem: RowLayout {
+						spacing: Kirigami.Units.smallSpacing
+
+						Label {
+							text: modelData.name
+							Layout.preferredWidth: 240
+							elide: Text.ElideRight
+						}
+						Label {
+							text: modelData.id
+							Layout.preferredWidth: 100
+							color: Kirigami.Theme.disabledTextColor
+						}
+						Label {
+							Layout.fillWidth: true
+							text: '<a href="https://weather.gc.ca/city/pages/' + modelData.id + '_metric_e.html">' + i18n("Open Link") + '</a>'
+							linkColor: highlighted ? Kirigami.Theme.highlightedTextColor : Kirigami.Theme.linkColor
+							onLinkActivated: (link) => Qt.openUrlExternally(link)
+
+							MouseArea {
+								anchors.fill: parent
+								acceptedButtons: Qt.NoButton
+								cursorShape: parent.hoveredLink ? Qt.PointingHandCursor : Qt.ArrowCursor
+							}
+						}
+					}
+
+					onClicked: {
+						chooseCityDialog.selectedCityId = modelData.id
+					}
+				}
+
+				Connections {
+					target: chooseCityDialog
+					function onFilteredCityListChanged() {
+						cityListView.model = chooseCityDialog.filteredCityList
+					}
 				}
 			}
 
@@ -131,8 +164,8 @@ Dialog {
 
 	function loadCityList(provinceUrl) {
 		chooseCityDialog.loadingCityList = true
-		filteredCityListModel.sourceModel = emptyListModel
 		cityListModel.clear()
+		filteredCityList = []
 
 		Requests.request(provinceUrl, function(err, data) {
 			if (err) {
@@ -144,22 +177,20 @@ Dialog {
 			for (var i = 0; i < cityList.length; i++) {
 				cityListModel.append(cityList[i])
 			}
-			
-			// link after populating so that each append() doesn't attempt to rebuild the UI.
-			filteredCityListModel.sourceModel = cityListModel
-			
+
+			chooseCityDialog.updateFilteredList()
+
 			chooseCityDialog.cityListLoaded = true
 			chooseCityDialog.loadingCityList = false
 		})
 	}
 
-	property alias provinceIdList: provinceRepeater.model
 	function loadProvinceCityList() {
 		var provinceId = provinceIdList[0]
-		if (provinceTabView.currentIndex >= 0) {
-			provinceId = provinceIdList[provinceTabView.currentIndex]
+		if (currentProvinceIndex >= 0 && currentProvinceIndex < provinceIdList.length) {
+			provinceId = provinceIdList[currentProvinceIndex]
 		}
-		
+
 		var provinceUrl = 'https://weather.gc.ca/forecast/canada/index_e.html?id=' + provinceId
 		loadCityList(provinceUrl)
 	}

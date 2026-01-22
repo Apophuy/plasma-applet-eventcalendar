@@ -1,4 +1,4 @@
-// Version 5
+// Version 7 - Plasma 6 compatible (uses cfg_* properties via ConfigPage)
 
 import QtQuick
 import QtQuick.Controls
@@ -6,8 +6,6 @@ import QtQuick.Layouts
 import QtQuick.Dialogs
 import QtQuick.Window
 import org.kde.kirigami as Kirigami
-
-import ".."
 
 RowLayout {
 	id: configColor
@@ -18,7 +16,8 @@ RowLayout {
 	property alias label: label.text
 	property alias labelColor: label.color
 	property alias horizontalAlignment: label.horizontalAlignment
-	property alias showAlphaChannel: dialog.showAlphaChannel
+	// showAlphaChannel removed in Qt 6 ColorDialog - use options instead
+	property bool showAlphaChannel: true
 	property color buttonOutlineColor: {
 		if (valueColor.r + valueColor.g + valueColor.b > 0.5) {
 			return "#BB000000" // Black outline
@@ -32,32 +31,53 @@ RowLayout {
 
 	property string configKey: ''
 	property string defaultColor: ''
-	property string value: {
-		if (configKey) {
-			return Plasmoid.configuration[configKey]
-		} else {
-			return "#000"
-		}
-	}
+	property string value: ""
 
 	readonly property color defaultColorValue: defaultColor
 	readonly property color valueColor: {
 		if (value == '' && defaultColor) {
 			return defaultColor
+		} else if (value == '') {
+			return "#000000"
 		} else {
 			return value
 		}
+	}
+
+	// Find the ConfigPage ancestor
+	property var configPage: null
+	Component.onCompleted: {
+		configPage = findConfigPage(configColor)
+		if (configPage && configKey) {
+			var val = configPage.getConfigValue(configKey)
+			if (typeof val !== "undefined") {
+				value = val
+				textField.text = val
+			}
+		}
+	}
+
+	// Helper function to find ConfigPage
+	function findConfigPage(item) {
+		var p = item
+		while (p) {
+			if (p.getConfigValue && p.setConfigValue) {
+				return p
+			}
+			p = p.parent
+		}
+		return null
 	}
 
 	onValueChanged: {
 		if (!textField.activeFocus) {
 			textField.text = configColor.value
 		}
-		if (configKey) {
+		if (configPage && configKey) {
 			if (value == defaultColorValue) {
-				Plasmoid.configuration[configKey] = ""
+				configPage.setConfigValue(configKey, "")
 			} else {
-				Plasmoid.configuration[configKey] = value
+				configPage.setConfigValue(configKey, value)
 			}
 		}
 	}
@@ -107,15 +127,12 @@ RowLayout {
 
 	ColorDialog {
 		id: dialog
-		visible: false
 		modality: Qt.WindowModal
 		title: configColor.label
-		showAlphaChannel: true
-		color: configColor.valueColor
-		onCurrentColorChanged: {
-			if (visible && color != currentColor) {
-				configColor.value = currentColor
-			}
+		options: ColorDialog.ShowAlphaChannel
+		selectedColor: configColor.valueColor
+		onAccepted: {
+			configColor.value = selectedColor
 		}
 	}
 }

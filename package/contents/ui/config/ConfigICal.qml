@@ -12,6 +12,9 @@ import "../lib"
 ConfigPage {
 	id: page
 
+	// cfg_* properties for KCM binding
+	property string cfg_icalCalendarList: ""
+
 	KCoreAddons.KUser {
 		id: kuser
 	}

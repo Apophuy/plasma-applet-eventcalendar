@@ -1,7 +1,8 @@
 import QtQuick
 import org.kde.kirigami as Kirigami
+import org.kde.plasma.plasmoid
 import org.kde.plasma.core as PlasmaCore
-import org.kde.plasma.extras as PlasmaExtras
+import org.kde.plasma.components as PlasmaComponents3
 
 import "Shared.js" as Shared
 import "./weather/WeatherApi.js" as WeatherApi
@@ -203,7 +204,7 @@ Item {
 					for (var i = 1; i < path.length - 2; i++) {
 						var xc = (gridPath[i].x + gridPath[i+1].x) / 2
 						var yc = (gridPath[i].y + gridPath[i+1].y) / 2
-						
+
 						context.quadraticCurveTo(gridPath[i].x, gridPath[i].y, xc, yc)
 					}
 					var n = path.length-1
@@ -287,7 +288,7 @@ Item {
 						if (i === 0 || item.y < pathMinY) pathMinY = item.y
 						if (i === 0 || item.y > pathMaxY) pathMaxY = item.y
 					}
-					
+
 					var pZeroY = graph.gridPoint(0, graph.freezingPoint).y
 					var pMaxY = graph.gridPoint(0, pathMinY).y // y axis gets flipped
 					var pMinY = graph.gridPoint(0, pathMaxY).y // y axis gets flipped
@@ -375,7 +376,7 @@ Item {
 					// 	context.strokeText(labelText, graph.gridX2, graph.gridY + 6)
 					// 	context.fillText(labelText, graph.gridX2, graph.gridY + 6)
 					// }
-					
+
 
 					// Area
 					graph.updateGridItemAreas()
@@ -386,7 +387,7 @@ Item {
 			}
 
 
- 
+
 			Repeater {
 				id: gridDataAreas
 				anchors.fill: parent
@@ -400,12 +401,21 @@ Item {
 					// color: ["#880", "#008"][index % 2]
 					color: "transparent"
 
-					PlasmaExtras.ToolTip {
-						id: tooltip
+					MouseArea {
+						id: tooltipArea
 						anchors.fill: parent
-						icon: modelData.gridItem.weatherIcon
-						mainText: modelData.gridItem.tooltipMainText
-						subText: modelData.gridItem.tooltipSubText
+						hoverEnabled: true
+						acceptedButtons: Qt.NoButton
+
+						PlasmaComponents3.ToolTip {
+							visible: tooltipArea.containsMouse
+							delay: Kirigami.Units.toolTipDelay
+							text: {
+								var main = modelData.gridItem.tooltipMainText || ""
+								var sub = modelData.gridItem.tooltipSubText || ""
+								return sub ? main + "\n" + sub : main
+							}
+						}
 					}
 
 					FontIcon {
@@ -415,7 +425,7 @@ Item {
 						color: appletConfig.meteogramIconColor
 						source: modelData.aggregratedIcon
 						height: appletConfig.meteogramIconSize
-						opacity: tooltip.containsMouse ? 0.1 : 1
+						opacity: tooltipArea.containsMouse ? 0.1 : 1
 						showOutline: meteogramView.showIconOutline
 					}
 

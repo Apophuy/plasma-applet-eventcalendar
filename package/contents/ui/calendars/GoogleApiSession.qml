@@ -1,4 +1,5 @@
 import QtQuick
+import org.kde.plasma.plasmoid
 
 import "../lib/Requests.js" as Requests
 

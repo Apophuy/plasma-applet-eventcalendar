@@ -1,4 +1,4 @@
-// Version 5
+// Version 7 - Plasma 6 compatible (uses cfg_* properties via ConfigPage)
 
 import QtQuick
 import QtQuick.Controls
@@ -33,12 +33,7 @@ RowLayout {
 	property string configKey: ''
 	readonly property var currentItem: comboBox.model[comboBox.currentIndex]
 	readonly property string value: currentItem ? currentItem[valueRole] : ""
-	readonly property string configValue: configKey ? Plasmoid.configuration[configKey] : ""
-	onConfigValueChanged: {
-		if (!comboBox.focus && value != configValue) {
-			selectValue(configValue)
-		}
-	}
+	property string configValue: ""
 
 	property alias textRole: comboBox.textRole
 	property alias valueRole: comboBox.valueRole
@@ -50,9 +45,36 @@ RowLayout {
 	signal populate()
 	property bool populated: true
 
+	// Find the ConfigPage ancestor
+	property var configPage: null
 	Component.onCompleted: {
+		configPage = findConfigPage(configComboBox)
 		populate()
-		selectValue(configValue)
+		if (configPage && configKey) {
+			var val = configPage.getConfigValue(configKey)
+			if (typeof val !== "undefined") {
+				configValue = val
+				selectValue(val)
+			}
+		}
+	}
+
+	// Helper function to find ConfigPage
+	function findConfigPage(item) {
+		var p = item
+		while (p) {
+			if (p.getConfigValue && p.setConfigValue) {
+				return p
+			}
+			p = p.parent
+		}
+		return null
+	}
+
+	onConfigValueChanged: {
+		if (!comboBox.focus && value != configValue) {
+			selectValue(configValue)
+		}
 	}
 
 	Label {
@@ -64,7 +86,7 @@ RowLayout {
 	ComboBox {
 		id: comboBox
 		textRole: "text" // Doesn't autodeduce from model if we manually populate it
-		property string valueRole: "value"
+		valueRole: "value" // Qt 6 has built-in valueRole property
 
 		model: []
 
@@ -72,9 +94,10 @@ RowLayout {
 			if (typeof model !== 'number' && 0 <= currentIndex && currentIndex < count) {
 				var item = model[currentIndex]
 				if (typeof item !== "undefined") {
-					var val = item[valueRole]
-					if (configKey && (typeof val !== "undefined") && populated) {
-						Plasmoid.configuration[configKey] = val
+					var val = item[configComboBox.valueRole]
+					if (configComboBox.configPage && configComboBox.configKey && (typeof val !== "undefined") && configComboBox.populated) {
+						configComboBox.configPage.setConfigValue(configComboBox.configKey, val)
+						configComboBox.configValue = val
 					}
 				}
 			}

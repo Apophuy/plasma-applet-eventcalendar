@@ -18,10 +18,12 @@
  */
 import QtQuick
 import org.kde.kirigami as Kirigami
+import org.kde.plasma.plasmoid
 import org.kde.plasma.core as PlasmaCore
 import org.kde.plasma.extras as PlasmaExtras
+import org.kde.plasma.components as PlasmaComponents3
 
-import org.kde.plasma.calendar
+import org.kde.plasma.workspace.calendar
 
 import "LocaleFuncs.js" as LocaleFuncs
 
@@ -211,12 +213,23 @@ MouseArea {
 		}
 	}
 
-	PlasmaExtras.ToolTip {
+	MouseArea {
+		id: tooltipArea
 		anchors.fill: parent
-		active: root.showTooltips
-		visible: root.showTooltips // Needed with active=false to make sure the ToolTipArea doesn't close a parent ToolTipArea. Eg: DateSelector.
-		mainText: containsMouse ? Qt.formatDate(thisDate, Qt.locale().dateFormat(Locale.LongFormat)) : ""
-		subText: containsMouse ? tooltipBody() : ""
+		hoverEnabled: root.showTooltips
+		acceptedButtons: Qt.NoButton
+
+		PlasmaComponents3.ToolTip {
+			visible: root.showTooltips && tooltipArea.containsMouse
+			delay: Kirigami.Units.toolTipDelay
+			text: {
+				if (!tooltipArea.containsMouse) return ""
+				var mainText = Qt.formatDate(thisDate, Qt.locale().dateFormat(Locale.LongFormat))
+				var subText = tooltipArea.tooltipBody()
+				return subText ? mainText + "\n" + subText : mainText
+			}
+		}
+
 		function tooltipBody() {
 			if (!model.events) {
 				return ''
@@ -225,15 +238,15 @@ MouseArea {
 			for (var i = 0; i < model.events.count; i++) {
 				var eventItem = model.events.get(i)
 				var line = ''
-				line += '<font color="' + eventItem.backgroundColor + '">■</font> '
-				line += '<b>' + eventItem.summary + ':</b> '
+				line += '■ '
+				line += eventItem.summary + ': '
 				line += LocaleFuncs.formatEventDuration(eventItem, {
 					relativeDate: thisDate,
 					clock24h: appletConfig.clock24h,
 				})
 				lines.push(line)
 			}
-			return lines.join('<br>')
+			return lines.join('\n')
 		}
 	}
 

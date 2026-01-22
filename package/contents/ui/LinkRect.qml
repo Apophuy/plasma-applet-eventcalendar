@@ -1,6 +1,7 @@
 import QtQuick
 import org.kde.plasma.core as PlasmaCore
-import org.kde.plasma.extras as PlasmaExtras
+import org.kde.plasma.components as PlasmaComponents3
+import org.kde.kirigami as Kirigami
 
 import "lib"
 
@@ -24,32 +25,38 @@ Rectangle {
 	signal doubleClicked(var mouse)
 	signal loadContextMenu(var contextMenu)
 
-	PlasmaExtras.ToolTip {
-		id: tooltip
+	MouseArea {
+		id: mouseArea
 		anchors.fill: parent
-		mainText: linkRect.tooltipMainText
-		subText: linkRect.tooltipSubText
-
-		MouseArea {
-			id: mouseArea
-			anchors.fill: parent
-			hoverEnabled: true
-			acceptedButtons: Qt.LeftButton | Qt.RightButton
-			cursorShape: linkRect.enabled && containsMouse ? Qt.PointingHandCursor : Qt.ArrowCursor
-			enabled: linkRect.enabled
-			onClicked: (mouse) => {
-				mouse.accepted = false
-				linkRect.clicked(mouse)
-				if (!mouse.accepted) {
-					if (mouse.button == Qt.LeftButton) {
-						linkRect.leftClicked(mouse)
-					} else if (mouse.button == Qt.RightButton) {
-						contextMenu.show(mouse.x, mouse.y)
-						mouse.accepted = true
-					}
+		hoverEnabled: true
+		acceptedButtons: Qt.LeftButton | Qt.RightButton
+		cursorShape: linkRect.enabled && containsMouse ? Qt.PointingHandCursor : Qt.ArrowCursor
+		enabled: linkRect.enabled
+		onClicked: (mouse) => {
+			mouse.accepted = false
+			linkRect.clicked(mouse)
+			if (!mouse.accepted) {
+				if (mouse.button == Qt.LeftButton) {
+					linkRect.leftClicked(mouse)
+				} else if (mouse.button == Qt.RightButton) {
+					contextMenu.show(mouse.x, mouse.y)
+					mouse.accepted = true
 				}
 			}
-			onDoubleClicked: (mouse) => linkRect.doubleClicked(mouse)
+		}
+		onDoubleClicked: (mouse) => linkRect.doubleClicked(mouse)
+
+		PlasmaComponents3.ToolTip {
+			id: tooltip
+			text: {
+				var result = linkRect.tooltipMainText
+				if (linkRect.tooltipSubText) {
+					result += (result ? "\n" : "") + linkRect.tooltipSubText
+				}
+				return result
+			}
+			visible: mouseArea.containsMouse && text
+			delay: Kirigami.Units.toolTipDelay
 		}
 	}
 

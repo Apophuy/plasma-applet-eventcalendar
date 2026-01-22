@@ -10,17 +10,25 @@ import "../lib"
 ConfigPage {
 	id: page
 
+	// cfg_* properties for KCM binding
+	property bool cfg_twoColumns: true
+	property int cfg_topRowHeight: 100
+	property int cfg_bottomRowHeight: 400
+	property int cfg_leftColumnWidth: 400
+	property int cfg_rightColumnWidth: 400
+	property int cfg_monthHeightSingleColumn: 300
+
 	SystemPalette {
 		id: syspal
 	}
 
 	//---
-	ExclusiveGroup { id: layoutGroup }
+	ButtonGroup { id: layoutGroup }
 	RadioButton {
 		text: i18n("Calendar to the left of the Agenda (Two Columns)")
-		exclusiveGroup: layoutGroup
-		checked: Plasmoid.configuration.twoColumns
-		onClicked: Plasmoid.configuration.twoColumns = true
+		ButtonGroup.group: layoutGroup
+		checked: page.cfg_twoColumns
+		onClicked: page.cfg_twoColumns = true
 		Layout.fillWidth: false
 		Layout.alignment: Qt.AlignHCenter
 	}
@@ -85,7 +93,7 @@ ConfigPage {
 			Image {
 				id: twoColumnsImage
 				anchors.fill: parent
-				source: Plasmoid.file("", "images/twocolumns.svg")
+				source: Qt.resolvedUrl("../images/twocolumns.svg")
 				smooth: true
 				visible: false
 			}
@@ -107,9 +115,9 @@ ConfigPage {
 	//---
 	RadioButton {
 		text: i18n("Agenda below the Calendar (Single Column)")
-		exclusiveGroup: layoutGroup
-		checked: !Plasmoid.configuration.twoColumns
-		onClicked: Plasmoid.configuration.twoColumns = false
+		ButtonGroup.group: layoutGroup
+		checked: !page.cfg_twoColumns
+		onClicked: page.cfg_twoColumns = false
 		Layout.fillWidth: false
 		Layout.alignment: Qt.AlignHCenter
 	}
@@ -169,7 +177,7 @@ ConfigPage {
 			Image {
 				id: singleColumnImage
 				anchors.fill: parent
-				source: Plasmoid.file("", "images/singlecolumn.svg")
+				source: Qt.resolvedUrl("../images/singlecolumn.svg")
 				smooth: true
 				visible: false
 			}

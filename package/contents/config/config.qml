@@ -1,12 +1,15 @@
 import QtQuick
 import org.kde.plasma.configuration
-import org.kde.plasma.calendar as PlasmaCalendar
+import org.kde.plasma.workspace.calendar as PlasmaCalendar
 import org.kde.plasma.plasmoid
 
 import "../ui/calendars/PlasmaCalendarUtils.js" as PlasmaCalendarUtils
 
 ConfigModel {
 	id: configModel
+
+	// In Plasma 6, EventPluginsManager is no longer a singleton
+	property PlasmaCalendar.EventPluginsManager eventPluginsManager: PlasmaCalendar.EventPluginsManager {}
 
 	ConfigCategory {
 		name: i18n("General")
@@ -51,7 +54,7 @@ ConfigModel {
 	}
 	ConfigCategory {
 		name: i18n("Google Calendar")
-		icon: Plasmoid.file("", "icons/google_calendar_96px.png")
+		icon: "view-calendar-day"
 		source: "config/ConfigGoogleCalendar.qml"
 	}
 	ConfigCategory {
@@ -67,7 +70,7 @@ ConfigModel {
 	}
 
 	property Instantiator __eventPlugins: Instantiator {
-		model: PlasmaCalendar.EventPluginsManager.model
+		model: configModel.eventPluginsManager.model
 		delegate: ConfigCategory {
 			name: model.display
 			icon: model.decoration

@@ -4,6 +4,25 @@ ListModel {
 	id: listModel
 	property alias configKey: base64Json.configKey
 
+	// ConfigPage reference - will be found automatically
+	property var configPage: null
+	Component.onCompleted: {
+		configPage = findConfigPage(listModel)
+		base64Json.configPage = configPage
+	}
+
+	// Helper function to find ConfigPage
+	function findConfigPage(item) {
+		var p = item
+		while (p) {
+			if (p.getConfigValue && p.setConfigValue) {
+				return p
+			}
+			p = p.parent
+		}
+		return null
+	}
+
 	property int oldCount: count
 	property QtObject base64Json: Base64Json {
 		id: base64Json

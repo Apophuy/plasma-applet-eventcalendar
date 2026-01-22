@@ -11,7 +11,7 @@ import "LocaleFuncs.js" as LocaleFuncs
 Item {
 	id: agendaView
 
-	readonly property int scrollbarWidth: width - agendaScrollView.contentWidth
+	readonly property int scrollbarWidth: width - agendaScrollView.scrollContentWidth
 
 	property color inProgressColor: appletConfig.agendaInProgressColor
 	property int inProgressFontWeight: Font.Bold
@@ -55,11 +55,11 @@ Item {
 		id: agendaScrollView
 		anchors.fill: parent
 		// clip: true
-		readonly property int contentWidth: contentItem ? contentItem.width : width
-		readonly property int contentHeight: contentItem ? contentItem.height : 0 // Warning: Binding loop
-		readonly property int viewportWidth: viewport ? viewport.width : width
-		readonly property int viewportHeight: viewport ? viewport.height : height
-		readonly property int scrollY: flickableItem ? flickableItem.contentY : 0
+		readonly property int scrollContentWidth: contentItem ? contentItem.width : width
+		readonly property int scrollContentHeight: contentItem ? contentItem.height : 0 // Warning: Binding loop
+		readonly property int viewportWidth: width
+		readonly property int viewportHeight: height
+		readonly property int scrollY: contentItem ? contentItem.contentY : 0
 
 		// onScrollYChanged: console.log('scrollY', scrollY)
 
@@ -82,7 +82,7 @@ Item {
 					// 		scrollToIndexTimer.updatePosition()
 					// 	}
 					// }
-					
+
 					// Component.onCompleted: console.log(Date.now(), 'AgendaListItem.onCompleted', index)
 					// Component.onDestruction: console.log(Date.now(), 'AgendaListItem.onDestruction', index)
 				}
@@ -138,12 +138,14 @@ Item {
 				}
 				return offsetY
 			} else { // index >= agendaRepeater.count
-				return agendaScrollView.contentHeight
+				return agendaScrollView.scrollContentHeight
 			}
 		}
 
 		function scrollToY(offsetY) {
-			flickableItem.contentY = Math.min(offsetY, contentHeight-viewportHeight)
+			if (agendaScrollView.contentItem) {
+				agendaScrollView.contentItem.contentY = Math.min(offsetY, scrollContentHeight-viewportHeight)
+			}
 		}
 
 		function positionViewAtBeginning() {

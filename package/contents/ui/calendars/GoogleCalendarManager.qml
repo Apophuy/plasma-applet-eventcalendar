@@ -1,4 +1,5 @@
 import QtQuick
+import org.kde.plasma.plasmoid
 
 import "../ErrorType.js" as ErrorType
 import "../Shared.js" as Shared
@@ -167,7 +168,7 @@ CalendarManager {
 			delete allData
 		}
 		allData = data
-		
+
 		if (allData.nextPageToken) {
 			logger.debug('fetchGCalEventsPageResponse.nextPageToken', allData.nextPageToken)
 			logger.debug('fetchGCalEventsPageResponse.nextPageToken', 'allData.items.length', allData.items && allData.items.length)
@@ -463,7 +464,7 @@ CalendarManager {
 
 	function patchGoogleCalendarEvent(calendarId, eventId, eventProps, callback) {
 		logger.debugJSON('patchGoogleCalendarEvent.sent', eventProps)
-		
+
 		patchGCalEvent({
 			accessToken: session.accessToken,
 			calendarId: calendarId,
@@ -471,7 +472,7 @@ CalendarManager {
 			data: eventProps,
 		}, function(err, data, xhr) {
 			logger.debugJSON('patchGoogleCalendarEvent.response', err, data)
-			
+
 			parseSingleEvent(calendarId, data)
 			eventUpdated(calendarId, eventId, data)
 			callback(err, data, xhr)

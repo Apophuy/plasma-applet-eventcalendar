@@ -12,6 +12,25 @@ import "../lib/Requests.js" as Requests
 ConfigPage {
 	id: page
 
+	// Required cfg_ properties for GoogleLoginManager
+	property bool cfg_debugging: false
+	property string cfg_accessToken: ""
+	property alias cfg_accessTokenType: googleLoginManager.cfg_accessTokenType
+	property alias cfg_accessTokenExpiresAt: googleLoginManager.cfg_accessTokenExpiresAt
+	property alias cfg_refreshToken: googleLoginManager.cfg_refreshToken
+	property string cfg_latestClientId: ""
+	property string cfg_latestClientSecret: ""
+	property alias cfg_sessionClientId: googleLoginManager.cfg_sessionClientId
+	property alias cfg_sessionClientSecret: googleLoginManager.cfg_sessionClientSecret
+	property alias cfg_calendarList: googleLoginManager.cfg_calendarList
+	property alias cfg_calendarIdList: googleLoginManager.cfg_calendarIdList
+	property alias cfg_tasklistList: googleLoginManager.cfg_tasklistList
+	property alias cfg_tasklistIdList: googleLoginManager.cfg_tasklistIdList
+	property string cfg_access_token: "" // legacy
+	property alias cfg_agendaNewEventLastCalendarId: googleLoginManager.cfg_agendaNewEventLastCalendarId
+	property string cfg_googleEventClickAction: "WebEventView"
+	property bool cfg_googleHideGoalsDesc: true
+
 	function alphaColor(c, a) {
 		return Qt.rgba(c.r, c.g, c.b, a)
 	}
@@ -37,6 +56,15 @@ ConfigPage {
 	GoogleLoginManager {
 		id: googleLoginManager
 
+		// Bind configuration properties
+		cfg_debugging: page.cfg_debugging
+		cfg_accessToken: page.cfg_accessToken
+		cfg_latestClientId: page.cfg_latestClientId
+		cfg_latestClientSecret: page.cfg_latestClientSecret
+		cfg_access_token: page.cfg_access_token
+
+		onCfg_accessTokenChanged: page.cfg_accessToken = cfg_accessToken
+
 		onCalendarListChanged: {
 			calendarsModel.clear()
 			var sortedList = sortArr(calendarList, "summary")
@@ -46,7 +74,7 @@ ConfigPage {
 				var isPrimary = item.primary === true
 				var isShown = calendarIdList.indexOf(item.id) >= 0 || (isPrimary && calendarIdList.indexOf('primary') >= 0)
 				calendarsModel.append({
-					calendarId: item.id, 
+					calendarId: item.id,
 					name: item.summary,
 					description: item.description,
 					backgroundColor: item.backgroundColor,
@@ -67,7 +95,7 @@ ConfigPage {
 				// console.log(JSON.stringify(item))
 				var isShown = tasklistIdList.indexOf(item.id) >= 0
 				tasklistsModel.append({
-					tasklistId: item.id, 
+					tasklistId: item.id,
 					name: item.title,
 					description: '',
 					backgroundColor: Kirigami.Theme.highlightColor.toString(),
@@ -183,7 +211,7 @@ ConfigPage {
 				}
 			}
 		}
-		
+
 	}
 
 	RowLayout {
@@ -228,26 +256,24 @@ ConfigPage {
 			Repeater {
 				model: calendarsModel
 				delegate: CheckBox {
-					text: model.name
+					id: calendarCheckBox
 					checked: model.show
-					style: CheckBoxStyle {
-						label: RowLayout {
-							Rectangle {
-								Layout.fillHeight: true
-								Layout.preferredWidth: height
-								color: model.backgroundColor
-							}
-							Label {
-								id: labelText
-								text: control.text
-							}
-							LockIcon {
-								Layout.fillHeight: true
-								Layout.preferredWidth: height
-								visible: model.isReadOnly
-							}
+					contentItem: RowLayout {
+						spacing: Kirigami.Units.smallSpacing
+						Item { width: calendarCheckBox.indicator.width } // Spacer for indicator
+						Rectangle {
+							Layout.preferredWidth: Kirigami.Units.iconSizes.small
+							Layout.preferredHeight: Kirigami.Units.iconSizes.small
+							color: model.backgroundColor
 						}
-						
+						Label {
+							text: model.name
+						}
+						LockIcon {
+							Layout.preferredWidth: Kirigami.Units.iconSizes.small
+							Layout.preferredHeight: Kirigami.Units.iconSizes.small
+							visible: model.isReadOnly
+						}
 					}
 
 					onClicked: {
@@ -267,7 +293,7 @@ ConfigPage {
 			text: i18n("Tasks")
 
 			Image {
-				source: Plasmoid.file("", "icons/google_tasks_96px.png")
+				source: "../icons/google_tasks_96px.png"
 				smooth: true
 				anchors.leftMargin: parent.contentWidth + Kirigami.Units.smallSpacing
 				anchors.left: parent.left
@@ -311,26 +337,24 @@ ConfigPage {
 			Repeater {
 				model: tasklistsModel
 				delegate: CheckBox {
-					text: model.name
+					id: tasklistCheckBox
 					checked: model.show
-					style: CheckBoxStyle {
-						label: RowLayout {
-							Rectangle {
-								Layout.fillHeight: true
-								Layout.preferredWidth: height
-								color: model.backgroundColor
-							}
-							Label {
-								id: labelText
-								text: control.text
-							}
-							LockIcon {
-								Layout.fillHeight: true
-								Layout.preferredWidth: height
-								visible: model.isReadOnly
-							}
+					contentItem: RowLayout {
+						spacing: Kirigami.Units.smallSpacing
+						Item { width: tasklistCheckBox.indicator.width } // Spacer for indicator
+						Rectangle {
+							Layout.preferredWidth: Kirigami.Units.iconSizes.small
+							Layout.preferredHeight: Kirigami.Units.iconSizes.small
+							color: model.backgroundColor
 						}
-						
+						Label {
+							text: model.name
+						}
+						LockIcon {
+							Layout.preferredWidth: Kirigami.Units.iconSizes.small
+							Layout.preferredHeight: Kirigami.Units.iconSizes.small
+							visible: model.isReadOnly
+						}
 					}
 
 					onClicked: {

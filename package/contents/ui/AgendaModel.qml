@@ -1,4 +1,5 @@
 import QtQuick
+import org.kde.plasma.plasmoid
 
 import "Shared.js" as Shared
 
@@ -311,7 +312,7 @@ ListModel {
 				addAgendaItemIfMissing(agendaItemList, day)
 			}
 		}
-		
+
 		if (clipPastEvents) {
 			// Remove calendar events before today.
 			var minDate = today

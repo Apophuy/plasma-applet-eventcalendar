@@ -1,5 +1,6 @@
 import QtQuick
 import org.kde.kirigami as Kirigami
+import org.kde.plasma.plasmoid
 import org.kde.plasma.core as PlasmaCore
 
 import "../Shared.js" as Shared
@@ -278,7 +279,7 @@ CalendarManager {
 			delete allData
 		}
 		allData = data
-		
+
 		if (allData.nextPageToken) {
 			logger.debug('fetchGCalTasksPageResponse.nextPageToken', allData.nextPageToken)
 			logger.debug('fetchGCalTasksPageResponse.nextPageToken', 'allData.items.length', allData.items && allData.items.length)
@@ -486,7 +487,7 @@ CalendarManager {
 	}
 	function setEventProperties_run(calendarId, eventId, event, args, callback) {
 		logger.debugJSON(calendarManagerId, 'setEventProperties_run', calendarId, eventId, event, args)
-		
+
 		// Merge assigned values into a cloned object
 		var data = cloneRawTask(event)
 		Shared.merge(data, args)

@@ -7,6 +7,19 @@ import "../lib"
 ConfigPage {
 	id: page
 
+	// cfg_* properties for KCM binding
+	property bool cfg_widgetShowCalendar: true
+	property string cfg_monthCurrentCustomTitleFormat: ""
+	property bool cfg_monthShowBorder: false
+	property bool cfg_monthShowWeekNumbers: false
+	property bool cfg_monthHighlightCurrentDayWeek: true
+	property int cfg_firstDayOfWeek: -1
+	property string cfg_monthEventBadgeType: "theme"
+	property string cfg_monthTodayStyle: "theme"
+	property double cfg_monthCellRadius: 0
+	property string cfg_monthDayDoubleClick: "GoogleCalWeb"
+	property int cfg_monthHeightSingleColumn: 300
+
 	ConfigCheckBox {
 		configKey: 'widgetShowCalendar'
 		text: i18n("Show calendar")
@@ -16,11 +29,9 @@ ConfigPage {
 		ConfigRadioButtonGroup {
 			id: clickDateGroup
 			label: i18n("Click Date:")
-			RadioButton {
-				text: i18n("Scroll to event in Agenda")
-				exclusiveGroup: clickDateGroup.exclusiveGroup
-				checked: true
-			}
+			model: [
+				{ value: 'scrollToAgenda', text: i18n("Scroll to event in Agenda") }
+			]
 		}
 	}
 
@@ -89,9 +100,9 @@ ConfigPage {
 					}
 
 					// The firstDayOfWeek enum starts at -1 instead of 0
-					currentIndex = Plasmoid.configuration.firstDayOfWeek + 1
+					currentIndex = page.cfg_firstDayOfWeek + 1
 					currentIndexChanged.connect(function(){
-						Plasmoid.configuration.firstDayOfWeek = currentIndex - 1
+						page.cfg_firstDayOfWeek = currentIndex - 1
 					})
 				}
 			}
@@ -120,11 +131,9 @@ ConfigPage {
 		ConfigRadioButtonGroup {
 			id: selectedStyleGroup
 			label: i18n("Selected:")
-			RadioButton {
-				text: i18n("Solid Color (Highlight)")
-				exclusiveGroup: selectedStyleGroup.exclusiveGroup
-				checked: true
-			}
+			model: [
+				{ value: 'default', text: i18n("Solid Color (Highlight)") },
+			]
 		}
 
 		ConfigRadioButtonGroup {

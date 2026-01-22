@@ -166,7 +166,7 @@ LinkRect {
 		// 	onClicked: Qt.openUrlExternally(model.htmlLink)
 		// }
 	}
-	
+
 	onLeftClicked: {
 		var task = tasks.get(taskItemIndex)
 		logger.logJSON("task", task)
@@ -202,7 +202,6 @@ LinkRect {
 			eventModel.deleteEvent(task.calendarId, task.id)
 		})
 		// deleteMenuItem.enabled = task.canEdit
-		deleteMenuItem.subMenu.addMenuItem(menuItem)
 		contextMenu.addMenuItem(deleteMenuItem)
 
 		menuItem = contextMenu.newMenuItem()

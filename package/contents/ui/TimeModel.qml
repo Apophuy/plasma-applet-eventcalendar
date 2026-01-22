@@ -1,5 +1,6 @@
 import QtQuick
 import QtQuick.Layouts
+import org.kde.plasma.plasmoid
 
 import org.kde.plasma.core as PlasmaCore
 import org.kde.plasma.plasma5support as Plasma5Support
@@ -7,7 +8,7 @@ import org.kde.plasma.plasma5support as Plasma5Support
 Item {
 	id: timeModel
 	property string timezone: "Local"
-	property var currentTime: dataSource.data[timezone]["DateTime"]
+	property var currentTime: dataSource.data[timezone] ? dataSource.data[timezone]["DateTime"] : new Date()
 	property alias dataSource: dataSource
 	property var allTimezones: {
 		var timezones = Plasmoid.configuration.selectedTimeZones.toString()

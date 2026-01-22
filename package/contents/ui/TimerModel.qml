@@ -1,4 +1,5 @@
 import QtQuick
+import org.kde.plasma.plasmoid
 
 QtObject {
 	id: timerModel
@@ -64,7 +65,7 @@ QtObject {
 			}
 		} else if (oldDuration >= 15) { // 15sec
 			return 5 // +5sec
-		} else { 
+		} else {
 			if (multiplier < 0 && oldDuration <= 1) { // 0-1sec
 				return 0 // +0
 			} else { // 2-14sec

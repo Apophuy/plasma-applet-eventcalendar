@@ -9,6 +9,24 @@ import "../lib"
 ConfigPage {
 	id: page
 
+	// cfg_* properties for KCM binding
+	property bool cfg_widgetShowAgenda: true
+	property int cfg_agendaFontSize: 0
+	property bool cfg_agendaWeatherShowIcon: true
+	property int cfg_agendaWeatherIconHeight: 24
+	property bool cfg_agendaWeatherShowText: false
+	property bool cfg_agendaWeatherOnRight: false
+	property bool cfg_agendaBreakupMultiDayEvents: false
+	property bool cfg_agendaNewEventRememberCalendar: true
+	property string cfg_agendaInProgressColor: ""
+	property int cfg_agendaDaySpacing: 20
+	property int cfg_agendaEventSpacing: 10
+	property int cfg_agendaMaxDescriptionLines: 5
+	property bool cfg_agendaShowEventDescription: true
+	property bool cfg_agendaShowEventHangoutLink: true
+	property bool cfg_agendaCondensedAllDayEvent: true
+	property bool cfg_showOutlines: true
+
 	property int indentWidth: 24 * Kirigami.Units.devicePixelRatio
 
 	ConfigCheckBox {
@@ -67,11 +85,9 @@ ConfigPage {
 		ConfigRadioButtonGroup {
 			id: clickWeatherGroup
 			label: i18n("Click Weather:")
-			RadioButton {
-				text: i18n("Open City Forecast In Browser")
-				exclusiveGroup: clickWeatherGroup.exclusiveGroup
-				checked: true
-			}
+			model: [
+				{ value: 'openForecast', text: i18n("Open City Forecast In Browser") },
+			]
 		}
 	}
 
@@ -79,16 +95,10 @@ ConfigPage {
 		ConfigRadioButtonGroup {
 			id: clickDateGroup
 			label: i18n("Click Date:")
-			RadioButton {
-				text: i18n("Open New Event In Browser")
-				exclusiveGroup: clickDateGroup.exclusiveGroup
-				enabled: false
-			}
-			RadioButton {
-				text: i18n("Open New Event Form")
-				exclusiveGroup: clickDateGroup.exclusiveGroup
-				checked: true
-			}
+			model: [
+				{ value: 'browser', text: i18n("Open New Event In Browser"), enabled: false },
+				{ value: 'form', text: i18n("Open New Event Form") },
+			]
 		}
 	}
 
@@ -114,11 +124,9 @@ ConfigPage {
 		ConfigRadioButtonGroup {
 			id: clickEventGroup
 			label: i18n("Click Event:")
-			RadioButton {
-				text: i18n("Open Event In Browser")
-				exclusiveGroup: clickEventGroup.exclusiveGroup
-				checked: true
-			}
+			model: [
+				{ value: 'browser', text: i18n("Open Event In Browser") },
+			]
 		}
 	}
 

@@ -4,6 +4,9 @@
 // https://github.com/KDE/plasma-framework/blob/master/src/declarativeimports/calendar/eventpluginsmanager.cpp
 
 function getPluginFilename(pluginPath) {
+	if (!pluginPath || typeof pluginPath !== 'string') {
+		return ''
+	}
 	return pluginPath.substr(pluginPath.lastIndexOf('/') + 1)
 }
 
@@ -63,4 +66,3 @@ function setEnabledPluginsByFilename(eventPluginsManager, pluginFilenameList) {
 	var pluginPathList = pluginFilenameToPathList(eventPluginsManager, pluginFilenameList)
 	eventPluginsManager.enabledPlugins = pluginPathList
 }
-

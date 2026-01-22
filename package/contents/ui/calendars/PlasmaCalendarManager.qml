@@ -1,8 +1,9 @@
 import QtQuick
 import org.kde.kirigami as Kirigami
+import org.kde.plasma.plasmoid
 
 import org.kde.plasma.core as PlasmaCore
-import org.kde.plasma.calendar as PlasmaCalendar
+import org.kde.plasma.workspace.calendar as PlasmaCalendar
 
 import "../lib"
 import "../Shared.js" as Shared
@@ -96,6 +97,11 @@ CalendarManager {
 	//     [General]
 	//     selectedRegions=us_en-us,ru_ru
 
+	// In Plasma 6, EventPluginsManager is no longer a singleton, we need to create an instance
+	PlasmaCalendar.EventPluginsManager {
+		id: eventPluginsManager
+	}
+
 	// PlasmaCalendar.EventPluginsManager.model is EventPluginsManager::pluginsModel()
 	// Which is only useful for the config to select the plugins.
 	// We need EventPluginsManager::plugins() to iterate the plugins, but it isn't exposed to QML.
@@ -103,12 +109,12 @@ CalendarManager {
 	// to get a list of events for a specific day.
 
 	Component.onCompleted: {
-		PlasmaCalendarUtils.setEnabledPluginsByFilename(PlasmaCalendar.EventPluginsManager, Plasmoid.configuration.enabledCalendarPlugins)
+		PlasmaCalendarUtils.setEnabledPluginsByFilename(eventPluginsManager, Plasmoid.configuration.enabledCalendarPlugins)
 	}
 	Connections {
 		target: Plasmoid.configuration
 		onEnabledCalendarPluginsChanged: {
-			PlasmaCalendarUtils.setEnabledPluginsByFilename(PlasmaCalendar.EventPluginsManager, Plasmoid.configuration.enabledCalendarPlugins)
+			PlasmaCalendarUtils.setEnabledPluginsByFilename(eventPluginsManager, Plasmoid.configuration.enabledCalendarPlugins)
 		}
 	}
 
@@ -129,7 +135,7 @@ CalendarManager {
 
 		Component.onCompleted: {
 			//daysModel.connect
-			daysModel.setPluginsManager(PlasmaCalendar.EventPluginsManager)
+			daysModel.setPluginsManager(eventPluginsManager)
 		}
 	}
 

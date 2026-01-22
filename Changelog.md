@@ -1,3 +1,56 @@
+## v77 - January 22 2026
+
+### Plasma 6 / Qt 6 Migration
+
+* **Major:** Complete migration to Plasma 6 / KDE Frameworks 6 / Qt 6
+* **Major:** Updated to Qt 6.6+ with Qt5Compat.GraphicalEffects support
+* **Major:** Migrated from Plasma 5 API to Plasma 6 API
+  - PlasmoidItem as root component instead of Item
+  - Updated all QML imports (no version numbers in Plasma 6)
+  - Migrated PlasmaCore to Kirigami and Plasma5Support modules
+  - Updated PlasmaCore.DataSource to Plasma5Support.DataSource
+  - Updated PlasmaCore.Svg/FrameSvgItem to KSvg.Svg/FrameSvgItem
+  - Migrated to org.kde.kirigami for Units, Theme, and Icons
+  - Updated KCMUtils integration for settings pages
+* **Build:** Updated install script to use kpackagetool6
+* **Build:** Added systemctl support for plasmashell restart
+* **Metadata:** Migrated from metadata.desktop to metadata.json
+* **Metadata:** Set X-Plasma-API-Minimum-Version to 6.0
+* **Metadata:** Updated X-Plasma-Provides to org.kde.plasma.time and org.kde.plasma.date
+
+### Configuration Changes
+
+* Migrated all snake_case config keys to camelCase (v71 migration)
+* Migrated enabledCalendarPlugins from full paths to filenames (v72 migration)
+* Added ConfigMigration.qml for automatic settings upgrade
+* Updated config schema in main.xml with new naming conventions
+
+### Documentation
+
+* **README:** Complete rewrite in Russian with comprehensive documentation
+* **README:** Detailed Qt 6 / Plasma 6 dependency requirements
+* **README:** Added architecture and data flow diagrams
+* **README:** Expanded troubleshooting section
+* **README:** Added project structure documentation
+* **README:** Listed all QML/Qt module dependencies
+* **README:** Distribution-specific installation instructions
+* **README:** Development and debugging guidelines
+* **README:** Localization information (18 supported languages)
+
+### Compatibility
+
+* Works on both Wayland and X11
+* Requires KDE Plasma ≥ 6.0
+* Requires Qt ≥ 6.6
+* Requires KDE Frameworks ≥ 6.0
+* NetworkMonitor (plasma-nm) is now optional
+* Backward compatibility with Plasma 5 configurations through migration
+
+### Known Issues
+
+* Users upgrading from Plasma 5 should logout/login after widget upgrade
+* Google Calendar may require re-authentication after migration
+
 ## v76 - May 3 2022
 
 * Do not show calendar border by default anymore.

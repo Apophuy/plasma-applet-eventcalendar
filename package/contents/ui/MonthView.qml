@@ -19,8 +19,9 @@
 import QtQuick
 import QtQuick.Controls as QQC2
 import QtQuick.Layouts
+import org.kde.plasma.plasmoid
 
-import org.kde.plasma.calendar
+import org.kde.plasma.workspace.calendar
 import org.kde.plasma.core as PlasmaCore
 import org.kde.kirigami as Kirigami
 

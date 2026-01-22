@@ -2,13 +2,30 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
-import org.kde.plasma.calendar as PlasmaCalendar
+import org.kde.plasma.workspace.calendar as PlasmaCalendar
 
 import "../lib"
 import "../calendars/PlasmaCalendarUtils.js" as PlasmaCalendarUtils
 
 ConfigPage {
 	id: page
+
+	// cfg_* properties for KCM binding
+	property bool cfg_debugging: false
+	property var cfg_enabledCalendarPlugins: []
+	property int cfg_eventsPollInterval: 20
+	property int cfg_eventReminderMinutesBefore: 15
+	property bool cfg_eventReminderNotificationEnabled: true
+	property bool cfg_eventReminderSfxEnabled: false
+	property string cfg_eventReminderSfxPath: ""
+	property bool cfg_eventStartingNotificationEnabled: true
+	property bool cfg_eventStartingSfxEnabled: true
+	property string cfg_eventStartingSfxPath: ""
+
+	// In Plasma 6, EventPluginsManager is no longer a singleton
+	PlasmaCalendar.EventPluginsManager {
+		id: eventPluginsManager
+	}
 
 	HeaderText {
 		text: i18n("Event Calendar Plugins")
@@ -19,7 +36,7 @@ ConfigPage {
 			text: i18n("ICalendar (.ics)")
 			checked: true
 			enabled: false
-			visible: Plasmoid.configuration.debugging
+			visible: page.cfg_debugging
 		}
 		CheckBox {
 			text: i18n("Google Calendar")
@@ -38,7 +55,7 @@ ConfigPage {
 	ConfigSection {
 		Repeater {
 			id: calendarPluginsRepeater
-			model: PlasmaCalendar.EventPluginsManager.model
+			model: eventPluginsManager.model
 			delegate: CheckBox {
 				text: model.display
 				checked: model.checked
@@ -51,10 +68,10 @@ ConfigPage {
 		}
 	}
 	function saveConfig() {
-		Plasmoid.configuration.enabledCalendarPlugins = PlasmaCalendarUtils.pluginPathToFilenameList(PlasmaCalendar.EventPluginsManager.enabledPlugins)
+		page.cfg_enabledCalendarPlugins = PlasmaCalendarUtils.pluginPathToFilenameList(eventPluginsManager.enabledPlugins)
 	}
 	Component.onCompleted: {
-		PlasmaCalendarUtils.populateEnabledPluginsByFilename(PlasmaCalendar.EventPluginsManager, Plasmoid.configuration.enabledCalendarPlugins)
+		PlasmaCalendarUtils.populateEnabledPluginsByFilename(eventPluginsManager, page.cfg_enabledCalendarPlugins)
 	}
 
 	HeaderText {
