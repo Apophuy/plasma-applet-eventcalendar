@@ -103,14 +103,14 @@ ColumnLayout {
 					// Layout.fillWidth: true
 					text: model.key
 					readOnly: true
-					Layout.preferredWidth: 200 * Kirigami.Units.devicePixelRatio
+					Layout.preferredWidth: 200
 					font.bold: !isDefault
 				}
 				TextField {
 					Layout.alignment: Qt.AlignTop | Qt.AlignLeft
 					text: model.stringType || model.configType || model.valueType
 					readOnly: true
-					Layout.preferredWidth: 80 * Kirigami.Units.devicePixelRatio
+					Layout.preferredWidth: 80
 				}
 				Loader {
 					id: valueControlLoader

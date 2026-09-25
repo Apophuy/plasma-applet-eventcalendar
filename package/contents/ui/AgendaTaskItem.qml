@@ -58,7 +58,7 @@ LinkRect {
 		id: contents
 		anchors.left: parent.left
 		anchors.right: parent.right
-		spacing: 4 * Kirigami.Units.devicePixelRatio
+		spacing: 4
 
 		PlasmaComponents3.CheckBox {
 			id: taskCheckBox
@@ -121,7 +121,7 @@ LinkRect {
 			Item {
 				id: taskNoteSpacing
 				visible: taskNotes.visible
-				implicitHeight: 4 * Kirigami.Units.devicePixelRatio
+				implicitHeight: 4
 			}
 
 			PlasmaComponents3.Label {
@@ -148,7 +148,7 @@ LinkRect {
 			Item {
 				id: taskEditorSpacing
 				visible: editTaskForm.visible
-				implicitHeight: 4 * Kirigami.Units.devicePixelRatio
+				implicitHeight: 4
 			}
 
 			EditTaskForm {

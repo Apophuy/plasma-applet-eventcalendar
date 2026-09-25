@@ -21,7 +21,7 @@ ColumnLayout {
 	property alias sfxPathValue: configSound.sfxPathValue
 	property alias sfxPathDefaultValue: configSound.sfxPathDefaultValue
 
-	property int indentWidth: 24 * Kirigami.Units.devicePixelRatio
+	property int indentWidth: 24
 
 	ConfigCheckBox {
 		id: notificationEnabledCheckBox

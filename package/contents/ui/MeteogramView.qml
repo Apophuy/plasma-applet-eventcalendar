@@ -9,8 +9,8 @@ import "./weather/WeatherApi.js" as WeatherApi
 
 Item {
 	id: meteogramView
-	width: 400
-	height: 100
+	implicitWidth: 400
+	implicitHeight: 100
 	property bool clock24h: appletConfig.clock24h
 	property int visibleDuration: 9
 	property bool showIconOutline: false
@@ -48,6 +48,8 @@ Item {
 	Item {
 		id: graph
 		anchors.fill: parent
+		onWidthChanged: update()
+		onHeightChanged: update()
 
 		property int xAxisLabelHeight: 20
 		property int xAxisMin: 0

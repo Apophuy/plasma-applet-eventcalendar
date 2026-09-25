@@ -104,7 +104,7 @@ LinkRect {
 		id: contents
 		anchors.left: parent.left
 		anchors.right: parent.right
-		spacing: 4 * Kirigami.Units.devicePixelRatio
+		spacing: 4
 
 		Rectangle {
 			implicitWidth: appletConfig.eventIndicatorWidth
@@ -159,7 +159,7 @@ LinkRect {
 			Item {
 				id: eventDescriptionSpacing
 				visible: eventDescription.visible
-				implicitHeight: 4 * Kirigami.Units.devicePixelRatio
+				implicitHeight: 4
 			}
 
 			PlasmaComponents3.Label {
@@ -190,7 +190,7 @@ LinkRect {
 			Item {
 				id: eventEditorSpacing
 				visible: editEventForm.visible
-				implicitHeight: 4 * Kirigami.Units.devicePixelRatio
+				implicitHeight: 4
 			}
 
 			EditEventForm {
@@ -201,7 +201,7 @@ LinkRect {
 			Item {
 				id: eventEditorSpacingBelow
 				visible: editEventForm.visible
-				implicitHeight: 4 * Kirigami.Units.devicePixelRatio
+				implicitHeight: 4
 			}
 
 			Loader {

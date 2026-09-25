@@ -34,7 +34,7 @@ Item {
 
 		RowLayout {
 			id: topRow
-			spacing: 10 * Kirigami.Units.devicePixelRatio
+			spacing: 10
 			property int contentsWidth: timerLabel.width + topRow.spacing + toggleButtonColumn.Layout.preferredWidth
 			property bool contentsFit: timerButtonView.width >= contentsWidth
 
@@ -152,7 +152,7 @@ Item {
 
 		RowLayout {
 			id: bottomRow
-			spacing: Math.floor(2 * Kirigami.Units.devicePixelRatio)
+			spacing: 2
 
 			// onWidthChanged: console.log('row.width', width)
 
@@ -206,7 +206,7 @@ Item {
 
 	Connections {
 		target: timerModel
-		onSecondsLeftChanged: {
+		function onSecondsLeftChanged() {
 			timerLabel.text = timerModel.formatTimer(timerModel.secondsLeft)
 		}
 	}

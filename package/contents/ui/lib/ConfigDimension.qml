@@ -12,7 +12,7 @@ GridLayout {
 
 	property int orientation: Qt.Horizontal
 	property color lineColor: "#000"
-	property int lineThickness: 2 * Kirigami.Units.devicePixelRatio
+	property int lineThickness: 2
 
 	property alias configKey: configSpinBox.configKey
 	property alias configValue: configSpinBox.configValue

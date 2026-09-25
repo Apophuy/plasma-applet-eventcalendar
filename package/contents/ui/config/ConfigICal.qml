@@ -64,7 +64,7 @@ ConfigPage {
 
 	ColumnLayout {
 		Layout.fillWidth: true
-		spacing: 20 * Kirigami.Units.devicePixelRatio // x4 the default spacing (5px)
+		spacing: 20 // x4 the default spacing (5px)
 
 		Repeater {
 			model: calendarsModel

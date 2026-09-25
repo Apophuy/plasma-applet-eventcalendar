@@ -8,7 +8,7 @@ Go to `~/.local/share/plasma/plasmoids/org.kde.plasma.eventcalendar/translate/` 
 
 ## New Translations
 
-1. Fill out [`template.pot`](template.pot) with your translations then open a [new issue](https://github.com/Zren/plasma-applet-eventcalendar/issues/new), name the file `spanish.txt`, attach the txt file to the issue (drag and drop).
+1. Fill out [`template.pot`](template.pot) with your translations then open a [new issue](https://github.com/Apophuy/plasma-applet-eventcalendar/issues/new), name the file `spanish.txt`, attach the txt file to the issue (drag and drop).
 
 Or if you know how to make a pull request
 
@@ -35,24 +35,24 @@ Or if you know how to make a pull request
 ## Status
 |  Locale  |  Lines  | % Done|
 |----------|---------|-------|
-| Template |     219 |       |
-| da       | 184/219 |   84% |
-| de       | 215/219 |   98% |
-| el       | 167/219 |   76% |
-| es       | 218/219 |   99% |
-| fi       | 215/219 |   98% |
-| fr       | 186/219 |   84% |
-| he       | 216/219 |   98% |
-| it       | 215/219 |   98% |
-| ja       | 183/219 |   83% |
-| ko       | 215/219 |   98% |
-| nl       | 219/219 |  100% |
-| pl       | 157/219 |   71% |
-| pt_BR    | 215/219 |   98% |
-| pt_PT    | 214/219 |   97% |
-| ru       | 215/219 |   98% |
-| sl       | 193/219 |   88% |
-| sv       | 179/219 |   81% |
-| tr       | 183/219 |   83% |
-| uk       | 157/219 |   71% |
-| zh_CN    | 166/219 |   75% |
+| Template |     245 |       |
+| da       | 178/245 |   72% |
+| de       | 208/245 |   84% |
+| el       | 165/245 |   67% |
+| es       | 211/245 |   86% |
+| fi       | 208/245 |   84% |
+| fr       | 179/245 |   73% |
+| he       | 209/245 |   85% |
+| it       | 208/245 |   84% |
+| ja       | 176/245 |   71% |
+| ko       | 208/245 |   84% |
+| nl       | 212/245 |   86% |
+| pl       | 155/245 |   63% |
+| pt_BR    | 208/245 |   84% |
+| pt_PT    | 207/245 |   84% |
+| ru       | 208/245 |   84% |
+| sl       | 186/245 |   75% |
+| sv       | 172/245 |   70% |
+| tr       | 177/245 |   72% |
+| uk       | 155/245 |   63% |
+| zh_CN    | 160/245 |   65% |

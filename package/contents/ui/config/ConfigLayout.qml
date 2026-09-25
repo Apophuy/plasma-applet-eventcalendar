@@ -33,9 +33,9 @@ ConfigPage {
 		Layout.alignment: Qt.AlignHCenter
 	}
 	GridLayout {
-		Layout.fillWidth: false
+		Layout.fillWidth: true
+		Layout.maximumWidth: 400
 		Layout.alignment: Qt.AlignHCenter
-		Layout.preferredWidth: 400 * Kirigami.Units.devicePixelRatio
 		columns: 3
 
 		//--- Row1
@@ -84,8 +84,8 @@ ConfigPage {
 			Layout.columnSpan: 2
 			Layout.rowSpan: 2
 
-			implicitWidth: 300 * Kirigami.Units.devicePixelRatio
-			implicitHeight: 300 * Kirigami.Units.devicePixelRatio
+			implicitWidth: 300
+			implicitHeight: 300
 
 			Layout.fillWidth: true
 			Layout.fillHeight: true
@@ -123,14 +123,14 @@ ConfigPage {
 	}
 
 	GridLayout {
-		Layout.fillWidth: false
+		Layout.fillWidth: true
+		Layout.maximumWidth: 400
 		Layout.alignment: Qt.AlignHCenter
-		Layout.preferredWidth: 400 * Kirigami.Units.devicePixelRatio
 		columns: 3
 
 		//--- Row1
 		Item {
-			implicitWidth: 150 * Kirigami.Units.devicePixelRatio
+			implicitWidth: 150
 			Layout.fillWidth: true
 			Layout.column: 0
 			Layout.row: 0
@@ -156,7 +156,7 @@ ConfigPage {
 
 		//--- Row3
 		Item {
-			implicitHeight: 150 * Kirigami.Units.devicePixelRatio
+			implicitHeight: 150
 			Layout.column: 2
 			Layout.row: 2
 		}
@@ -168,8 +168,8 @@ ConfigPage {
 			Layout.columnSpan: 2
 			Layout.rowSpan: 2
 
-			implicitWidth: 300 * Kirigami.Units.devicePixelRatio
-			implicitHeight: 300 * Kirigami.Units.devicePixelRatio
+			implicitWidth: 300
+			implicitHeight: 300
 
 			Layout.fillWidth: true
 			Layout.fillHeight: true

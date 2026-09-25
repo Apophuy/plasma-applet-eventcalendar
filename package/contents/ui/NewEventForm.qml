@@ -13,7 +13,7 @@ Loader {
 
 	sourceComponent: Component {
 		RowLayout {
-			spacing: 4 * Kirigami.Units.devicePixelRatio
+			spacing: 4
 
 			PlasmaComponents3.CheckBox {
 				Layout.alignment: Qt.AlignHCenter | Qt.AlignTop
@@ -29,7 +29,7 @@ Loader {
 			}
 
 			ColumnLayout {
-				spacing: 10 * Kirigami.Units.devicePixelRatio
+				spacing: 10
 
 				Component.onCompleted: {
 					newEventText.forceActiveFocus()

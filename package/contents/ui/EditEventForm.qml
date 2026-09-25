@@ -230,7 +230,7 @@ Loader {
 					text: (event && event.description) || ""
 
 					Layout.fillWidth: true
-					Layout.preferredHeight: contentHeight + (20 * Kirigami.Units.devicePixelRatio)
+					Layout.preferredHeight: contentHeight + 20
 
 					Keys.onEscapePressed: editEventItem.cancel()
 
@@ -250,7 +250,7 @@ Loader {
 
 				RowLayout {
 					Layout.columnSpan: 2
-					spacing: 4 * Kirigami.Units.devicePixelRatio
+					spacing: 4
 					Item {
 						Layout.fillWidth: true
 					}

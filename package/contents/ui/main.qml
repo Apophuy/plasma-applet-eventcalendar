@@ -5,6 +5,7 @@ import org.kde.plasma.plasmoid
 import org.kde.plasma.core as PlasmaCore
 import org.kde.plasma.components as PlasmaComponents3
 import org.kde.plasma.plasma5support as Plasma5Support
+import org.kde.plasma.private.digitalclock as DigitalClock
 import org.kde.kirigami as Kirigami
 import org.kde.config as KConfig
 import org.kde.kcmutils as KCMUtils
@@ -48,10 +49,10 @@ PlasmoidItem {
 	toolTipItem: Loader {
 		id: tooltipLoader
 
-		Layout.minimumWidth: item ? item.width : 0
-		Layout.maximumWidth: item ? item.width : 0
-		Layout.minimumHeight: item ? item.height : 0
-		Layout.maximumHeight: item ? item.height : 0
+		Layout.minimumWidth: item ? item.implicitWidth : 0
+		Layout.maximumWidth: item ? item.implicitWidth : 0
+		Layout.minimumHeight: item ? item.implicitHeight : 0
+		Layout.maximumHeight: item ? item.implicitHeight : 0
 
 		source: "TooltipView.qml"
 	}
@@ -130,6 +131,17 @@ PlasmoidItem {
 
 	property Component popupComponent: PopupView {
 		id: popup
+		isDesktopContainment: root.isDesktopContainment
+		Component.onCompleted: {
+			logic.popup = popup
+			updateToday()
+			logic.updateWeather()
+		}
+		Component.onDestruction: {
+			if (logic.popup === popup) {
+				logic.popup = null
+			}
+		}
 
 		eventModel: root.eventModel
 		agendaModel: root.agendaModel
@@ -138,8 +150,7 @@ PlasmoidItem {
 		// * we're a desktop widget (no need)
 		// * the timer widget is enabled since there's room in the top right
 		property bool isPinVisible: {
-			// Plasmoid.location == PlasmaCore.Types.Floating when using plasmawindowed and when used as a desktop widget.
-			return Plasmoid.location != PlasmaCore.Types.Floating // && Plasmoid.configuration.widget_show_pin
+			return !root.isDesktopContainment
 		}
 		padding: {
 			if (isPinVisible && !(Plasmoid.configuration.widgetShowTimer || Plasmoid.configuration.widgetShowMeteogram)) {
@@ -196,13 +207,18 @@ PlasmoidItem {
 
 	Plasmoid.backgroundHints: Plasmoid.configuration.showBackground ? PlasmaCore.Types.DefaultBackground : PlasmaCore.Types.NoBackground
 
-	property bool isDesktopContainment: Plasmoid.location == PlasmaCore.Types.Floating
+	property bool isDesktopContainment: Plasmoid.formFactor === PlasmaCore.Types.Planar
 	preferredRepresentation: isDesktopContainment ? fullRepresentation : compactRepresentation
 	compactRepresentation: clockComponent
 	fullRepresentation: popupComponent
 	hideOnWindowDeactivate: !Plasmoid.configuration.pin
 
 	Plasmoid.contextualActions: [
+		PlasmaCore.Action {
+			id: clipboardAction
+			text: i18n("Copy to Clipboard")
+			icon.name: "edit-copy"
+		},
 		PlasmaCore.Action {
 			text: i18n("Adjust Date and Time…")
 			icon.name: "preferences-system-time"
@@ -222,6 +238,15 @@ PlasmoidItem {
 			onTriggered: KCMUtils.KCMLauncher.openSystemSettings("kcm_regionandlang")
 		}
 	]
+
+	Connections {
+		target: Plasmoid
+		function onContextualActionsAboutToShow() {
+			DigitalClock.ClipboardMenu.currentDate = timeModel.currentTime
+		}
+	}
+
+	Component.onCompleted: DigitalClock.ClipboardMenu.setupMenu(clipboardAction)
 
 	// Timer {
 	// 	interval: 400

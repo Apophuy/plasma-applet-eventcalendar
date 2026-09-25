@@ -103,7 +103,7 @@ Item {
 		}
 		spacing: Kirigami.Units.smallSpacing
 
-		Kirigami.Heading {
+		PlasmaExtras.Heading {
 			id: heading
 
 			Layout.fillWidth: true

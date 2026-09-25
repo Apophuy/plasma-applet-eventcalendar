@@ -18,7 +18,7 @@ PlasmaComponents3.TextField {
 	id: dateSelector
 	readonly property Item control: dateSelector
 
-	property int defaultMinimumWidth: 80 * Kirigami.Units.devicePixelRatio
+	property int defaultMinimumWidth: 80
 	readonly property int implicitContentWidth: contentWidth + leftPadding + rightPadding
 	implicitWidth: Math.max(defaultMinimumWidth, implicitContentWidth)
 
@@ -68,15 +68,15 @@ PlasmaComponents3.TextField {
 		implicitWidth: contentItem.implicitWidth
 		implicitHeight: contentItem.implicitHeight
 
-		topMargin: 6 * Kirigami.Units.devicePixelRatio
-		bottomMargin: 6 * Kirigami.Units.devicePixelRatio
+		topMargin: 6
+		bottomMargin: 6
 
 		// https://github.com/KDE/plasma-framework/blob/master/src/declarativeimports/calendar/qml/MonthView.qml
 		contentItem: MonthView {
 			id: dateSelectorMonthView
 
-			implicitWidth: 280 * Kirigami.Units.devicePixelRatio
-			implicitHeight: 280 * Kirigami.Units.devicePixelRatio
+			implicitWidth: 280
+			implicitHeight: 280
 
 			today: new Date()
 			currentDate: dateSelector.dateTime

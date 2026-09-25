@@ -12,8 +12,10 @@ Dialog {
 	id: chooseCityDialog
 	title: i18n("Select city")
 
-	width: 500
-	height: 600
+	implicitWidth: 500
+	implicitHeight: 600
+	width: parent && parent.width > 0 ? Math.min(implicitWidth, parent.width) : implicitWidth
+	height: parent && parent.height > 0 ? Math.min(implicitHeight, parent.height) : implicitHeight
 	property bool loadingCityList: false
 
 	// Configuration properties passed from parent

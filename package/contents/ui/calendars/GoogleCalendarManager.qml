@@ -26,6 +26,15 @@ CalendarManager {
 			fetchGoogleAccountEvents(calendarIdList)
 		}
 	}
+	function runAuthorized(action, onError) {
+		session.checkAccessToken(function(err) {
+			if (err) {
+				if (onError) onError(err)
+				return
+			}
+			action()
+		})
+	}
 
 	//-------------------------
 	// Events
@@ -39,7 +48,7 @@ CalendarManager {
 		googleCalendarManager.error(errorMessage, errorType)
 	}
 	function handleError(err, data, xhr) {
-		var httpCode = xhr.status
+		var httpCode = xhr ? xhr.status : 0
 		if (httpCode === 0) {
 			var msg = i18n("Could not connect")
 			var suggestion = i18n("Will try again soon.")
@@ -48,12 +57,15 @@ CalendarManager {
 		}
 
 		// https://developers.google.com/calendar/v3/errors
-		if (err.error && err.error.errors && err.error.errors.length >= 1) {
-			httpCode = err.error.code
-			var err0 = err.error.errors[0]
+		var errorObject = data && data.error ? data.error : (err && err.error ? err.error : null)
+		if (errorObject) {
+			httpCode = errorObject.code || httpCode
+			var err0 = errorObject.errors && errorObject.errors.length > 0
+				? errorObject.errors[0]
+				: errorObject
 
-			if (httpCode === 401 && err0.reason == 'authError') {
-				var suggestion = i18n("Widget has been updated. Please logout and login to Google Calendar again.")
+			if (httpCode === 401) {
+				var suggestion = i18n("Please sign in to Google again.")
 				showHttpError(httpCode, err0.message, suggestion, ErrorType.ClientError)
 			} else if (httpCode === 403 && err0.domain == 'usageLimits') {
 				var suggestion = i18n("Too many web requests. Will try again soon.")
@@ -64,6 +76,8 @@ CalendarManager {
 			}
 			return
 		}
+
+		showHttpError(httpCode, "" + (err || i18n("Unknown Google Calendar error")), i18n("Will try again soon."), ErrorType.UnknownError)
 	}
 
 
@@ -92,7 +106,9 @@ CalendarManager {
 				fetchGoogleAccountEvents_done(data)
 			}
 		})
-		session.checkAccessToken(func)
+		runAuthorized(func, function() {
+			googleCalendarManager.asyncRequestsDone += 1
+		})
 	}
 	function fetchGoogleAccountEvents_run(calendarIdList, callback) {
 		logger.debug('fetchGoogleAccountEvents_run', calendarIdList)
@@ -214,7 +230,9 @@ CalendarManager {
 		logger.debug('fetchGoogleCalendarEvent', calendarId, eventId)
 		if (session.accessToken) {
 			var func = fetchGoogleCalendarEvent_run.bind(this, calendarId, eventId, callback)
-			session.checkAccessToken(func)
+			runAuthorized(func, function(err) {
+				callback(err, null, null)
+			})
 		} else {
 			session.transactionError('attempting to "fetch an event" without an access token set')
 		}
@@ -325,7 +343,7 @@ CalendarManager {
 					createEvent_done(calendarId, data)
 				}
 			})
-			session.checkAccessToken(func)
+			runAuthorized(func)
 		} else {
 			session.transactionError('attempting to "create an event" without an access token set')
 		}
@@ -405,7 +423,7 @@ CalendarManager {
 					updateGoogleCalendarEvent_done(calendarId, eventId, event, data)
 				}
 			})
-			session.checkAccessToken(func)
+			runAuthorized(func)
 		} else {
 			session.transactionError('attempting to "set an event property" without an access token set')
 		}
@@ -528,7 +546,7 @@ CalendarManager {
 					deleteEvent_done(calendarId, eventId, data)
 				}
 			})
-			session.checkAccessToken(func)
+			runAuthorized(func)
 		} else {
 			session.transactionError('attempting to "delete an event" without an access token set')
 		}
