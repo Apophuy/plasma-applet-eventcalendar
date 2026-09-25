@@ -4,6 +4,7 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 import org.kde.kirigami as Kirigami
+import org.kde.plasma.plasmoid
 
 ColumnLayout {
 	id: page
@@ -103,14 +104,14 @@ ColumnLayout {
 					// Layout.fillWidth: true
 					text: model.key
 					readOnly: true
-					Layout.preferredWidth: 200 * Kirigami.Units.devicePixelRatio
+					Layout.preferredWidth: 200
 					font.bold: !isDefault
 				}
 				TextField {
 					Layout.alignment: Qt.AlignTop | Qt.AlignLeft
 					text: model.stringType || model.configType || model.valueType
 					readOnly: true
-					Layout.preferredWidth: 80 * Kirigami.Units.devicePixelRatio
+					Layout.preferredWidth: 80
 				}
 				Loader {
 					id: valueControlLoader
@@ -151,7 +152,7 @@ ColumnLayout {
 
 		property bool loading: false
 		property bool error: false
-		property string source: Plasmoid.file("", "config/main.xml")
+		property url source: Qt.resolvedUrl("../../config/main.xml")
 
 		signal updated()
 
@@ -282,7 +283,7 @@ ColumnLayout {
 
 	Connections {
 		target: configDefaults
-		onUpdated: {
+		function onUpdated() {
 			var keys = configTableModel.keys
 			// Assume the default main.xml's order and Plasmoid.configuration is the same (we probably shouldn't).
 			for (var i = 0; i < keys.length; i++) {
@@ -311,7 +312,7 @@ ColumnLayout {
 
 	Connections {
 		target: Plasmoid.configuration
-		onValueChanged: {
+		function onValueChanged(key, value) {
 			var keyIndex = configTableModel.keys.indexOf(key)
 			if (keyIndex >= 0) {
 				configTableModel.setProperty(keyIndex, 'value', value)

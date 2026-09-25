@@ -18,7 +18,7 @@ PlasmaComponents3.TextField {
 	id: timeSelector
 	readonly property Item control: timeSelector
 
-	property int defaultMinimumWidth: 80 * Kirigami.Units.devicePixelRatio
+	property int defaultMinimumWidth: 80
 	readonly property int implicitContentWidth: contentWidth + leftPadding + rightPadding
 	implicitWidth: Math.max(defaultMinimumWidth, implicitContentWidth)
 
@@ -65,7 +65,7 @@ PlasmaComponents3.TextField {
 		highlightDateTime(dateTime)
 	}
 
-	onEntryActivated: {
+	onEntryActivated: function(index) {
 		if (0 <= index && index < model.length) {
 			var entry = model[index]
 			setDateTime(entry[control.valueRole])
@@ -113,12 +113,12 @@ PlasmaComponents3.TextField {
 	property T.Popup popup: T.Popup {
 		x: control.mirrored ? control.width - width : 0
 		y: control.height
-		property int minWidth: 120 * Kirigami.Units.devicePixelRatio
-		property int maxHeight: 150 * Kirigami.Units.devicePixelRatio
+		property int minWidth: 120
+		property int maxHeight: 150
 		width: Math.max(control.width, minWidth)
 		implicitHeight: Math.min(contentItem.implicitHeight, maxHeight)
-		topMargin: 6 * Kirigami.Units.devicePixelRatio
-		bottomMargin: 6 * Kirigami.Units.devicePixelRatio
+		topMargin: 6
+		bottomMargin: 6
 
 		contentItem: ListView {
 			id: listView

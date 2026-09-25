@@ -43,21 +43,21 @@ QtObject {
 	property color agendaInProgressColorDefault: Kirigami.Theme.highlightColor
 	property color agendaInProgressColor: Plasmoid.configuration.agendaInProgressColor || agendaInProgressColorDefault
 
-	property int agendaColumnSpacing: 10 * Kirigami.Units.devicePixelRatio
-	property int agendaDaySpacing: Plasmoid.configuration.agendaDaySpacing * Kirigami.Units.devicePixelRatio
-	property int agendaEventSpacing: Plasmoid.configuration.agendaEventSpacing * Kirigami.Units.devicePixelRatio
-	property int agendaWeatherColumnWidth: 60 * Kirigami.Units.devicePixelRatio
-	property int agendaWeatherIconSize: Plasmoid.configuration.agendaWeatherIconHeight * Kirigami.Units.devicePixelRatio
-	property int agendaDateColumnWidth: 50 * Kirigami.Units.devicePixelRatio + agendaColumnSpacing * 2
-	property int eventIndicatorWidth: 2 * Kirigami.Units.devicePixelRatio
+	property int agendaColumnSpacing: 10
+	property int agendaDaySpacing: Plasmoid.configuration.agendaDaySpacing
+	property int agendaEventSpacing: Plasmoid.configuration.agendaEventSpacing
+	property int agendaWeatherColumnWidth: 60
+	property int agendaWeatherIconSize: Plasmoid.configuration.agendaWeatherIconHeight
+	property int agendaDateColumnWidth: 50 + agendaColumnSpacing * 2
+	property int eventIndicatorWidth: 2
 
-	property int agendaFontSize: Plasmoid.configuration.agendaFontSize === 0 ? Kirigami.Theme.defaultFont.pixelSize : Plasmoid.configuration.agendaFontSize * Kirigami.Units.devicePixelRatio
+	property int agendaFontSize: Plasmoid.configuration.agendaFontSize === 0 ? Kirigami.Theme.defaultFont.pixelSize : Plasmoid.configuration.agendaFontSize
 
-	property int timerClockFontHeight: 40 * Kirigami.Units.devicePixelRatio
-	property int timerButtonWidth: 48 * Kirigami.Units.devicePixelRatio
+	property int timerClockFontHeight: 40
+	property int timerButtonWidth: 48
 
-	property int meteogramIconSize: 24 * Kirigami.Units.devicePixelRatio
-	property int meteogramColumnWidth: 32 * Kirigami.Units.devicePixelRatio // weatherIconSize = 32px (height = 24px but most icons are landscape)
+	property int meteogramIconSize: 24
+	property int meteogramColumnWidth: 32 // weatherIconSize = 32px (height = 24px but most icons are landscape)
 
 	property QtObject icalCalendarList: Base64Json {
 		configKey: 'icalCalendarList'

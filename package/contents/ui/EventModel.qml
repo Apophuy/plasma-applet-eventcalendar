@@ -1,6 +1,8 @@
 import QtQuick
+import org.kde.plasma.plasmoid
 
 import "./calendars"
+import "./ErrorType.js" as ErrorType
 
 CalendarManager {
 	id: eventModel
@@ -80,6 +82,12 @@ CalendarManager {
 
 	GoogleApiSession {
 		id: googleApiSession
+	}
+	Connections {
+		target: googleApiSession
+		function onAccessTokenError(msg) {
+			eventModel.error(msg, ErrorType.ClientError)
+		}
 	}
 	GoogleCalendarManager {
 		id: googleCalendarManager

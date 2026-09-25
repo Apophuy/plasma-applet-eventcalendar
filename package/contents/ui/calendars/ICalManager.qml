@@ -31,17 +31,25 @@ CalendarManager {
 
 	function fetchEvents(calendarData, startTime, endTime, callback) {
 		logger.debug('ical.fetchEvents', calendarData.url)
-		var cmd = 'python3 ' + Plasmoid.file("", "scripts/icsjson.py")
-		cmd += ' --url "' + calendarData.url + '"' // TODO proper argument wrapping
-		cmd += ' query'
-		cmd += ' ' + startTime.getFullYear() + '-' + (startTime.getMonth()+1) + '-' + startTime.getDate()
-		cmd += ' ' + endTime.getFullYear() + '-' + (endTime.getMonth()+1) + '-' + endTime.getDate()
+		var startDate = startTime.getFullYear() + '-' + (startTime.getMonth()+1) + '-' + startTime.getDate()
+		var endDate = endTime.getFullYear() + '-' + (endTime.getMonth()+1) + '-' + endTime.getDate()
+		var cmd = [
+			'python3',
+			executable.urlToLocalPath(Qt.resolvedUrl("../../scripts/icsjson.py")),
+			'--url', calendarData.url,
+			'query', startDate, endDate,
+		]
 		executable.exec(cmd, function(cmd, exitCode, exitStatus, stdout, stderr) {
 			if (exitCode) {
 				logger.log('ical.stderr', stderr)
 				return callback(stderr)
 			}
-			var data = JSON.parse(stdout)
+			var data
+			try {
+				data = JSON.parse(stdout)
+			} catch (err) {
+				return callback('Invalid iCalendar response: ' + err)
+			}
 			// console.log(cmd)
 			// console.log(str)
 			callback(null, data)
@@ -49,9 +57,12 @@ CalendarManager {
 	}
 
 	function fetchCalendar(calendarData) {
-		icalManager.asyncRequests += 0
+		icalManager.asyncRequests += 1
 		fetchEvents(calendarData, dateMin, dateMax, function(err, data) {
-			parseEventList(calendarData, data.items)
+			if (err) {
+				icalManager.asyncRequestsDone += 1
+				return
+			}
 			setCalendarData(calendarData.url, data)
 			icalManager.asyncRequestsDone += 1
 		})
@@ -64,7 +75,7 @@ CalendarManager {
 		}
 	}
 
-	onCalendarParsing: {
+	onCalendarParsing: function(calendarId, data) {
 		var calendar = getCalendar(calendarId)
 		parseEventList(calendar, data.items)
 	}

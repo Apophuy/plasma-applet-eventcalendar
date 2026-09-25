@@ -2,6 +2,7 @@ import QtQuick
 import org.kde.kirigami as Kirigami
 import org.kde.plasma.core as PlasmaCore
 import org.kde.plasma.components as PlasmaComponents3
+import org.kde.plasma.plasmoid
 
 Item {
 	id: eventBadgeCount
@@ -46,4 +47,3 @@ Item {
 		}
 	}
 }
-

@@ -5,10 +5,16 @@
 # https://techbase.kde.org/Development/Tutorials/Localization/i18n_Build_Systems/Outside_KDE_repositories
 # https://invent.kde.org/sysadmin/l10n-scripty/-/blob/master/extract-messages.sh
 
-DIR=`cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd`
-plasmoidName=`kreadconfig5 --file="$DIR/../metadata.desktop" --group="Desktop Entry" --key="X-KDE-PluginInfo-Name"`
+DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+cd "$DIR" || exit 1
+metadataFile="$DIR/../metadata.desktop"
+readMetadataValue() {
+	key="$1"
+	sed -n 's/^'"${key}"'=//p' "$metadataFile" | head -n 1
+}
+plasmoidName=$(readMetadataValue "X-KDE-PluginInfo-Name")
 widgetName="${plasmoidName##*.}" # Strip namespace
-website=`kreadconfig5 --file="$DIR/../metadata.desktop" --group="Desktop Entry" --key="X-KDE-PluginInfo-Website"`
+website=$(readMetadataValue "X-KDE-PluginInfo-Website")
 bugAddress="$website"
 packageRoot=".." # Root of translatable sources
 projectName="plasma_applet_${plasmoidName}" # project name
@@ -24,26 +30,25 @@ if [ ! -t 1 ]; then
 	TC_LightGray=''; TC_LightRed=''; TC_LightGreen=''; TC_Yellow=''; TC_LightBlue='';
 	TC_Bold=''; TC_Reset='';
 fi
-function echoTC() {
+echoTC() {
 	text="$1"
 	textColor="$2"
-	echo -e "${textColor}${text}${TC_Reset}"
+	printf '%b\n' "${textColor}${text}${TC_Reset}"
 }
-function echoGray { echoTC "$1" "$TC_LightGray"; }
-function echoRed { echoTC "$1" "$TC_Red"; }
-function echoGreen { echoTC "$1" "$TC_LightGreen"; }
+echoGray() { echoTC "$1" "$TC_LightGray"; }
+echoRed() { echoTC "$1" "$TC_Red"; }
+echoGreen() { echoTC "$1" "$TC_LightGreen"; }
 
 #---
 if [ -z "$plasmoidName" ]; then
 	echoRed "[translate/merge] Error: Couldn't read plasmoidName."
-	exit
+	exit 1
 fi
 
-if [ -z "$(which xgettext)" ]; then
-	echoRed "[translate/merge] Error: xgettext command not found. Need to install gettext"
-	echoRed "[translate/merge] Running ${TC_Bold}'sudo apt install gettext'"
-	sudo apt install gettext
-	echoRed "[translate/merge] gettext installation should be finished. Going back to merging translations."
+if ! command -v xgettext >/dev/null 2>&1 || ! command -v msgmerge >/dev/null 2>&1 || ! command -v msgfmt >/dev/null 2>&1; then
+	echoRed "[translate/merge] Error: gettext tools (xgettext, msgmerge and msgfmt) are required."
+	echoRed "[translate/merge] Install gettext with your package manager and run this script again."
+	exit 1
 fi
 
 #---
@@ -78,7 +83,7 @@ find "${packageRoot}" -name '*.cpp' -o -name '*.h' -o -name '*.c' -o -name '*.qm
 xgettext \
 	${potArgs} \
 	--files-from="${DIR}/infiles.list" \
-	-C -kde \
+	-C --kde -kde \
 	-ci18n \
 	-ki18n:1 -ki18nc:1c,2 -ki18np:1,2 -ki18ncp:1c,2,3 \
 	-kki18n:1 -kki18nc:1c,2 -kki18np:1,2 -kki18ncp:1c,2,3 \
@@ -249,9 +254,11 @@ rm "$DIR/LINGUAS"
 # Populate ReadMe.md
 echoGray "[translate/merge] Updating translate/ReadMe.md"
 sed -i -E 's`share\/plasma\/plasmoids\/(.+)\/translate`share/plasma/plasmoids/'"${plasmoidName}"'/translate`' ./ReadMe.md
-if [[ "$website" == *"github.com"* ]]; then
-	sed -i -E 's`\[new issue\]\(https:\/\/github\.com\/(.+)\/(.+)\/issues\/new\)`[new issue]('"${website}"'/issues/new)`' ./ReadMe.md
-fi
+case "$website" in
+	*github.com*)
+		sed -i -E 's`\[new issue\]\(https:\/\/github\.com\/(.+)\/(.+)\/issues\/new\)`[new issue]('"${website}"'/issues/new)`' ./ReadMe.md
+		;;
+esac
 sed -i '/^|/ d' ./ReadMe.md # Remove status table from ReadMe
 cat ./Status.md >> ./ReadMe.md
 rm ./Status.md

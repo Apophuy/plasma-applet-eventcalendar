@@ -10,7 +10,7 @@ Item {
 	property bool cfg_debugging: false
 	property string cfg_accessToken: ""
 	property string cfg_accessTokenType: ""
-	property int cfg_accessTokenExpiresAt: 0
+	property double cfg_accessTokenExpiresAt: 0
 	property string cfg_refreshToken: ""
 	property string cfg_latestClientId: ""
 	property string cfg_latestClientSecret: ""
@@ -55,8 +55,7 @@ Item {
 	property var calendarList: calendarListValue
 
 	function setCalendarListValue(value) {
-		cfg_calendarList = Qt.btoa(JSON.stringify(value))
-		calendarListChanged()
+		cfg_calendarList = Qt.btoa(JSON.stringify(value || []))
 	}
 
 	// Data - calendar id list
@@ -64,9 +63,17 @@ Item {
 
 	property var calendarIdList: calendarIdListValue
 
-	function setCalendarIdList(value) {
-		cfg_calendarIdList = value.join(',')
-		// Signal emitted automatically when cfg_calendarIdList changes
+	onCalendarIdListChanged: {
+		var serialized = (calendarIdList || []).join(',')
+		if (cfg_calendarIdList !== serialized) {
+			cfg_calendarIdList = serialized
+		}
+	}
+	onCfg_calendarIdListChanged: {
+		var serialized = (calendarIdList || []).join(',')
+		if (serialized !== cfg_calendarIdList) {
+			calendarIdList = cfg_calendarIdList ? cfg_calendarIdList.split(',') : []
+		}
 	}
 
 	// Data - tasklist list
@@ -84,7 +91,7 @@ Item {
 	property var tasklistList: tasklistListValue
 
 	function setTasklistListValue(value) {
-		cfg_tasklistList = Qt.btoa(JSON.stringify(value))
+		cfg_tasklistList = Qt.btoa(JSON.stringify(value || []))
 		// Signal emitted automatically when cfg_tasklistList changes
 	}
 
@@ -93,9 +100,17 @@ Item {
 
 	property var tasklistIdList: tasklistIdListValue
 
-	function setTasklistIdList(value) {
-		cfg_tasklistIdList = value.join(',')
-		// Signal emitted automatically when cfg_tasklistIdList changes
+	onTasklistIdListChanged: {
+		var serialized = (tasklistIdList || []).join(',')
+		if (cfg_tasklistIdList !== serialized) {
+			cfg_tasklistIdList = serialized
+		}
+	}
+	onCfg_tasklistIdListChanged: {
+		var serialized = (tasklistIdList || []).join(',')
+		if (serialized !== cfg_tasklistIdList) {
+			tasklistIdList = cfg_tasklistIdList ? cfg_tasklistIdList.split(',') : []
+		}
 	}
 
 
@@ -105,58 +120,15 @@ Item {
 	signal error(string err)
 
 
-	//---
-	readonly property string authorizationCodeUrl: {
-		var url = 'https://accounts.google.com/o/oauth2/v2/auth'
-		url += '?scope=' + encodeURIComponent('https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/tasks')
-		url += '&response_type=code'
-		url += '&redirect_uri=' + encodeURIComponent('urn:ietf:wg:oauth:2.0:oob')
-		url += '&client_id=' + encodeURIComponent(cfg_latestClientId)
-		return url
-	}
-
-	function fetchAccessToken(args) {
-		var url = 'https://oauth2.googleapis.com/token'
-		Requests.post({
-			url: url,
-			data: {
-				client_id: cfg_latestClientId,
-				client_secret: cfg_latestClientSecret,
-				code: args.authorizationCode,
-				grant_type: 'authorization_code',
-				redirect_uri: 'urn:ietf:wg:oauth:2.0:oob',
-			},
-		}, function(err, data, xhr) {
-			logger.debug('/oauth2/token Response', data)
-
-			// Check for errors
-			if (err) {
-				handleError(err, null)
-				return
-			}
-			try {
-				data = JSON.parse(data)
-			} catch (e) {
-				handleError('Error parsing /oauth2/token data as JSON', null)
-				return
-			}
-			if (data && data.error) {
-				handleError(err, data)
-				return
-			}
-
-			// Ready
-			updateAccessToken(data)
-		})
-	}
-
 	function updateAccessToken(data) {
 		cfg_sessionClientId = cfg_latestClientId
 		cfg_sessionClientSecret = cfg_latestClientSecret
-		cfg_accessToken = data.access_token
-		cfg_accessTokenType = data.token_type
-		cfg_accessTokenExpiresAt = Date.now() + data.expires_in * 1000
-		cfg_refreshToken = data.refresh_token
+		cfg_accessToken = data.access_token || ''
+		cfg_accessTokenType = data.token_type || 'Bearer'
+		cfg_accessTokenExpiresAt = Date.now() + (data.expires_in || 0) * 1000
+		if (data.refresh_token) {
+			cfg_refreshToken = data.refresh_token
+		}
 		newAccessToken()
 	}
 
@@ -169,16 +141,15 @@ Item {
 
 	function updateCalendarList() {
 		logger.debug('updateCalendarList')
-		logger.debug('accessToken', cfg_accessToken)
 		fetchGCalCalendars({
 			accessToken: cfg_accessToken,
 		}, function(err, data, xhr) {
 			// Check for errors
-			if (err || data.error) {
+			if (err || !data || data.error) {
 				handleError(err, data)
 				return
 			}
-			setCalendarListValue(data.items)
+			setCalendarListValue(data.items || [])
 		})
 	}
 
@@ -201,16 +172,15 @@ Item {
 
 	function updateTasklistList() {
 		logger.debug('updateTasklistList')
-		logger.debug('accessToken', cfg_accessToken)
 		fetchGoogleTasklistList({
 			accessToken: cfg_accessToken,
 		}, function(err, data, xhr) {
 			// Check for errors
-			if (err || data.error) {
+			if (err || !data || data.error) {
 				handleError(err, data)
 				return
 			}
-			setTasklistListValue(data.items)
+			setTasklistListValue(data.items || [])
 		})
 	}
 
@@ -222,7 +192,6 @@ Item {
 				"Authorization": "Bearer " + args.accessToken,
 			}
 		}, function(err, data, xhr) {
-			console.log('fetchGoogleTasklistList.response', err, data, xhr && xhr.status)
 			if (!err && data && data.error) {
 				return callback('fetchGoogleTasklistList error', data, xhr)
 			}
@@ -242,9 +211,9 @@ Item {
 		// Delete relevant data
 		cfg_agendaNewEventLastCalendarId = ''
 		setCalendarListValue([])
-		setCalendarIdList([])
+		calendarIdList = []
 		setTasklistListValue([])
-		setTasklistIdList([])
+		tasklistIdList = []
 		sessionReset()
 	}
 

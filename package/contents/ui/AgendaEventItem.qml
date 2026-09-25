@@ -3,9 +3,9 @@ import org.kde.kirigami as Kirigami
 import QtQuick.Controls
 import QtQuick.Controls as QQC2
 import QtQuick.Layouts
-import org.kde.kirigami as Kirigami
 import org.kde.plasma.core as PlasmaCore
 import org.kde.plasma.components as PlasmaComponents3
+import org.kde.plasma.plasmoid
 
 import "LocaleFuncs.js" as LocaleFuncs
 import "Shared.js" as Shared
@@ -27,8 +27,12 @@ LinkRect {
 	}
 	Connections {
 		target: timeModel
-		onLoaded: agendaEventItem.checkIfInProgress()
-		onMinuteChanged: agendaEventItem.checkIfInProgress()
+		function onLoaded() {
+			agendaEventItem.checkIfInProgress()
+		}
+		function onMinuteChanged() {
+			agendaEventItem.checkIfInProgress()
+		}
 	}
 	Component.onCompleted: {
 		agendaEventItem.checkIfInProgress()
@@ -104,7 +108,7 @@ LinkRect {
 		id: contents
 		anchors.left: parent.left
 		anchors.right: parent.right
-		spacing: 4 * Kirigami.Units.devicePixelRatio
+		spacing: 4
 
 		Rectangle {
 			implicitWidth: appletConfig.eventIndicatorWidth
@@ -159,7 +163,7 @@ LinkRect {
 			Item {
 				id: eventDescriptionSpacing
 				visible: eventDescription.visible
-				implicitHeight: 4 * Kirigami.Units.devicePixelRatio
+				implicitHeight: 4
 			}
 
 			PlasmaComponents3.Label {
@@ -190,7 +194,7 @@ LinkRect {
 			Item {
 				id: eventEditorSpacing
 				visible: editEventForm.visible
-				implicitHeight: 4 * Kirigami.Units.devicePixelRatio
+				implicitHeight: 4
 			}
 
 			EditEventForm {
@@ -201,7 +205,7 @@ LinkRect {
 			Item {
 				id: eventEditorSpacingBelow
 				visible: editEventForm.visible
-				implicitHeight: 4 * Kirigami.Units.devicePixelRatio
+				implicitHeight: 4
 			}
 
 			Loader {
@@ -223,7 +227,7 @@ LinkRect {
 							return i18n("Hangout")
 						}
 					}
-					icon.source: Plasmoid.file("", "icons/hangouts.svg")
+					icon.source: Qt.resolvedUrl("../icons/hangouts.svg")
 					onClicked: Qt.openUrlExternally(externalLink)
 				}
 			}
@@ -245,41 +249,42 @@ LinkRect {
 		}
 	}
 
-	onLoadContextMenu: {
+	onLoadContextMenu: function(contextMenu) {
 		var menuItem
 		var event = events.get(eventItemIndex)
 
 		menuItem = contextMenu.newMenuItem()
 		menuItem.text = i18n("Edit")
-		menuItem.icon = "edit-rename"
+		menuItem.icon.name = "edit-rename"
 		menuItem.enabled = event.canEdit
-		menuItem.clicked.connect(function() {
+		menuItem.triggered.connect(function() {
 			editEventForm.active = !editEventForm.active
 			agendaScrollView.positionViewAtEvent(agendaItemIndex, eventItemIndex)
 		})
-		contextMenu.addMenuItem(menuItem)
+		contextMenu.addItem(menuItem)
 
 		var deleteMenuItem = contextMenu.newSubMenu()
-		deleteMenuItem.text = i18n("Delete Event")
-		deleteMenuItem.icon = "delete"
+		deleteMenuItem.title = i18n("Delete Event")
+		deleteMenuItem.icon.name = "delete"
 		menuItem = contextMenu.newMenuItem(deleteMenuItem)
 		menuItem.text = i18n("Confirm Deletion")
-		menuItem.icon = "delete"
+		menuItem.icon.name = "delete"
 		menuItem.enabled = event.canEdit
-		menuItem.clicked.connect(function() {
+		menuItem.triggered.connect(function() {
 			logger.debug('eventModel.deleteEvent', event.calendarId, event.id)
 			eventModel.deleteEvent(event.calendarId, event.id)
 		})
+		deleteMenuItem.addItem(menuItem)
 		deleteMenuItem.enabled = event.canEdit
-		contextMenu.addMenuItem(deleteMenuItem)
+		contextMenu.addMenu(deleteMenuItem)
 
 		menuItem = contextMenu.newMenuItem()
 		menuItem.text = i18n("Edit in browser")
-		menuItem.icon = "internet-web-browser"
+		menuItem.icon.name = "internet-web-browser"
 		menuItem.enabled = !!event.htmlLink
-		menuItem.clicked.connect(function() {
+		menuItem.triggered.connect(function() {
 			Qt.openUrlExternally(event.htmlLink)
 		})
-		contextMenu.addMenuItem(menuItem)
+		contextMenu.addItem(menuItem)
 	}
 }

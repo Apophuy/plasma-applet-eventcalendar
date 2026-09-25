@@ -67,6 +67,7 @@ Plasmoid для календаря с повесткой дня, погодой 
 ### Python скрипты (включены в проект)
 
 - `package/contents/scripts/icsjson.py` — Парсинг iCal календарей
+- `package/contents/scripts/google_oauth.py` — OAuth-вход в Google через локальный loopback callback и PKCE
 - `package/contents/scripts/konsolekalendar.py` — Интеграция с konsolekalendar
 - `package/contents/scripts/notification.py` — Уведомления о событиях
 
@@ -195,8 +196,11 @@ journalctl --user -f | grep eventcalendar
 ### Google Calendar
 
 1. Правый клик на Calendar → **Event Calendar Settings** → **Google Calendar**
-2. Скопируйте код и введите его по указанной ссылке (оставьте окно настроек открытым)
-3. После того, как окно настроек покажет статус синхронизации, нажмите **Apply**
+2. Нажмите **Login with Google** — браузер откроется автоматически
+3. Войдите в Google и разрешите доступ к Calendar и Tasks; после локального перенаправления вернитесь в настройки виджета
+4. После того, как окно настроек покажет статус синхронизации, нажмите **Apply**
+
+Авторизация использует loopback callback на `127.0.0.1` и PKCE. Для запуска локального callback требуется `python3`; вход одинаково работает в сеансах Wayland и X11.
 
 ### Google Tasks
 

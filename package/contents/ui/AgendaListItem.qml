@@ -24,8 +24,12 @@ GridLayout {
 	Component.onCompleted: agendaListItem.checkIfToday()
 	Connections {
 		target: timeModel
-		onLoaded: agendaListItem.checkIfToday()
-		onDateChanged: agendaListItem.checkIfToday()
+		function onLoaded() {
+			agendaListItem.checkIfToday()
+		}
+		function onDateChanged() {
+			agendaListItem.checkIfToday()
+		}
 	}
 	property bool agendaItemInProgress: agendaItemIsToday
 	property bool weatherOnRight: Plasmoid.configuration.agendaWeatherOnRight
@@ -34,7 +38,7 @@ GridLayout {
 
 	Connections {
 		target: agendaModel
-		onPopulatingChanged: {
+		function onPopulatingChanged() {
 			if (!agendaModel.populating) {
 				agendaListItem.reset()
 			}

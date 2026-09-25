@@ -103,7 +103,7 @@ Item {
 		}
 		spacing: Kirigami.Units.smallSpacing
 
-		Kirigami.Heading {
+		PlasmaExtras.Heading {
 			id: heading
 
 			Layout.fillWidth: true
@@ -427,7 +427,7 @@ Item {
 
 				Connections {
 					target: daysCalendar
-					onActivateHighlightedItem: {
+					function onActivateHighlightedItem() {
 						if (delegate.containsMouse) {
 							delegate.clicked(null)
 						}

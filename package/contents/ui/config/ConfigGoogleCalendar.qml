@@ -7,10 +7,10 @@ import org.kde.kirigami as Kirigami
 
 import ".."
 import "../lib"
-import "../lib/Requests.js" as Requests
 
 ConfigPage {
 	id: page
+	property bool loginInProgress: false
 
 	// Required cfg_ properties for GoogleLoginManager
 	property bool cfg_debugging: false
@@ -51,6 +51,67 @@ ConfigPage {
 			predicate = sortByKey.bind(null, predicate)
 		}
 		return arr.concat().sort(predicate)
+	}
+
+	function oauthErrorMessage(exitCode) {
+		switch (exitCode) {
+		case 2:
+			return i18n("Google OAuth client credentials are not configured.")
+		case 3:
+			return i18n("Could not start the local Google login callback.")
+		case 4:
+			return i18n("Could not open the default web browser.")
+		case 5:
+			return i18n("Google login timed out. Please try again.")
+		case 6:
+			return i18n("Google login was cancelled or rejected.")
+		default:
+			return i18n("Google login failed. Please try again.")
+		}
+	}
+
+	function startGoogleLogin() {
+		if (!page.cfg_latestClientId) {
+			messageWidget.err(oauthErrorMessage(2))
+			return
+		}
+
+		messageWidget.info(i18n("Opening Google login in your web browser…"))
+		page.loginInProgress = true
+		var helperPath = oauthHelper.urlToLocalPath(Qt.resolvedUrl("../../scripts/google_oauth.py"))
+		oauthHelper.exec([
+			"python3",
+			helperPath,
+			"--client-id", page.cfg_latestClientId,
+			"--client-secret", page.cfg_latestClientSecret,
+		], function(cmd, exitCode, exitStatus, stdout, stderr) {
+			page.loginInProgress = false
+			if (exitCode !== 0) {
+				console.warn("Google OAuth helper failed:", exitCode, stderr)
+				messageWidget.err(page.oauthErrorMessage(exitCode))
+				return
+			}
+
+			var tokenData
+			try {
+				tokenData = JSON.parse((stdout || "").trim())
+			} catch (error) {
+				console.warn("Could not parse Google OAuth helper response:", error)
+				messageWidget.err(i18n("Google login returned an invalid response."))
+				return
+			}
+			if (!tokenData || !tokenData.access_token) {
+				messageWidget.err(i18n("Google login did not return an access token."))
+				return
+			}
+
+			googleLoginManager.updateAccessToken(tokenData)
+			messageWidget.success(i18n("Google Calendar is connected."))
+		})
+	}
+
+	ExecUtil {
+		id: oauthHelper
 	}
 
 	GoogleLoginManager {
@@ -142,76 +203,22 @@ ConfigPage {
 		visible: !googleLoginManager.isLoggedIn
 		Label {
 			Layout.fillWidth: true
-			text: i18n("To sync with Google Calendar")
+			text: i18n("Sign in with Google to sync Calendar events and Tasks. The browser returns securely to this computer after approval.")
 			color: readableNegativeTextColor
 			wrapMode: Text.Wrap
-		}
-		LinkText {
-			Layout.fillWidth: true
-			text: i18n("Visit <a href=\"%1\">%2</a> (opens in your web browser). After you login and give permission to access your calendar, it will give you a code to paste below.", googleLoginManager.authorizationCodeUrl, 'https://accounts.google.com/...')
-			color: readableNegativeTextColor
-			wrapMode: Text.Wrap
-
-			// Tooltip
-			// QQC2.ToolTip.visible: !!hoveredLink
-			// QQC2.ToolTip.text: googleLoginManager.authorizationCodeUrl
-
-			// ContextMenu
-			MouseArea {
-				anchors.fill: parent
-				acceptedButtons: Qt.RightButton
-				onClicked: {
-					if (mouse.button === Qt.RightButton) {
-						contextMenu.popup()
-					}
-				}
-				onPressAndHold: {
-					if (mouse.source === Qt.MouseEventNotSynthesized) {
-						contextMenu.popup()
-					}
-				}
-
-				QQC2.Menu {
-					id: contextMenu
-					QQC2.MenuItem {
-						text: i18n("Copy Link")
-						onTriggered: clipboardHelper.copyText(googleLoginManager.authorizationCodeUrl)
-					}
-				}
-
-				TextEdit {
-					id: clipboardHelper
-					visible: false
-					function copyText(text) {
-						clipboardHelper.text = text
-						clipboardHelper.selectAll()
-						clipboardHelper.copy()
-					}
-				}
-			}
 		}
 		RowLayout {
-			TextField {
-				id: authorizationCodeInput
-				Layout.fillWidth: true
-
-				placeholderText: i18n("Enter code here (Eg: %1)", '1/2B3C4defghijklmnopqrst-uvwxyz123456789ab-cdeFGHIJKlmnio')
-				text: ""
-			}
 			Button {
-				text: i18n("Submit")
-				onClicked: {
-					if (authorizationCodeInput.text) {
-						googleLoginManager.fetchAccessToken({
-							authorizationCode: authorizationCodeInput.text,
-						})
-					} else {
-						messageWidget.err(i18n("Invalid Google Authorization Code"))
-					}
-				}
+				text: i18n("Login with Google")
+				icon.name: "internet-services"
+				enabled: !page.loginInProgress
+				onClicked: page.startGoogleLogin()
+			}
+			QQC2.BusyIndicator {
+				running: page.loginInProgress
+				visible: running
 			}
 		}
-
 	}
 
 	RowLayout {

@@ -28,8 +28,8 @@ import org.kde.plasma.plasmoid
 Item {
 	id: clock
 
-	property int horizontalFixedLineWidth: 300 * Kirigami.Units.devicePixelRatio
-	property int verticalFixedLineHeight: 24 * Kirigami.Units.devicePixelRatio
+	property int horizontalFixedLineWidth: 300
+	property int verticalFixedLineHeight: 24
 
 	property int targetHeight: verticalFixedLineHeight
 

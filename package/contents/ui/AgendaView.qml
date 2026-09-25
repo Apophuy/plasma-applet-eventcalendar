@@ -2,7 +2,6 @@ import QtQuick
 import org.kde.kirigami as Kirigami
 import QtQuick.Controls
 import QtQuick.Layouts
-import org.kde.kirigami as Kirigami
 import org.kde.plasma.core as PlasmaCore
 
 import "Shared.js" as Shared
@@ -11,7 +10,7 @@ import "LocaleFuncs.js" as LocaleFuncs
 Item {
 	id: agendaView
 
-	readonly property int scrollbarWidth: width - agendaScrollView.scrollContentWidth
+	readonly property int scrollbarWidth: agendaScrollView.effectiveScrollBarWidth
 
 	property color inProgressColor: appletConfig.agendaInProgressColor
 	property int inProgressFontWeight: Font.Bold
@@ -24,7 +23,7 @@ Item {
 
 	Connections {
 		target: eventModel
-		onEventCreated: {
+		function onEventCreated(calendarId, data) {
 			notificationManager.notify({
 				appName: i18n("Event Calendar"),
 				appIcon: "resource-calendar-insert",
@@ -36,7 +35,7 @@ Item {
 				})
 			})
 		}
-		onEventDeleted: {
+		function onEventDeleted(calendarId, eventId, data) {
 			logger.logJSON('AgendaView.onEventDeleted', data)
 			notificationManager.notify({
 				appName: i18n("Event Calendar"),
@@ -55,10 +54,9 @@ Item {
 		id: agendaScrollView
 		anchors.fill: parent
 		// clip: true
-		readonly property int scrollContentWidth: contentItem ? contentItem.width : width
-		readonly property int scrollContentHeight: contentItem ? contentItem.height : 0 // Warning: Binding loop
-		readonly property int viewportWidth: width
-		readonly property int viewportHeight: height
+		readonly property int scrollContentHeight: contentItem ? contentItem.contentHeight : 0
+		readonly property int viewportWidth: Math.max(0, availableWidth - effectiveScrollBarWidth)
+		readonly property int viewportHeight: Math.max(0, availableHeight - effectiveScrollBarHeight)
 		readonly property int scrollY: contentItem ? contentItem.contentY : 0
 
 		// onScrollYChanged: console.log('scrollY', scrollY)
@@ -87,13 +85,13 @@ Item {
 					// Component.onDestruction: console.log(Date.now(), 'AgendaListItem.onDestruction', index)
 				}
 
-				onItemAdded: {
+				onItemAdded: function(index, item) {
 					// console.log(Date.now(), 'agendaRepeater.itemAdded', index)
 					if (index === root.agendaModel.count-1) {
 						populated = true
 					}
 				}
-				onItemRemoved: {
+				onItemRemoved: function(index, item) {
 					// console.log(Date.now(), 'agendaRepeater.onItemRemoved', index)
 					populated = false
 				}
@@ -144,7 +142,8 @@ Item {
 
 		function scrollToY(offsetY) {
 			if (agendaScrollView.contentItem) {
-				agendaScrollView.contentItem.contentY = Math.min(offsetY, scrollContentHeight-viewportHeight)
+				var maximumScrollY = Math.max(0, scrollContentHeight - viewportHeight)
+				agendaScrollView.contentItem.contentY = Math.max(0, Math.min(offsetY, maximumScrollY))
 			}
 		}
 
@@ -173,7 +172,7 @@ Item {
 		}
 
 		function positionViewAtEnd() {
-			scrollToY(contentHeight)
+			scrollToY(scrollContentHeight)
 		}
 	}
 
