@@ -1,16 +1,14 @@
 import QtQuick
 import org.kde.kirigami as Kirigami
 import org.kde.plasma.plasmoid
-import org.kde.plasma.core as PlasmaCore
 import org.kde.plasma.components as PlasmaComponents3
 
-import "Shared.js" as Shared
 import "./weather/WeatherApi.js" as WeatherApi
 
 Item {
 	id: meteogramView
-	width: 400
-	height: 100
+	implicitWidth: 400
+	implicitHeight: 100
 	property bool clock24h: appletConfig.clock24h
 	property int visibleDuration: 9
 	property bool showIconOutline: false
@@ -38,16 +36,18 @@ Item {
 
 	Connections {
 		target: appletConfig
-		onMeteogramTextColorChanged: graph.update()
-		onMeteogramScaleColorChanged: graph.update()
-		onMeteogramPositiveTempColorChanged: graph.update()
-		onMeteogramNegativeTempColorChanged: graph.update()
-		onMeteogramPrecipitationRawColorChanged: graph.update()
+		function onMeteogramTextColorChanged() { graph.update() }
+		function onMeteogramScaleColorChanged() { graph.update() }
+		function onMeteogramPositiveTempColorChanged() { graph.update() }
+		function onMeteogramNegativeTempColorChanged() { graph.update() }
+		function onMeteogramPrecipitationRawColorChanged() { graph.update() }
 	}
 
 	Item {
 		id: graph
 		anchors.fill: parent
+		onWidthChanged: update()
+		onHeightChanged: update()
 
 		property int xAxisLabelHeight: 20
 		property int xAxisMin: 0

@@ -12,8 +12,8 @@ Item {
 
 	property int preferredTextWidth: Kirigami.Units.gridUnit * 20
 
-	width: childrenRect.width + Kirigami.Units.gridUnit
-	height: childrenRect.height + Kirigami.Units.gridUnit
+	implicitWidth: childrenRect.width + Kirigami.Units.gridUnit
+	implicitHeight: childrenRect.height + Kirigami.Units.gridUnit
 
 	LayoutMirroring.enabled: Qt.application.layoutDirection === Qt.RightToLeft
 	LayoutMirroring.childrenInherit: true

@@ -26,7 +26,7 @@ Flow {
 		showTime: durationSelector.showTime
 		dateFirst: true
 
-		onDateTimeShifted: {
+		onDateTimeShifted: function(oldDateTime, deltaDateTime, newDateTime) {
 			logger.debug('onDateTimeShifted')
 			logger.debug('    dt1', oldDateTime)
 			logger.debug('    dt2', dateTime)

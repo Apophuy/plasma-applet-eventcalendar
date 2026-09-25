@@ -7,6 +7,8 @@ QtObject {
 	id: googleApiSession
 
 	readonly property string accessToken: Plasmoid.configuration.accessToken
+	property bool refreshInProgress: false
+	property var refreshWaiters: []
 
 	//--- Refresh Credentials
 	function checkAccessToken(callback) {
@@ -19,25 +21,48 @@ QtObject {
 	}
 
 	function updateAccessToken(callback) {
-		// logger.debug('accessTokenExpiresAt', Plasmoid.configuration.accessTokenExpiresAt)
-		// logger.debug('                 now', Date.now())
-		// logger.debug('refreshToken', Plasmoid.configuration.refreshToken)
+		refreshWaiters.push(callback)
+		if (refreshInProgress) {
+			return
+		}
+		refreshInProgress = true
+
+		function finishRefresh(err) {
+			var waiters = refreshWaiters.slice(0)
+			refreshWaiters = []
+			refreshInProgress = false
+			if (err) {
+				googleApiSession.accessTokenError(err)
+			}
+			for (var i = 0; i < waiters.length; i++) {
+				waiters[i](err || null)
+			}
+		}
+
 		if (Plasmoid.configuration.refreshToken) {
 			logger.debug('updateAccessToken')
 			fetchNewAccessToken(function(err, data, xhr) {
-				if (err || (!err && data && data.error)) {
-					logger.log('Error when using refreshToken:', err, data)
-					return callback(err)
+				var tokenData = null
+				if (!err) {
+					try {
+						tokenData = typeof data === "string" ? JSON.parse(data) : data
+					} catch (parseError) {
+						err = i18n("Google returned an invalid token response.")
+					}
 				}
-				logger.debug('onAccessToken', data)
-				data = JSON.parse(data)
+				if (err || (tokenData && tokenData.error)) {
+					logger.log('Error refreshing Google access token:', err)
+					return finishRefresh(err || i18n("Could not refresh the Google access token."))
+				}
+				if (!tokenData || !tokenData.access_token) {
+					return finishRefresh(i18n("Google did not return an access token."))
+				}
+				googleApiSession.applyAccessToken(tokenData)
 
-				googleApiSession.applyAccessToken(data)
-
-				callback(null)
+				finishRefresh(null)
 			})
 		} else {
-			callback('No refresh token. Cannot update access token.')
+			finishRefresh(i18n("Google login has expired. Please sign in again."))
 		}
 	}
 
@@ -45,12 +70,12 @@ QtObject {
 	signal newAccessToken()
 	signal transactionError(string msg)
 
-	onTransactionError: logger.log(msg)
+	onTransactionError: function(msg) { logger.log(msg) }
 
 	function applyAccessToken(data) {
 		Plasmoid.configuration.accessToken = data.access_token
-		Plasmoid.configuration.accessTokenType = data.token_type
-		Plasmoid.configuration.accessTokenExpiresAt = Date.now() + data.expires_in * 1000
+		Plasmoid.configuration.accessTokenType = data.token_type || 'Bearer'
+		Plasmoid.configuration.accessTokenExpiresAt = Date.now() + (data.expires_in || 3600) * 1000
 		newAccessToken()
 	}
 

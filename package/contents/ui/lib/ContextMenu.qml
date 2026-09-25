@@ -12,25 +12,34 @@ QQC2.Menu {
 		MenuItem {}
 	}
 
-	// Compatibility property
-	property var content: contextMenu.contentData
-
 	function clearMenuItems() {
 		while (contextMenu.count > 0) {
-			contextMenu.removeItem(contextMenu.itemAt(0))
+			var subMenu = contextMenu.menuAt(0)
+			if (subMenu) {
+				contextMenu.removeMenu(subMenu)
+				subMenu.destroy()
+			} else {
+				var menuItem = contextMenu.takeItem(0)
+				if (menuItem) {
+					menuItem.destroy()
+				}
+			}
 		}
 	}
 
 	function newSeperator(parentMenu) {
-		return Qt.createQmlObject("import QtQuick.Controls as QQC2; QQC2.MenuSeparator {}", parentMenu || contextMenu)
+		var targetMenu = parentMenu || contextMenu
+		return Qt.createQmlObject("import QtQuick.Controls as QQC2; QQC2.MenuSeparator {}", targetMenu.contentItem)
 	}
 
 	function newMenuItem(parentMenu, properties) {
-		return menuItemComponent.createObject(parentMenu || contextMenu, properties || {})
+		var targetMenu = parentMenu || contextMenu
+		return menuItemComponent.createObject(targetMenu.contentItem, properties || {})
 	}
 
 	function newSubMenu(parentMenu, properties) {
-		var subMenu = Qt.createComponent("ContextMenu.qml").createObject(parentMenu || contextMenu)
+		var targetMenu = parentMenu || contextMenu
+		var subMenu = Qt.createComponent("ContextMenu.qml").createObject(targetMenu.contentItem)
 		if (properties && properties.text) {
 			subMenu.title = properties.text
 		}

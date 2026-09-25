@@ -38,7 +38,7 @@ ConfigPage {
 	property string timeFormat12hour: 'h:mm AP'
 
 	property bool showDebug: page.cfg_debugging
-	property int indentWidth: 24 * Kirigami.Units.devicePixelRatio
+	property int indentWidth: 24
 
 	function setMouseWheelCommands(up, down) {
 		page.cfg_clockMouseWheel = 'RunCommands'

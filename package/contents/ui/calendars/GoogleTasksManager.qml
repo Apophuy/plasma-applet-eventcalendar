@@ -3,6 +3,7 @@ import org.kde.kirigami as Kirigami
 import org.kde.plasma.plasmoid
 import org.kde.plasma.core as PlasmaCore
 
+import "../ErrorType.js" as ErrorType
 import "../Shared.js" as Shared
 import "../lib/Async.js" as Async
 import "../lib/Requests.js" as Requests
@@ -33,6 +34,50 @@ CalendarManager {
 		if (session.accessToken) {
 			fetchGoogleAccountTasks(tasklistIdList)
 		}
+	}
+	function runAuthorized(action, onError) {
+		session.checkAccessToken(function(err) {
+			if (err) {
+				if (onError) onError(err)
+				return
+			}
+			action()
+		})
+	}
+
+	function showHttpError(httpCode, msg, suggestion, errorType) {
+		var errorMessage = i18n("HTTP Error %1: %2", httpCode, msg)
+		if (suggestion) {
+			errorMessage += '\n' + suggestion
+		}
+		googleTasksManager.error(errorMessage, errorType)
+	}
+	function handleError(err, data, xhr) {
+		var httpCode = xhr ? xhr.status : 0
+		if (httpCode === 0) {
+			showHttpError(httpCode, i18n("Could not connect"), i18n("Will try again soon."), ErrorType.NetworkError)
+			return
+		}
+
+		var errorObject = data && data.error ? data.error : (err && err.error ? err.error : null)
+		if (errorObject) {
+			httpCode = errorObject.code || httpCode
+			var detail = errorObject.errors && errorObject.errors.length > 0
+				? errorObject.errors[0]
+				: errorObject
+			if (httpCode === 401) {
+				showHttpError(httpCode, detail.message, i18n("Please sign in to Google again."), ErrorType.ClientError)
+			} else if (httpCode === 403) {
+				showHttpError(httpCode, detail.message, i18n("Too many web requests. Will try again soon."), ErrorType.ClientError)
+			} else if (httpCode >= 500) {
+				showHttpError(httpCode, detail.message, i18n("Will try again soon."), ErrorType.ServerError)
+			} else {
+				showHttpError(httpCode, detail.message, i18n("Will try again soon."), ErrorType.UnknownError)
+			}
+			return
+		}
+
+		showHttpError(httpCode, "" + (err || i18n("Unknown Google Tasks error")), i18n("Will try again soon."), ErrorType.UnknownError)
 	}
 
 	//--- Utils
@@ -99,7 +144,9 @@ CalendarManager {
 				fetchGoogleAccountTasks_done(data)
 			}
 		})
-		session.checkAccessToken(func)
+		runAuthorized(func, function() {
+			googleTasksManager.asyncRequestsDone += 1
+		})
 	}
 	function fetchGoogleAccountTasks_run(tasklistIdList, callback) {
 		logger.debug('fetchGoogleAccountTasks_run', tasklistIdList)
@@ -333,7 +380,7 @@ CalendarManager {
 					createEvent_done(calendarId, data)
 				}
 			})
-			session.checkAccessToken(func)
+			runAuthorized(func)
 		} else {
 			session.transactionError('attempting to "create an event" without an access token set')
 		}
@@ -404,7 +451,7 @@ CalendarManager {
 					deleteEvent_done(calendarId, eventId, data)
 				}
 			})
-			session.checkAccessToken(func)
+			runAuthorized(func)
 		} else {
 			session.transactionError('attempting to "delete an event" without an access token set')
 		}
@@ -480,7 +527,7 @@ CalendarManager {
 					setEventProperties_done(calendarId, eventId, event, data)
 				}
 			})
-			session.checkAccessToken(func)
+			runAuthorized(func)
 		} else {
 			session.transactionError('attempting to "set an event property" without an access token set')
 		}

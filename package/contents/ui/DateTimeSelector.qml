@@ -2,7 +2,6 @@ import QtQuick
 import org.kde.kirigami as Kirigami
 import QtQuick.Controls
 import QtQuick.Layouts
-import org.kde.kirigami as Kirigami
 import QtQuick.Window
 
 import org.kde.plasma.core as PlasmaCore
@@ -20,7 +19,7 @@ GridLayout {
 	readonly property int minimumWidth: dateSelector.implicitWidth + columnSpacing + timeSelector.implicitWidth
 
 	signal dateTimeShifted(date oldDateTime, int deltaDateTime, date newDateTime)
-	onDateTimeShifted: {
+	onDateTimeShifted: function(oldDateTime, deltaDateTime, newDateTime) {
 		dateTimeSelector.dateTime = newDateTime
 	}
 
@@ -33,7 +32,7 @@ GridLayout {
 		dateTime: dateTimeSelector.dateTime
 		dateFormat: i18nc("event editor date format", "d MMM, yyyy")
 
-		onDateTimeShifted: {
+		onDateTimeShifted: function(oldDateTime, deltaDateTime, newDateTime) {
 			dateTimeSelector.dateTimeShifted(oldDateTime, deltaDateTime, newDateTime)
 		}
 	}
@@ -47,7 +46,7 @@ GridLayout {
 
 		dateTime: dateTimeSelector.dateTime
 
-		onDateTimeShifted: {
+		onDateTimeShifted: function(oldDateTime, deltaDateTime, newDateTime) {
 			dateTimeSelector.dateTimeShifted(oldDateTime, deltaDateTime, newDateTime)
 		}
 	}

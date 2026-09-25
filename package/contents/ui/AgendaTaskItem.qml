@@ -2,9 +2,9 @@ import QtQuick
 import org.kde.kirigami as Kirigami
 import QtQuick.Controls
 import QtQuick.Layouts
-import org.kde.kirigami as Kirigami
 import org.kde.plasma.core as PlasmaCore
 import org.kde.plasma.components as PlasmaComponents3
+import org.kde.plasma.plasmoid
 
 import "LocaleFuncs.js" as LocaleFuncs
 import "Shared.js" as Shared
@@ -25,8 +25,12 @@ LinkRect {
 	}
 	Connections {
 		target: timeModel
-		onLoaded: agendaTaskItem.checkIfIsOverdue()
-		onMinuteChanged: agendaTaskItem.checkIfIsOverdue()
+		function onLoaded() {
+			agendaTaskItem.checkIfIsOverdue()
+		}
+		function onMinuteChanged() {
+			agendaTaskItem.checkIfIsOverdue()
+		}
 	}
 	Component.onCompleted: {
 		agendaTaskItem.checkIfIsOverdue()
@@ -58,7 +62,7 @@ LinkRect {
 		id: contents
 		anchors.left: parent.left
 		anchors.right: parent.right
-		spacing: 4 * Kirigami.Units.devicePixelRatio
+		spacing: 4
 
 		PlasmaComponents3.CheckBox {
 			id: taskCheckBox
@@ -121,7 +125,7 @@ LinkRect {
 			Item {
 				id: taskNoteSpacing
 				visible: taskNotes.visible
-				implicitHeight: 4 * Kirigami.Units.devicePixelRatio
+				implicitHeight: 4
 			}
 
 			PlasmaComponents3.Label {
@@ -148,7 +152,7 @@ LinkRect {
 			Item {
 				id: taskEditorSpacing
 				visible: editTaskForm.visible
-				implicitHeight: 4 * Kirigami.Units.devicePixelRatio
+				implicitHeight: 4
 			}
 
 			EditTaskForm {
@@ -176,41 +180,42 @@ LinkRect {
 		// eventModel.toggleCompleted(event.tasklistId, task.id)
 	}
 
-	onLoadContextMenu: {
+	onLoadContextMenu: function(contextMenu) {
 		var menuItem
 		var task = tasks.get(taskItemIndex)
 
 		menuItem = contextMenu.newMenuItem()
 		menuItem.text = i18n("Edit")
-		menuItem.icon = "edit-rename"
+		menuItem.icon.name = "edit-rename"
 		menuItem.enabled = task.canEdit
-		menuItem.clicked.connect(function() {
+		menuItem.triggered.connect(function() {
 			editTaskForm.active = !editTaskForm.active
 			agendaScrollView.positionViewAtTask(agendaItemIndex, taskItemIndex)
 		})
-		contextMenu.addMenuItem(menuItem)
+		contextMenu.addItem(menuItem)
 
 		var deleteMenuItem = contextMenu.newSubMenu()
-		deleteMenuItem.text = i18n("Delete Event")
-		deleteMenuItem.icon = "delete"
+		deleteMenuItem.title = i18n("Delete Event")
+		deleteMenuItem.icon.name = "delete"
 		menuItem = contextMenu.newMenuItem(deleteMenuItem)
 		menuItem.text = i18n("Confirm Deletion")
-		menuItem.icon = "delete"
+		menuItem.icon.name = "delete"
 		menuItem.enabled = task.canEdit
-		menuItem.clicked.connect(function() {
+		menuItem.triggered.connect(function() {
 			logger.debug('eventModel.deleteTask', task.calendarId, task.id)
 			eventModel.deleteEvent(task.calendarId, task.id)
 		})
+		deleteMenuItem.addItem(menuItem)
 		// deleteMenuItem.enabled = task.canEdit
-		contextMenu.addMenuItem(deleteMenuItem)
+		contextMenu.addMenu(deleteMenuItem)
 
 		menuItem = contextMenu.newMenuItem()
 		menuItem.text = i18n("Edit in browser")
-		menuItem.icon = "internet-web-browser"
+		menuItem.icon.name = "internet-web-browser"
 		menuItem.enabled = !!task.htmlLink
-		menuItem.clicked.connect(function() {
+		menuItem.triggered.connect(function() {
 			Qt.openUrlExternally(task.htmlLink)
 		})
-		contextMenu.addMenuItem(menuItem)
+		contextMenu.addItem(menuItem)
 	}
 }

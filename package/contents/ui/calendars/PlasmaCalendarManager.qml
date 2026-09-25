@@ -113,7 +113,7 @@ CalendarManager {
 	}
 	Connections {
 		target: Plasmoid.configuration
-		onEnabledCalendarPluginsChanged: {
+		function onEnabledCalendarPluginsChanged() {
 			PlasmaCalendarUtils.setEnabledPluginsByFilename(eventPluginsManager, Plasmoid.configuration.enabledCalendarPlugins)
 		}
 	}
@@ -318,7 +318,7 @@ CalendarManager {
 		}
 	}
 
-	onCalendarParsing: {
+	onCalendarParsing: function(calendarId, data) {
 		var calendar = getCalendar(calendarId)
 		parseEventList(calendar, data.items)
 	}

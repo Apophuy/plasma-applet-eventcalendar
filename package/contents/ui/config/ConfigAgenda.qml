@@ -27,7 +27,7 @@ ConfigPage {
 	property bool cfg_agendaCondensedAllDayEvent: true
 	property bool cfg_showOutlines: true
 
-	property int indentWidth: 24 * Kirigami.Units.devicePixelRatio
+	property int indentWidth: 24
 
 	ConfigCheckBox {
 		configKey: 'widgetShowAgenda'
