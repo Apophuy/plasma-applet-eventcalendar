@@ -6,6 +6,7 @@ import org.kde.plasma.plasmoid
 import org.kde.plasma.core as PlasmaCore
 import org.kde.plasma.components as PlasmaComponents3
 
+import "lib"
 import "LocaleFuncs.js" as LocaleFuncs
 
 Item {
@@ -212,79 +213,50 @@ Item {
 	}
 
 
-	// Context menu using QtQuick.Controls Menu for Plasma 6
-	QQC2.Menu {
+	ContextMenu {
 		id: contextMenu
 
-		function clearMenuItems() {
-			while (contextMenu.count > 0) {
-				contextMenu.removeItem(contextMenu.itemAt(0))
-			}
-		}
-
-		function newSeperator() {
-			return Qt.createQmlObject("import QtQuick.Controls as QQC2; QQC2.MenuSeparator {}", contextMenu)
-		}
-		function newMenuItem() {
-			return Qt.createQmlObject("import QtQuick.Controls as QQC2; QQC2.MenuItem {}", contextMenu)
-		}
-
-		function loadDynamicActions() {
-			contextMenu.clearMenuItems()
-
+		onPopulate: function(menu) {
 			// Repeat
-			var menuItem = newMenuItem()
+			var menuItem = menu.newMenuItem()
 			menuItem.icon.name = Plasmoid.configuration.timerRepeats ? 'media-playlist-repeat' : 'process-stop'
 			menuItem.text = i18n("Repeat")
 			menuItem.triggered.connect(function() {
 				timerRepeatsButton.clicked()
 			})
-			contextMenu.addItem(menuItem)
+			menu.addItem(menuItem)
 
 			// Sound
-			menuItem = newMenuItem()
+			menuItem = menu.newMenuItem()
 			menuItem.icon.name = Plasmoid.configuration.timerSfxEnabled ? 'audio-volume-high' : 'process-stop'
 			menuItem.text = i18n("Sound")
 			menuItem.triggered.connect(function() {
 				timerSfxEnabledButton.clicked()
 			})
-			contextMenu.addItem(menuItem)
+			menu.addItem(menuItem)
 
-			//
-			contextMenu.addItem(newSeperator())
+			menu.addItem(menu.newSeperator())
 
 			// Set Timer
-			menuItem = newMenuItem()
+			menuItem = menu.newMenuItem()
 			menuItem.icon.name = 'chronometer'
 			menuItem.text = i18n("Set Timer")
 			menuItem.triggered.connect(function() {
 				timerView.isSetTimerViewVisible = true
 			})
-			contextMenu.addItem(menuItem)
+			menu.addItem(menuItem)
 
-			//
-			contextMenu.addItem(newSeperator())
+			menu.addItem(menu.newSeperator())
 
 			for (var i = 0; i < timerModel.defaultTimers.length; i++) {
 				var presetItem = timerModel.defaultTimers[i]
 
-				menuItem = newMenuItem()
+				menuItem = menu.newMenuItem()
 				menuItem.icon.name = 'chronometer'
 				menuItem.text = LocaleFuncs.durationShortFormat(presetItem.seconds)
 				menuItem.triggered.connect(timerModel.setDurationAndStart.bind(timerModel, presetItem.seconds))
-				contextMenu.addItem(menuItem)
+				menu.addItem(menuItem)
 			}
-
-		}
-
-		function show(x, y) {
-			loadDynamicActions()
-			contextMenu.popup(x, y)
-		}
-
-		function showBelow(item) {
-			loadDynamicActions()
-			contextMenu.popup(item, 0, item.height)
 		}
 	}
 }
