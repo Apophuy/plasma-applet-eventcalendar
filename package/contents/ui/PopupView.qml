@@ -36,10 +36,17 @@ MouseArea {
 
 	readonly property int twoColumnNaturalWidth: leftColumnWidth + spacing + rightColumnWidth + padding * 2
 	readonly property int singleColumnNaturalWidth: leftColumnWidth + padding * 2
+	readonly property int screenMargin: Kirigami.Units.gridUnit * 2
+	readonly property var currentScreenGeometry: Plasmoid.screenGeometry || null
+	readonly property real availableScreenWidth: currentScreenGeometry && currentScreenGeometry.width > 0
+		? Math.max(Kirigami.Units.gridUnit * 14, currentScreenGeometry.width - screenMargin)
+		: Number.POSITIVE_INFINITY
+	readonly property real availableScreenHeight: currentScreenGeometry && currentScreenGeometry.height > 0
+		? Math.max(Kirigami.Units.gridUnit * 14, currentScreenGeometry.height - screenMargin)
+		: Number.POSITIVE_INFINITY
 	readonly property bool bothMainWidgetsVisible: showAgenda && showCalendar
 	readonly property bool calendarOnly: !showAgenda && showCalendar && !showMeteogram && !showTimer
-	readonly property bool screenCanFitTwoColumns: Plasmoid.screenGeometry.width <= 0
-		|| twoColumnNaturalWidth <= Plasmoid.screenGeometry.width - Kirigami.Units.gridUnit * 2
+	readonly property bool screenCanFitTwoColumns: twoColumnNaturalWidth <= availableScreenWidth
 	property bool twoColumns: Plasmoid.configuration.twoColumns && bothMainWidgetsVisible
 		&& (isDesktopContainment ? width <= 0 || width >= twoColumnNaturalWidth : screenCanFitTwoColumns)
 	property bool singleColumn: !twoColumns
@@ -62,31 +69,27 @@ MouseArea {
 	}
 	Layout.preferredWidth: {
 		var naturalWidth = calendarOnly ? 378 : (twoColumns ? twoColumnNaturalWidth : singleColumnNaturalWidth)
-		var screenWidth = Plasmoid.screenGeometry.width
-		return screenWidth > 0
-			? Math.min(naturalWidth, screenWidth - Kirigami.Units.gridUnit * 2)
-			: naturalWidth
+		return Math.min(naturalWidth, availableScreenWidth)
 	}
+	Layout.maximumWidth: isDesktopContainment ? Number.POSITIVE_INFINITY : availableScreenWidth
 
 	Layout.minimumHeight: Kirigami.Units.gridUnit * 14
 	Layout.preferredHeight: {
+		var naturalHeight
 		if (calendarOnly) {
-			return 378
-		}
-		if (singleColumn) {
-			var naturalHeight = singleColumnContentHeight + padding * 2
-			var screenHeight = Plasmoid.screenGeometry.height
-			return screenHeight > 0
-				? Math.min(naturalHeight, screenHeight - Kirigami.Units.gridUnit * 2)
-				: naturalHeight
+			naturalHeight = 378
+		} else if (singleColumn) {
+			naturalHeight = singleColumnContentHeight + padding * 2
 		} else { // twoColumns
-			var h = bottomRowHeight // showAgenda || showCalendar
+			naturalHeight = bottomRowHeight // showAgenda || showCalendar
 			if (showMeteogram || showTimer) {
-				h += spacing + effectiveTwoColumnTopHeight
+				naturalHeight += spacing + effectiveTwoColumnTopHeight
 			}
-			return h + padding * 2
+			naturalHeight += padding * 2
 		}
+		return Math.min(naturalHeight, availableScreenHeight)
 	}
+	Layout.maximumHeight: isDesktopContainment ? Number.POSITIVE_INFINITY : availableScreenHeight
 
 	property var eventModel
 	property var agendaModel
