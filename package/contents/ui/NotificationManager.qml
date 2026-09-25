@@ -14,7 +14,7 @@ QtObject {
 
 		var cmd = [
 			'python3',
-			Plasmoid.file("", "scripts/notification.py"),
+			executable.urlToLocalPath(Qt.resolvedUrl("../scripts/notification.py")),
 		]
 		if (args.appName) {
 			cmd.push('--app-name', args.appName)

@@ -65,7 +65,7 @@ PlasmaComponents3.TextField {
 		highlightDateTime(dateTime)
 	}
 
-	onEntryActivated: {
+	onEntryActivated: function(index) {
 		if (0 <= index && index < model.length) {
 			var entry = model[index]
 			setDateTime(entry[control.valueRole])

@@ -1,4 +1,5 @@
 import QtQuick
+import org.kde.plasma.plasmoid
 
 import "./calendars"
 import "./ErrorType.js" as ErrorType

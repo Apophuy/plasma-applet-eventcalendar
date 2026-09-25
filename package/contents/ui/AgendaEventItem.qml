@@ -3,9 +3,9 @@ import org.kde.kirigami as Kirigami
 import QtQuick.Controls
 import QtQuick.Controls as QQC2
 import QtQuick.Layouts
-import org.kde.kirigami as Kirigami
 import org.kde.plasma.core as PlasmaCore
 import org.kde.plasma.components as PlasmaComponents3
+import org.kde.plasma.plasmoid
 
 import "LocaleFuncs.js" as LocaleFuncs
 import "Shared.js" as Shared
@@ -227,7 +227,7 @@ LinkRect {
 							return i18n("Hangout")
 						}
 					}
-					icon.source: Plasmoid.file("", "icons/hangouts.svg")
+					icon.source: Qt.resolvedUrl("../icons/hangouts.svg")
 					onClicked: Qt.openUrlExternally(externalLink)
 				}
 			}
@@ -249,7 +249,7 @@ LinkRect {
 		}
 	}
 
-	onLoadContextMenu: {
+	onLoadContextMenu: function(contextMenu) {
 		var menuItem
 		var event = events.get(eventItemIndex)
 

@@ -303,7 +303,7 @@ MouseArea {
 			Layout.fillWidth: true
 			Layout.fillHeight: true
 
-			onNewEventFormOpened: function() {
+			onNewEventFormOpened: function(agendaItem, calendarSelector) {
 				// logger.debug('onNewEventFormOpened')
 				var selectedCalendarId = ""
 				if (Plasmoid.configuration.agendaNewEventRememberCalendar) {

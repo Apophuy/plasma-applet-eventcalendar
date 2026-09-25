@@ -4,6 +4,7 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 import org.kde.kirigami as Kirigami
+import org.kde.plasma.plasmoid
 
 ColumnLayout {
 	id: page
@@ -151,7 +152,7 @@ ColumnLayout {
 
 		property bool loading: false
 		property bool error: false
-		property string source: Plasmoid.file("", "config/main.xml")
+		property url source: Qt.resolvedUrl("../../config/main.xml")
 
 		signal updated()
 

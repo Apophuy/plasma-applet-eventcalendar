@@ -46,7 +46,7 @@ PlasmaComponents3.TextField {
 
 	onPressed: popup.open()
 
-	onDateSelected: {
+	onDateSelected: function(newDateTime) {
 		setDateTime(newDateTime)
 	}
 

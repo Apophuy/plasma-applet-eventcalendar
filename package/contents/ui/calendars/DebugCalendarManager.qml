@@ -1,4 +1,5 @@
 import QtQuick
+import org.kde.plasma.plasmoid
 
 import "../Shared.js" as Shared
 import "../lib/Requests.js" as Requests
@@ -19,7 +20,7 @@ CalendarManager {
 
 	// Note: Not in use
 	// Used to load dumped json events found in debug logs from file.
-	// fetchJsonEventsFile(Plasmoid.file('', 'testevents.json'), 'testevents@gmail.com') // .../contents/testevents.json
+	// fetchJsonEventsFile(Qt.resolvedUrl('../../testevents.json'), 'testevents@gmail.com')
 	function fetchJsonEventsFile(filename, calendarId) {
 		logger.debug('fetchJsonEventsFile', calendarId)
 		debugCalendarManager.asyncRequests += 1
@@ -71,7 +72,7 @@ CalendarManager {
 		fetchDebugEvents()
 	}
 
-	onCalendarParsing: {
+	onCalendarParsing: function(calendarId, data) {
 		parseEventList(debugCalendar, data.items)
 	}
 
