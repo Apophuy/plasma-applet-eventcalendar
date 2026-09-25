@@ -2,7 +2,6 @@ import QtQuick
 import org.kde.kirigami as Kirigami
 import QtQuick.Controls
 import QtQuick.Layouts
-import org.kde.kirigami as Kirigami
 import org.kde.plasma.core as PlasmaCore
 
 import "Shared.js" as Shared
@@ -24,7 +23,7 @@ Item {
 
 	Connections {
 		target: eventModel
-		onEventCreated: {
+		function onEventCreated(calendarId, data) {
 			notificationManager.notify({
 				appName: i18n("Event Calendar"),
 				appIcon: "resource-calendar-insert",
@@ -36,7 +35,7 @@ Item {
 				})
 			})
 		}
-		onEventDeleted: {
+		function onEventDeleted(calendarId, eventId, data) {
 			logger.logJSON('AgendaView.onEventDeleted', data)
 			notificationManager.notify({
 				appName: i18n("Event Calendar"),
@@ -87,13 +86,13 @@ Item {
 					// Component.onDestruction: console.log(Date.now(), 'AgendaListItem.onDestruction', index)
 				}
 
-				onItemAdded: {
+				onItemAdded: function(index, item) {
 					// console.log(Date.now(), 'agendaRepeater.itemAdded', index)
 					if (index === root.agendaModel.count-1) {
 						populated = true
 					}
 				}
-				onItemRemoved: {
+				onItemRemoved: function(index, item) {
 					// console.log(Date.now(), 'agendaRepeater.onItemRemoved', index)
 					populated = false
 				}

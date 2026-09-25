@@ -1,10 +1,8 @@
 import QtQuick
 import org.kde.kirigami as Kirigami
 import org.kde.plasma.plasmoid
-import org.kde.plasma.core as PlasmaCore
 import org.kde.plasma.components as PlasmaComponents3
 
-import "Shared.js" as Shared
 import "./weather/WeatherApi.js" as WeatherApi
 
 Item {
@@ -38,11 +36,11 @@ Item {
 
 	Connections {
 		target: appletConfig
-		onMeteogramTextColorChanged: graph.update()
-		onMeteogramScaleColorChanged: graph.update()
-		onMeteogramPositiveTempColorChanged: graph.update()
-		onMeteogramNegativeTempColorChanged: graph.update()
-		onMeteogramPrecipitationRawColorChanged: graph.update()
+		function onMeteogramTextColorChanged() { graph.update() }
+		function onMeteogramScaleColorChanged() { graph.update() }
+		function onMeteogramPositiveTempColorChanged() { graph.update() }
+		function onMeteogramNegativeTempColorChanged() { graph.update() }
+		function onMeteogramPrecipitationRawColorChanged() { graph.update() }
 	}
 
 	Item {
