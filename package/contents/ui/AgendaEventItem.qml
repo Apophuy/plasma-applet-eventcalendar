@@ -255,35 +255,36 @@ LinkRect {
 
 		menuItem = contextMenu.newMenuItem()
 		menuItem.text = i18n("Edit")
-		menuItem.icon = "edit-rename"
+		menuItem.icon.name = "edit-rename"
 		menuItem.enabled = event.canEdit
-		menuItem.clicked.connect(function() {
+		menuItem.triggered.connect(function() {
 			editEventForm.active = !editEventForm.active
 			agendaScrollView.positionViewAtEvent(agendaItemIndex, eventItemIndex)
 		})
-		contextMenu.addMenuItem(menuItem)
+		contextMenu.addItem(menuItem)
 
 		var deleteMenuItem = contextMenu.newSubMenu()
-		deleteMenuItem.text = i18n("Delete Event")
-		deleteMenuItem.icon = "delete"
+		deleteMenuItem.title = i18n("Delete Event")
+		deleteMenuItem.icon.name = "delete"
 		menuItem = contextMenu.newMenuItem(deleteMenuItem)
 		menuItem.text = i18n("Confirm Deletion")
-		menuItem.icon = "delete"
+		menuItem.icon.name = "delete"
 		menuItem.enabled = event.canEdit
-		menuItem.clicked.connect(function() {
+		menuItem.triggered.connect(function() {
 			logger.debug('eventModel.deleteEvent', event.calendarId, event.id)
 			eventModel.deleteEvent(event.calendarId, event.id)
 		})
+		deleteMenuItem.addItem(menuItem)
 		deleteMenuItem.enabled = event.canEdit
-		contextMenu.addMenuItem(deleteMenuItem)
+		contextMenu.addMenu(deleteMenuItem)
 
 		menuItem = contextMenu.newMenuItem()
 		menuItem.text = i18n("Edit in browser")
-		menuItem.icon = "internet-web-browser"
+		menuItem.icon.name = "internet-web-browser"
 		menuItem.enabled = !!event.htmlLink
-		menuItem.clicked.connect(function() {
+		menuItem.triggered.connect(function() {
 			Qt.openUrlExternally(event.htmlLink)
 		})
-		contextMenu.addMenuItem(menuItem)
+		contextMenu.addItem(menuItem)
 	}
 }
