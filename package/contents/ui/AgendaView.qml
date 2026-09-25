@@ -10,7 +10,7 @@ import "LocaleFuncs.js" as LocaleFuncs
 Item {
 	id: agendaView
 
-	readonly property int scrollbarWidth: width - agendaScrollView.scrollContentWidth
+	readonly property int scrollbarWidth: agendaScrollView.effectiveScrollBarWidth
 
 	property color inProgressColor: appletConfig.agendaInProgressColor
 	property int inProgressFontWeight: Font.Bold
@@ -54,10 +54,9 @@ Item {
 		id: agendaScrollView
 		anchors.fill: parent
 		// clip: true
-		readonly property int scrollContentWidth: contentItem ? contentItem.width : width
-		readonly property int scrollContentHeight: contentItem ? contentItem.height : 0 // Warning: Binding loop
-		readonly property int viewportWidth: width
-		readonly property int viewportHeight: height
+		readonly property int scrollContentHeight: contentItem ? contentItem.contentHeight : 0
+		readonly property int viewportWidth: Math.max(0, availableWidth - effectiveScrollBarWidth)
+		readonly property int viewportHeight: Math.max(0, availableHeight - effectiveScrollBarHeight)
 		readonly property int scrollY: contentItem ? contentItem.contentY : 0
 
 		// onScrollYChanged: console.log('scrollY', scrollY)
@@ -143,7 +142,8 @@ Item {
 
 		function scrollToY(offsetY) {
 			if (agendaScrollView.contentItem) {
-				agendaScrollView.contentItem.contentY = Math.min(offsetY, scrollContentHeight-viewportHeight)
+				var maximumScrollY = Math.max(0, scrollContentHeight - viewportHeight)
+				agendaScrollView.contentItem.contentY = Math.max(0, Math.min(offsetY, maximumScrollY))
 			}
 		}
 
@@ -172,7 +172,7 @@ Item {
 		}
 
 		function positionViewAtEnd() {
-			scrollToY(contentHeight)
+			scrollToY(scrollContentHeight)
 		}
 	}
 
