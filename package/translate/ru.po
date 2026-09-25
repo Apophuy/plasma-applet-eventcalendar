@@ -147,12 +147,12 @@ msgstr "d MMM, yyyy"
 #, kde-format
 msgctxt "Reset calendar to today"
 msgid "Today"
-msgstr ""
+msgstr "Сегодня"
 
 #: ../contents/ui/DaysCalendar.qml
 #, kde-format
 msgid "Reset calendar to today"
-msgstr ""
+msgstr "Вернуться к сегодняшней дате"
 
 #: ../contents/ui/DurationSelector.qml
 #, kde-format
@@ -306,32 +306,32 @@ msgstr "MMMM, yyyy"
 #: ../contents/ui/MonthView.qml
 #, kde-format
 msgid "Previous Month"
-msgstr ""
+msgstr "Предыдущий месяц"
 
 #: ../contents/ui/MonthView.qml
 #, kde-format
 msgid "Next Month"
-msgstr ""
+msgstr "Следующий месяц"
 
 #: ../contents/ui/MonthView.qml
 #, kde-format
 msgid "Previous Year"
-msgstr ""
+msgstr "Предыдущий год"
 
 #: ../contents/ui/MonthView.qml
 #, kde-format
 msgid "Next Year"
-msgstr ""
+msgstr "Следующий год"
 
 #: ../contents/ui/MonthView.qml
 #, kde-format
 msgid "Previous Decade"
-msgstr ""
+msgstr "Предыдущее десятилетие"
 
 #: ../contents/ui/MonthView.qml
 #, kde-format
 msgid "Next Decade"
-msgstr ""
+msgstr "Следующее десятилетие"
 
 #: ../contents/ui/NewEventForm.qml
 #, kde-format
@@ -423,7 +423,7 @@ msgstr "Ближайшие события"
 #, kde-format
 msgctxt "%1 = 15 minutes"
 msgid "Starting in %1"
-msgstr ""
+msgstr "Начнётся через %1"
 
 #: ../contents/ui/calendars/CalendarManager.qml
 #, kde-format
@@ -434,28 +434,28 @@ msgstr "(Без названия)"
 #: ../contents/ui/calendars/GoogleApiSession.qml
 #, kde-format
 msgid "Google returned an invalid token response."
-msgstr ""
+msgstr "Google вернул некорректный ответ с токеном."
 
 #: ../contents/ui/calendars/GoogleApiSession.qml
 #, kde-format
 msgid "Could not refresh the Google access token."
-msgstr ""
+msgstr "Не удалось обновить токен доступа Google."
 
 #: ../contents/ui/calendars/GoogleApiSession.qml
 #, kde-format
 msgid "Google did not return an access token."
-msgstr ""
+msgstr "Google не вернул токен доступа."
 
 #: ../contents/ui/calendars/GoogleApiSession.qml
 #, kde-format
 msgid "Google login has expired. Please sign in again."
-msgstr ""
+msgstr "Срок действия входа в Google истёк. Войдите снова."
 
 #: ../contents/ui/calendars/GoogleCalendarManager.qml
 #: ../contents/ui/calendars/GoogleTasksManager.qml
 #, kde-format
 msgid "Please sign in to Google again."
-msgstr ""
+msgstr "Войдите в Google снова."
 
 #: ../contents/ui/calendars/GoogleCalendarManager.qml
 #: ../contents/ui/calendars/GoogleTasksManager.qml
@@ -466,36 +466,36 @@ msgstr "Слишком много запросов. Чуть позже повт
 #: ../contents/ui/calendars/GoogleCalendarManager.qml
 #, kde-format
 msgid "Unknown Google Calendar error"
-msgstr ""
+msgstr "Неизвестная ошибка Google Calendar"
 
 #: ../contents/ui/calendars/GoogleTasksManager.qml
 #, kde-format
 msgid "Unknown Google Tasks error"
-msgstr ""
+msgstr "Неизвестная ошибка Google Tasks"
 
 #: ../contents/ui/calendars/PlasmaCalendarManager.qml
 #, kde-format
 msgctxt "Agenda listview section title"
 msgid "Holidays"
-msgstr ""
+msgstr "Праздники"
 
 #: ../contents/ui/calendars/PlasmaCalendarManager.qml
 #, kde-format
 msgctxt "Agenda listview section title"
 msgid "Events"
-msgstr ""
+msgstr "События"
 
 #: ../contents/ui/calendars/PlasmaCalendarManager.qml
 #, kde-format
 msgctxt "Agenda listview section title"
 msgid "Todo"
-msgstr ""
+msgstr "Задачи"
 
 #: ../contents/ui/calendars/PlasmaCalendarManager.qml
 #, kde-format
 msgctxt "Means 'Other calendar items'"
 msgid "Other"
-msgstr ""
+msgstr "Прочее"
 
 #: ../contents/ui/config/ConfigAgenda.qml
 #, kde-format
@@ -968,52 +968,52 @@ msgstr "Включить отладку"
 #: ../contents/ui/config/ConfigGoogleCalendar.qml
 #, kde-format
 msgid "Google OAuth client credentials are not configured."
-msgstr ""
+msgstr "Учётные данные клиента Google OAuth не настроены."
 
 #: ../contents/ui/config/ConfigGoogleCalendar.qml
 #, kde-format
 msgid "Could not start the local Google login callback."
-msgstr ""
+msgstr "Не удалось запустить локальный обработчик входа в Google."
 
 #: ../contents/ui/config/ConfigGoogleCalendar.qml
 #, kde-format
 msgid "Could not open the default web browser."
-msgstr ""
+msgstr "Не удалось открыть браузер по умолчанию."
 
 #: ../contents/ui/config/ConfigGoogleCalendar.qml
 #, kde-format
 msgid "Google login timed out. Please try again."
-msgstr ""
+msgstr "Время ожидания входа в Google истекло. Повторите попытку."
 
 #: ../contents/ui/config/ConfigGoogleCalendar.qml
 #, kde-format
 msgid "Google login was cancelled or rejected."
-msgstr ""
+msgstr "Вход в Google был отменён или отклонён."
 
 #: ../contents/ui/config/ConfigGoogleCalendar.qml
 #, kde-format
 msgid "Google login failed. Please try again."
-msgstr ""
+msgstr "Не удалось войти в Google. Повторите попытку."
 
 #: ../contents/ui/config/ConfigGoogleCalendar.qml
 #, kde-format
 msgid "Opening Google login in your web browser…"
-msgstr ""
+msgstr "Открывается страница входа в Google…"
 
 #: ../contents/ui/config/ConfigGoogleCalendar.qml
 #, kde-format
 msgid "Google login returned an invalid response."
-msgstr ""
+msgstr "При входе в Google получен некорректный ответ."
 
 #: ../contents/ui/config/ConfigGoogleCalendar.qml
 #, kde-format
 msgid "Google login did not return an access token."
-msgstr ""
+msgstr "При входе в Google не получен токен доступа."
 
 #: ../contents/ui/config/ConfigGoogleCalendar.qml
 #, kde-format
 msgid "Google Calendar is connected."
-msgstr ""
+msgstr "Google Calendar подключён."
 
 #: ../contents/ui/config/ConfigGoogleCalendar.qml
 #, kde-format
@@ -1036,11 +1036,13 @@ msgid ""
 "Sign in with Google to sync Calendar events and Tasks. The browser returns "
 "securely to this computer after approval."
 msgstr ""
+"Войдите в Google, чтобы синхронизировать события календаря и задачи. После "
+"подтверждения браузер безопасно перенаправит вас обратно на этот компьютер."
 
 #: ../contents/ui/config/ConfigGoogleCalendar.qml
 #, kde-format
 msgid "Login with Google"
-msgstr ""
+msgstr "Войти через Google"
 
 #: ../contents/ui/config/ConfigGoogleCalendar.qml
 #: ../contents/ui/config/ConfigICal.qml
@@ -1066,17 +1068,17 @@ msgstr "Параметры"
 #: ../contents/ui/config/ConfigGoogleCalendar.qml
 #, kde-format
 msgid "Event Click:"
-msgstr ""
+msgstr "Щелчок по событию:"
 
 #: ../contents/ui/config/ConfigGoogleCalendar.qml
 #, kde-format
 msgid "Open Web Event View"
-msgstr ""
+msgstr "Открыть событие в браузере"
 
 #: ../contents/ui/config/ConfigGoogleCalendar.qml
 #, kde-format
 msgid "Open Web Month View"
-msgstr ""
+msgstr "Открыть месяц в браузере"
 
 #: ../contents/ui/config/ConfigGoogleCalendar.qml
 #, kde-format
@@ -1310,12 +1312,12 @@ msgstr "Все файлы (%1)"
 #: ../contents/ui/main.qml
 #, kde-format
 msgid "Copy to Clipboard"
-msgstr ""
+msgstr "Копировать в буфер обмена"
 
 #: ../contents/ui/main.qml
 #, kde-format
 msgid "Adjust Date and Time…"
-msgstr ""
+msgstr "Настроить дату и время…"
 
 #: ../contents/ui/main.qml
 #, kde-format
