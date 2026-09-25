@@ -4,3 +4,8 @@
 *.mo
 /dist
 /package/metadata.json
+
+# Локальные настройки AI-агентов
+/AGENTS.md
+/.agents/
+/.codex/
