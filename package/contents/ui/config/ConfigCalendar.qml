@@ -30,7 +30,7 @@ ConfigPage {
 			id: clickDateGroup
 			label: i18n("Click Date:")
 			model: [
-				{ value: 'scrollToAgenda', text: i18n("Scroll to event in Agenda") }
+				{ value: 'scrollToAgenda', text: i18n("Scroll to event in Agenda"), checked: true }
 			]
 		}
 	}
@@ -121,7 +121,7 @@ ConfigPage {
 			id: selectedStyleGroup
 			label: i18n("Selected:")
 			model: [
-				{ value: 'default', text: i18n("Solid Color (Highlight)") },
+				{ value: 'default', text: i18n("Solid Color (Highlight)"), checked: true },
 			]
 		}
 

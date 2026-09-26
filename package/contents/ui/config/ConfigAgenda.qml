@@ -85,7 +85,7 @@ ConfigPage {
 			id: clickWeatherGroup
 			label: i18n("Click Weather:")
 			model: [
-				{ value: 'openForecast', text: i18n("Open City Forecast In Browser") },
+				{ value: 'openForecast', text: i18n("Open City Forecast In Browser"), checked: true },
 			]
 		}
 	}
@@ -96,7 +96,7 @@ ConfigPage {
 			label: i18n("Click Date:")
 			model: [
 				{ value: 'browser', text: i18n("Open New Event In Browser"), enabled: false },
-				{ value: 'form', text: i18n("Open New Event Form") },
+				{ value: 'form', text: i18n("Open New Event Form"), checked: true },
 			]
 		}
 	}
@@ -124,7 +124,7 @@ ConfigPage {
 			id: clickEventGroup
 			label: i18n("Click Event:")
 			model: [
-				{ value: 'browser', text: i18n("Open Event In Browser") },
+				{ value: 'browser', text: i18n("Open Event In Browser"), checked: true },
 			]
 		}
 	}

@@ -65,7 +65,9 @@ RowLayout {
 				visible: typeof modelData.visible !== "undefined" ? modelData.visible : true
 				enabled: typeof modelData.enabled !== "undefined" ? modelData.enabled : true
 				text: modelData.text
-				checked: modelData.value === configRadioButtonGroup.configValue
+				checked: configRadioButtonGroup.configKey
+					? modelData.value === configRadioButtonGroup.configValue
+					: modelData.checked === true
 				ButtonGroup.group: radioButtonGroup
 				onClicked: {
 					focus = true

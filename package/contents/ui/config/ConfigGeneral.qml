@@ -10,12 +10,15 @@ import "../lib/Requests.js" as Requests
 
 ConfigPage {
 	id: page
+	showAppletVersion: true
 
 	// cfg_* properties that KCM injects and Config* components use
 	// These are automatically bound to configuration by KCM
 	property bool cfg_debugging: false
 	property bool cfg_widgetShowMeteogram: true
 	property bool cfg_widgetShowTimer: true
+	property bool cfg_timerSfxEnabled: true
+	property string cfg_timerSfxFilepath: "/usr/share/sounds/freedesktop/stereo/complete.oga"
 	property bool cfg_showBackground: true
 	property string cfg_clockFontFamily: ""
 	property string cfg_clockTimeFormat1: ""
@@ -77,13 +80,22 @@ ConfigPage {
 		onCheckedChanged: page.cfg_widgetShowTimer = checked
 	}
 
+	ConfigSound {
+		Kirigami.FormData.label: i18n("SFX:")
+		sfxEnabledKey: "timerSfxEnabled"
+		sfxPathKey: "timerSfxFilepath"
+		sfxPathDefaultValue: "/usr/share/sounds/freedesktop/stereo/complete.oga"
+		enabled: widgetShowTimer.checked
+		Layout.fillWidth: true
+	}
+
 	Kirigami.Separator {
 		Kirigami.FormData.isSection: true
 		Kirigami.FormData.label: i18n("Clock")
 	}
 
 		LinkText {
-			text: '<a href="https://doc.qt.io/qt-5/qml-qtqml-qt.html#formatDateTime-method">' + i18n("Time Format Documentation") + '</a>'
+			text: '<a href="https://doc.qt.io/qt-6/qml-qtqml-qt.html#formatDateTime-method">' + i18n("Time Format Documentation") + '</a>'
 		}
 
 		Label {
