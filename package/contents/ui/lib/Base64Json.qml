@@ -9,9 +9,17 @@ QtObject {
 
 	// ConfigPage reference - must be set by parent
 	property var configPage: null
+	readonly property var pageConfigValue: configPage && configKey
+		? configPage.getConfigValue(configKey)
+		: undefined
 
 	Component.onCompleted: loadConfig()
 	onConfigPageChanged: loadConfig()
+	onPageConfigValueChanged: {
+		if (configPage) {
+			configValue = typeof pageConfigValue === "undefined" ? "" : pageConfigValue
+		}
+	}
 
 	function loadConfig() {
 		if (!configKey) {

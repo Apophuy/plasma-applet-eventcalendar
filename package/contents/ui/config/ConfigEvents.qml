@@ -64,9 +64,11 @@ ConfigPage {
 	function saveConfig() {
 		page.cfg_enabledCalendarPlugins = PlasmaCalendarUtils.pluginPathToFilenameList(eventPluginsManager.enabledPlugins)
 	}
-	Component.onCompleted: {
+	function loadEnabledCalendarPlugins() {
 		PlasmaCalendarUtils.populateEnabledPluginsByFilename(eventPluginsManager, page.cfg_enabledCalendarPlugins)
 	}
+	onCfg_enabledCalendarPluginsChanged: loadEnabledCalendarPlugins()
+	Component.onCompleted: loadEnabledCalendarPlugins()
 
 	HeaderText {
 		text: i18n("Misc")

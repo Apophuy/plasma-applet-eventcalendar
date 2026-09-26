@@ -16,6 +16,7 @@ ConfigPage {
 	Base64JsonListModel {
 		id: calendarsModel
 		configKey: 'icalCalendarList'
+		configPage: page
 
 		function addCalendar() {
 			addItem({
@@ -53,7 +54,6 @@ ConfigPage {
 					Layout.preferredWidth: height
 					Layout.alignment: Qt.AlignTop
 					checked: show
-					style: CheckBoxStyle {}
 
 					onClicked: calendarsModel.setItemProperty(index, 'show', checked)
 				}
@@ -69,7 +69,7 @@ ConfigPage {
 							Layout.fillWidth: true
 							text: model.name
 							placeholderText: i18n("Calendar Label")
-							onTextChanged: calendarsModel.setItemProperty(index, 'name', text)
+							onTextEdited: calendarsModel.setItemProperty(index, 'name', text)
 						}
 						Button {
 							icon.name: "trash-empty"
@@ -81,7 +81,7 @@ ConfigPage {
 							id: calendarUrlField
 							Layout.fillWidth: true
 							text: model.url
-							onTextChanged: calendarsModel.setItemProperty(index, 'url', text)
+							onTextEdited: calendarsModel.setItemProperty(index, 'url', text)
 						}
 
 						Button {
@@ -97,7 +97,7 @@ ConfigPage {
 								nameFilters: [ i18n("iCalendar (*.ics)") ]
 
 								onAccepted: {
-									calendarUrlField.text = selectedFile
+									calendarsModel.setItemProperty(index, 'url', selectedFile.toString())
 								}
 							}
 						}

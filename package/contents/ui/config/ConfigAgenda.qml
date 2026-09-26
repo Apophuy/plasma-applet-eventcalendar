@@ -47,7 +47,6 @@ ConfigPage {
 		RowLayout {
 			ConfigCheckBox {
 				configKey: 'agendaWeatherShowIcon'
-				checked: true
 				text: i18n("Weather Icon")
 			}
 			ConfigSlider {

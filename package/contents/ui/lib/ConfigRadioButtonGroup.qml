@@ -26,7 +26,9 @@ RowLayout {
 	ButtonGroup { id: radioButtonGroup }
 
 	property string configKey: ''
-	property var configValue: ""
+	readonly property var configValue: configPage && configKey
+		? configPage.getConfigValue(configKey)
+		: ""
 
 	property alias model: buttonRepeater.model
 
@@ -34,12 +36,6 @@ RowLayout {
 	property var configPage: null
 	Component.onCompleted: {
 		configPage = findConfigPage(configRadioButtonGroup)
-		if (configPage && configKey) {
-			var val = configPage.getConfigValue(configKey)
-			if (typeof val !== "undefined") {
-				configValue = val
-			}
-		}
 	}
 
 	// Helper function to find ConfigPage
@@ -75,7 +71,6 @@ RowLayout {
 					focus = true
 					if (configRadioButtonGroup.configPage && configRadioButtonGroup.configKey) {
 						configRadioButtonGroup.configPage.setConfigValue(configRadioButtonGroup.configKey, modelData.value)
-						configRadioButtonGroup.configValue = modelData.value
 					}
 				}
 			}

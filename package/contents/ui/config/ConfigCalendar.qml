@@ -83,27 +83,16 @@ ConfigPage {
 				text: i18n("First day of week:")
 			}
 			ComboBox {
-				// [-1, 0, 1, 2, 3, 4, 5, 6] // Default = -1, 0..6 = Sun..Sat
-				model: ListModel {}
-				textRole: "text"
-
-				Component.onCompleted: {
-					model.append({
-						text: i18n("Default"),
-						value: -1,
-					})
-					for (var i = 0; i < 7; i++) {
-						model.append({
-							text: Qt.locale().dayName(i),
-							value: i,
-						})
+				model: [-1, 0, 1, 2, 3, 4, 5, 6].map(function(day) {
+					return {
+						text: day === -1 ? i18n("Default") : Qt.locale().dayName(day),
+						value: day,
 					}
-
-					// The firstDayOfWeek enum starts at -1 instead of 0
-					currentIndex = page.cfg_firstDayOfWeek + 1
-					currentIndexChanged.connect(function(){
-						page.cfg_firstDayOfWeek = currentIndex - 1
-					})
+				})
+				textRole: "text"
+				currentIndex: page.cfg_firstDayOfWeek + 1
+				onActivated: function(index) {
+					page.cfg_firstDayOfWeek = model[index].value
 				}
 			}
 		}

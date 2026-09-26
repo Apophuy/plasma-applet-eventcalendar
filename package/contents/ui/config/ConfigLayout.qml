@@ -93,7 +93,7 @@ ConfigPage {
 			Image {
 				id: twoColumnsImage
 				anchors.fill: parent
-				source: Qt.resolvedUrl("../images/twocolumns.svg")
+				source: Qt.resolvedUrl("../../images/twocolumns.svg")
 				smooth: true
 				visible: false
 			}
@@ -177,7 +177,7 @@ ConfigPage {
 			Image {
 				id: singleColumnImage
 				anchors.fill: parent
-				source: Qt.resolvedUrl("../images/singlecolumn.svg")
+				source: Qt.resolvedUrl("../../images/singlecolumn.svg")
 				smooth: true
 				visible: false
 			}
