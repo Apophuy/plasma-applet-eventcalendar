@@ -1,147 +1,160 @@
-import os, sys
+#!/usr/bin/env python3
+
+import argparse
 import datetime
-from icalendar import Calendar
+import hashlib
 import json
+import pathlib
+import sys
+import urllib.error
 import urllib.parse
 import urllib.request
 
-debugging=False
-def debug(*args):
-	if debugging:
-		print(*args)
+try:
+    from icalendar import Calendar
+except ImportError:
+    print("The Python 'icalendar' module is required.", file=sys.stderr)
+    raise SystemExit(3)
 
-def dateToJson(dateObj):
-	if isinstance(dateObj.dt, datetime.datetime):
-		# { "dateTime": "2010-08-04T02:44:20.063Z" }
-		dateTimeStr = dateObj.dt.isoformat() # 2014-10-02T18:00:00+00:00
-		return { 'dateTime': dateTimeStr }
-	else: # datetime
-		# { "date": "2010-08-04" }
-		dateStr = dateObj.dt.isoformat()
-		return { 'date': dateStr }
 
-def eventsToJson(eventList=None, indent=4):
-	if eventList is None:
-		eventList = list(self.cal.walk('vevent'))
+MAX_CALENDAR_BYTES = 10 * 1024 * 1024
+REQUEST_TIMEOUT_SECONDS = 20
 
-	data = {}
-	data['items'] = []
-	for event in eventList:
-		item = {}
 
-		item['kind'] = 'calendar#event'
-		item['etag'] = '\"0123456789012345\"'
-		item['iCalUID'] = event['UID']
-		item['id'] = "ics_{}_{}_{}".format(item['iCalUID'],
-			event['DTSTART'].dt.isoformat(),
-			event['DTEND'].dt.isoformat()
-		)
-		
-		item['status'] = 'confirmed' # TODO: event['STATUS']
-		item['htmlLink'] = ''
-		if 'CREATED' in event:
-			item['created'] = event['CREATED'].dt.isoformat()
-		if 'LAST-MODIFIED' in event:
-			item['updated'] = event['LAST-MODIFIED'].dt.isoformat()
+def date_to_json(value):
+    if isinstance(value, datetime.datetime):
+        return {"dateTime": value.isoformat()}
+    return {"date": value.isoformat()}
 
-		item['summary'] = event['SUMMARY']
-		if 'LOCATION' in event:
-			item['location'] = event['LOCATION']
 
-		item['start'] = dateToJson(event['DTSTART'])
-		item['end'] = dateToJson(event['DTEND'])
-		
-		# item['transparency'] = event['TRANSP'] # 'transparent'
-		# item['recurringEventId'] = ''
+def event_end(event, start):
+    if "DTEND" in event:
+        return event.decoded("DTEND")
+    if "DURATION" in event:
+        return start + event.decoded("DURATION")
+    if isinstance(start, datetime.datetime):
+        return start
+    return start + datetime.timedelta(days=1)
 
-		data['items'].append(item)
 
-	return json.dumps(data, indent=indent)
+def event_id(event, start, end):
+    uid = str(event.get("UID", ""))
+    value = "\0".join((uid, start.isoformat(), end.isoformat()))
+    return "ics_" + hashlib.sha256(value.encode("utf-8")).hexdigest()
 
-def ensureDateTime(dt):
-	if isinstance(dt, datetime.date):
-		return datetime.datetime.combine(dt, datetime.time.min)
-	else:
-		return dt
 
-def eventWithin(event, startTime, endTime):
-	eventStart = ensureDateTime(event['DTSTART'].dt)
-	eventEnd = ensureDateTime(event['DTEND'].dt)
-	startTime = ensureDateTime(startTime)
-	endTime = ensureDateTime(endTime)
-	# If it starts before endTime and it ends after startTime
-	return eventStart <= endTime and eventEnd >= startTime
+def events_to_json(event_list, indent=4):
+    items = []
+    for event in event_list:
+        start = event.decoded("DTSTART")
+        end = event_end(event, start)
+        item = {
+            "kind": "calendar#event",
+            "etag": '\"0123456789012345\"',
+            "iCalUID": str(event.get("UID", "")),
+            "id": event_id(event, start, end),
+            "status": str(event.get("STATUS", "confirmed")).lower(),
+            "htmlLink": str(event.get("URL", "")),
+            "summary": str(event.get("SUMMARY", "")),
+            "start": date_to_json(start),
+            "end": date_to_json(end),
+        }
+        if "CREATED" in event:
+            item["created"] = event.decoded("CREATED").isoformat()
+        if "LAST-MODIFIED" in event:
+            item["updated"] = event.decoded("LAST-MODIFIED").isoformat()
+        if "LOCATION" in event:
+            item["location"] = str(event.get("LOCATION"))
+        if "DESCRIPTION" in event:
+            item["description"] = str(event.get("DESCRIPTION"))
+        items.append(item)
+    return json.dumps({"items": items}, indent=indent, ensure_ascii=False)
+
+
+def comparable_datetime(value):
+    if isinstance(value, datetime.datetime):
+        result = value
+    else:
+        result = datetime.datetime.combine(value, datetime.time.min)
+    return result.astimezone(datetime.timezone.utc).replace(tzinfo=None)
+
+
+def event_within(event, start_time, end_time_exclusive):
+    event_start_value = event.decoded("DTSTART")
+    event_end_value = event_end(event, event_start_value)
+    event_start = comparable_datetime(event_start_value)
+    event_end_time = comparable_datetime(event_end_value)
+    start = comparable_datetime(start_time)
+    end = comparable_datetime(end_time_exclusive)
+    return event_start < end and event_end_time > start
+
+
+def normalize_url(value):
+    parsed = urllib.parse.urlparse(value)
+    if not parsed.scheme:
+        return pathlib.Path(value).expanduser().resolve().as_uri()
+    if parsed.scheme not in ("file", "http", "https"):
+        raise ValueError("Only local files and HTTP(S) URLs are supported.")
+    return value
+
 
 class CalendarManager:
-	def __init__(self, url):
-		self.url = url
-		self.cal = None
-	
-	def read(self):
-		with urllib.request.urlopen(self.url) as sock:
-			text = sock.read()
-			self.cal = Calendar.from_ical(text)
+    def __init__(self, url):
+        self.url = normalize_url(url)
+        self.calendar = None
 
-	@property
-	def events(self):
-		return self.cal.walk('vevent')
+    def read(self):
+        request = urllib.request.Request(
+            self.url,
+            headers={"User-Agent": "KDE Event Calendar iCalendar reader"},
+        )
+        with urllib.request.urlopen(request, timeout=REQUEST_TIMEOUT_SECONDS) as response:
+            data = response.read(MAX_CALENDAR_BYTES + 1)
+        if len(data) > MAX_CALENDAR_BYTES:
+            raise ValueError("The iCalendar file is larger than 10 MiB.")
+        self.calendar = Calendar.from_ical(data)
 
-	def query(self, startTime, endTime):
-		for event in self.events:
-			if eventWithin(event, startTime, endTime):
-				debug("within", event['DTSTART'].dt, event['DTEND'].dt)
-				yield event
-			else:
-				debug("out", event['DTSTART'].dt, event['DTEND'].dt)
+    @property
+    def events(self):
+        return self.calendar.walk("vevent")
 
-
-	def toJson(self):
-		return eventsToJson(self.events)
-
-
-def parseDate(dateStr):
-	return datetime.datetime.strptime(dateStr, '%Y-%m-%d')
-
-def argparse_date(s):
-	try:
-		return parseDate(s)
-	except ValueError:
-		msg = "Not a valid date: '{0}'.".format(s)
-		raise argparse.ArgumentTypeError(msg)
-
-if __name__ == '__main__':
-	import argparse
-
-	parser = argparse.ArgumentParser(description="calculate X to the power of Y")
-	parser.add_argument("--url", type=str, required=True, help="The .ics file to read/write")
-	subparsers = parser.add_subparsers(help='Commands', dest='subcommand')
-
-	query = subparsers.add_parser('query')
-	query.add_argument("startTime", type=argparse_date, help="Inclusive starting date in YYYY-MM-DD format")
-	query.add_argument("endTime", type=argparse_date, help="Inclusive ending date in YYYY-MM-DD format")
-
-	add = subparsers.add_parser('add')
-
-	delete = subparsers.add_parser('delete')
-
-	# debugging = True
-	if debugging:
-		args = parser.parse_args(['--url', 'basic.ics', 'query', '2016-09-15', '2016-09-16'])
-	else:
-		args = parser.parse_args()
-
-	url = urllib.parse.urlparse(args.url, scheme='file').geturl()
-
-	manager = CalendarManager(url)
-	if args.subcommand == 'query':
-		manager.read()
-		eventList = manager.query(args.startTime, args.endTime)
-		print(eventsToJson(eventList))
-
-	elif args.subcommand == 'add':
-		pass
-	elif args.subcommand == 'delete':
-		pass
+    def query(self, start_time, end_time):
+        end_time_exclusive = end_time + datetime.timedelta(days=1)
+        return (
+            event
+            for event in self.events
+            if event_within(event, start_time, end_time_exclusive)
+        )
 
 
+def parse_date(value):
+    try:
+        return datetime.datetime.strptime(value, "%Y-%m-%d")
+    except ValueError as error:
+        raise argparse.ArgumentTypeError(
+            "Not a valid date: '{}'".format(value)
+        ) from error
 
+
+def main():
+    parser = argparse.ArgumentParser(description="Read iCalendar events as JSON")
+    parser.add_argument("--url", required=True, help="Local path or HTTP(S) .ics URL")
+    subparsers = parser.add_subparsers(dest="subcommand", required=True)
+
+    query_parser = subparsers.add_parser("query")
+    query_parser.add_argument("startTime", type=parse_date)
+    query_parser.add_argument("endTime", type=parse_date)
+
+    args = parser.parse_args()
+    manager = CalendarManager(args.url)
+    try:
+        manager.read()
+        print(events_to_json(manager.query(args.startTime, args.endTime)))
+    except (KeyError, OSError, TypeError, ValueError, urllib.error.URLError) as error:
+        print("Could not read iCalendar data: {}".format(error), file=sys.stderr)
+        return 4
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

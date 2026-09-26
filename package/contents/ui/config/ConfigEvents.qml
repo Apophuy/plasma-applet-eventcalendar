@@ -33,12 +33,6 @@ ConfigPage {
 
 	ConfigSection {
 		CheckBox {
-			text: i18n("ICalendar (.ics)")
-			checked: true
-			enabled: false
-			visible: page.cfg_debugging
-		}
-		CheckBox {
 			text: i18n("Google Calendar")
 			checked: true
 			enabled: false

@@ -15,7 +15,7 @@ CalendarManager {
 		bindSignals(googleCalendarManager)
 		bindSignals(googleTasksManager)
 		bindSignals(plasmaCalendarManager)
-		// bindSignals(icalManager)
+		bindSignals(icalManager)
 		// bindSignals(debugCalendarManager)
 		// bindSignals(debugGoogleCalendarManager)
 	}

@@ -71,24 +71,27 @@ Plasmoid для календаря с повесткой дня, погодой 
 - `package/contents/scripts/konsolekalendar.py` — Интеграция с konsolekalendar
 - `package/contents/scripts/notification.py` — Уведомления о событиях
 
+Для чтения локальных и удалённых iCalendar (`.ics`) требуется Python-модуль `icalendar`.
+Повторяющиеся события с `RRULE` пока не разворачиваются в отдельные вхождения.
+
 ### Установка зависимостей по дистрибутивам
 
 **Arch Linux / Manjaro:**
 
 ```bash
-sudo pacman -S plasma-desktop qt6-5compat git plasma-nm kdeplasma-addons plasma-calendar-addons
+sudo pacman -S plasma-desktop qt6-5compat git plasma-nm kdeplasma-addons plasma-calendar-addons python-icalendar
 ```
 
 **Debian 13 (Trixie) / Ubuntu 24.04+:**
 
 ```bash
-sudo apt install kde-plasma-desktop qml6-module-qt5compat-graphicaleffects git plasma-nm plasma-calendar-addons
+sudo apt install kde-plasma-desktop qml6-module-qt5compat-graphicaleffects git plasma-nm plasma-calendar-addons python3-icalendar
 ```
 
 **Fedora:**
 
 ```bash
-sudo dnf install plasma-desktop qt6-qt5compat git kf6-kpackage plasma-nm plasma-calendar-addons
+sudo dnf install plasma-desktop qt6-qt5compat git kf6-kpackage plasma-nm plasma-calendar-addons python3-icalendar
 ```
 
 **openSUSE:**

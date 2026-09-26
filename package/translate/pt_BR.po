@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: eventcalendar\n"
 "Report-Msgid-Bugs-To: https://github.com/Apophuy/plasma-applet-"
 "eventcalendar\n"
-"POT-Creation-Date: 2026-09-25 14:29+0300\n"
+"POT-Creation-Date: 2026-09-26 13:27+0300\n"
 "PO-Revision-Date: 2021-10-19 20:30-0300\n"
 "Last-Translator: Bernardo Barzotto Zomer <bernardobarzottoz@gmail.com>\n"
 "Language-Team: Portuguese <kde-i18n-pt_BR@kde.org>\n"
@@ -62,7 +62,7 @@ msgstr "Agenda"
 msgid "Events"
 msgstr "Eventos"
 
-#: ../contents/config/config.qml ../contents/ui/config/ConfigEvents.qml
+#: ../contents/config/config.qml
 #, kde-format
 msgid "ICalendar (.ics)"
 msgstr "ICalendar (.ics)"
@@ -470,6 +470,21 @@ msgstr ""
 #: ../contents/ui/calendars/GoogleTasksManager.qml
 #, kde-format
 msgid "Unknown Google Tasks error"
+msgstr ""
+
+#: ../contents/ui/calendars/ICalManager.qml
+#, kde-format
+msgid "iCalendar"
+msgstr ""
+
+#: ../contents/ui/calendars/ICalManager.qml
+#, kde-format
+msgid "Could not load iCalendar “%1”. Install the Python “icalendar” module."
+msgstr ""
+
+#: ../contents/ui/calendars/ICalManager.qml
+#, kde-format
+msgid "Could not load iCalendar “%1”."
 msgstr ""
 
 #: ../contents/ui/calendars/PlasmaCalendarManager.qml
@@ -1089,11 +1104,6 @@ msgstr "Adicionar Calendário"
 
 #: ../contents/ui/config/ConfigICal.qml
 #, kde-format
-msgid "New Calendar"
-msgstr "Novo Calendário"
-
-#: ../contents/ui/config/ConfigICal.qml
-#, kde-format
 msgid "Calendar Label"
 msgstr "Nome do Calendário"
 
@@ -1323,6 +1333,10 @@ msgstr "Definir idioma…"
 #, kde-format
 msgid "Set Locale…"
 msgstr "Definir Formato…"
+
+#, kde-format
+#~ msgid "New Calendar"
+#~ msgstr "Novo Calendário"
 
 #~ msgid "Time Format"
 #~ msgstr "Formato de Hora"

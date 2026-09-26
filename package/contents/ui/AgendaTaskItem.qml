@@ -141,7 +141,7 @@ LinkRect {
 				wrapMode: Text.Wrap // See warning at taskTitle.wrapMode
 
 				linkColor: Kirigami.Theme.highlightColor
-				onLinkActivated: Qt.openUrlExternally(link)
+				onLinkActivated: (link) => Qt.openUrlExternally(link)
 				MouseArea {
 					anchors.fill: parent
 					acceptedButtons: Qt.NoButton // we don't want to eat clicks on the Text

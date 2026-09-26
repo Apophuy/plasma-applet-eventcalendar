@@ -62,6 +62,6 @@ Rectangle {
 
 	ContextMenu {
 		id: contextMenu
-		onPopulate: linkRect.loadContextMenu(contextMenu)
+		onPopulate: (menu) => linkRect.loadContextMenu(menu)
 	}
 }

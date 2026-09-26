@@ -69,8 +69,8 @@ PinchArea {
 
 	property QtObject calendarBackend: calendarBackend
 
-	onPinchStarted: stack.currentItem.transformOrigin = pinch.center
-	onPinchUpdated: {
+	onPinchStarted: (pinch) => stack.currentItem.transformOrigin = pinch.center
+	onPinchUpdated: (pinch) => {
 		var item = stack.currentItem
 		if (stack.depth < 3 && pinch.scale < 1) {
 			item.transformScale = pinch.scale
@@ -80,7 +80,7 @@ PinchArea {
 			item.opacity = (2 - pinch.scale / 2)
 		}
 	}
-	onPinchFinished: {
+	onPinchFinished: (pinch) => {
 		var item = stack.currentItem
 		if (item.transformScale < 0.7) {
 			item.headerClicked()
@@ -408,7 +408,7 @@ PinchArea {
 			onHeaderClicked: {
 				stack.push(yearOverview)
 			}
-			onActivated: {
+			onActivated: (index, date) => {
 				var rowNumber = Math.floor(index / columns)
 				week = 1 + calendarBackend.weeksModel[rowNumber]
 				root.date = date
@@ -416,7 +416,7 @@ PinchArea {
 				root.setSelectedDate(dt)
 				root.dateClicked(dt)
 			}
-			onDoubleClicked: {
+			onDoubleClicked: (index, date) => {
 				root.dayDoubleClicked(date)
 			}
 		}
@@ -443,7 +443,7 @@ PinchArea {
 				updateDecadeOverview()
 				stack.push(decadeOverview)
 			}
-			onActivated: {
+			onActivated: (index, date) => {
 				calendarBackend.goToMonth(date.monthNumber)
 				stack.pop()
 			}
@@ -472,7 +472,7 @@ PinchArea {
 
 			onPrevious: calendarBackend.previousDecade()
 			onNext: calendarBackend.nextDecade()
-			onActivated: {
+			onActivated: (index, date) => {
 				calendarBackend.goToYear(date.yearNumber)
 				stack.pop()
 			}
