@@ -33,17 +33,17 @@ KCM.SimpleKCM {
 
 	ColumnLayout {
 		id: content
-		anchors.left: parent.left
-		anchors.right: parent.right
+		Layout.fillWidth: true
+		width: page.availableWidth
+
+		Loader {
+			id: appletVersionLoader
+			active: false
+			visible: active
+			Layout.alignment: Qt.AlignRight
+			source: "AppletVersion.qml"
+		}
 	}
 
 	property alias showAppletVersion: appletVersionLoader.active
-	Loader {
-		id: appletVersionLoader
-		active: false
-		visible: active
-		source: "AppletVersion.qml"
-		anchors.right: parent.right
-		anchors.bottom: parent.top
-	}
 }

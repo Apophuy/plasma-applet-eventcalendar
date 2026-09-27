@@ -8,17 +8,15 @@ CheckBox {
 	id: configCheckBox
 
 	property string configKey: ''
+	readonly property var configValue: configPage && configKey
+		? configPage.getConfigValue(configKey)
+		: false
+	checked: !!configValue
 
 	// Find the ConfigPage ancestor
 	property var configPage: null
 	Component.onCompleted: {
 		configPage = findConfigPage(configCheckBox)
-		if (configPage && configKey) {
-			var val = configPage.getConfigValue(configKey)
-			if (typeof val !== "undefined") {
-				checked = val
-			}
-		}
 	}
 
 	// Helper function to find ConfigPage

@@ -44,7 +44,7 @@ LinkRect {
 			if (model.due.indexOf('T00:00:00.000Z') !== -1) {
 				// Due at end of day
 				var shortDateFormat = i18nc("short month+date format", "MMM d")
-				return Qt.formatDateTime(model.dueDateTime, shortDateFormat)
+				return model.dueDateTime.toLocaleDateString(Qt.locale(), shortDateFormat)
 			} else {
 				// Due at specific time
 				return LocaleFuncs.formatEventDateTime(model.dueDateTime, {
@@ -141,7 +141,7 @@ LinkRect {
 				wrapMode: Text.Wrap // See warning at taskTitle.wrapMode
 
 				linkColor: Kirigami.Theme.highlightColor
-				onLinkActivated: Qt.openUrlExternally(link)
+				onLinkActivated: (link) => Qt.openUrlExternally(link)
 				MouseArea {
 					anchors.fill: parent
 					acceptedButtons: Qt.NoButton // we don't want to eat clicks on the Text

@@ -7,9 +7,12 @@ ListModel {
 	// ConfigPage reference - will be found automatically
 	property var configPage: null
 	Component.onCompleted: {
-		configPage = findConfigPage(listModel)
+		if (!configPage) {
+			configPage = findConfigPage(listModel)
+		}
 		base64Json.configPage = configPage
 	}
+	onConfigPageChanged: base64Json.configPage = configPage
 
 	// Helper function to find ConfigPage
 	function findConfigPage(item) {

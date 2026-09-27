@@ -224,7 +224,7 @@ MouseArea {
 			delay: Kirigami.Units.toolTipDelay
 			text: {
 				if (!tooltipArea.containsMouse) return ""
-				var mainText = Qt.formatDate(thisDate, Qt.locale().dateFormat(Locale.LongFormat))
+				var mainText = thisDate.toLocaleDateString(Qt.locale(), Locale.LongFormat)
 				var subText = tooltipArea.tooltipBody()
 				return subText ? mainText + "\n" + subText : mainText
 			}

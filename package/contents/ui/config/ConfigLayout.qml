@@ -14,8 +14,8 @@ ConfigPage {
 	property bool cfg_twoColumns: true
 	property int cfg_topRowHeight: 100
 	property int cfg_bottomRowHeight: 400
-	property int cfg_leftColumnWidth: 400
-	property int cfg_rightColumnWidth: 400
+	property int cfg_leftColumnWidth: 480
+	property int cfg_rightColumnWidth: 480
 	property int cfg_monthHeightSingleColumn: 300
 
 	SystemPalette {
@@ -93,7 +93,7 @@ ConfigPage {
 			Image {
 				id: twoColumnsImage
 				anchors.fill: parent
-				source: Qt.resolvedUrl("../images/twocolumns.svg")
+				source: Qt.resolvedUrl("../../images/twocolumns.svg")
 				smooth: true
 				visible: false
 			}
@@ -177,7 +177,7 @@ ConfigPage {
 			Image {
 				id: singleColumnImage
 				anchors.fill: parent
-				source: Qt.resolvedUrl("../images/singlecolumn.svg")
+				source: Qt.resolvedUrl("../../images/singlecolumn.svg")
 				smooth: true
 				visible: false
 			}

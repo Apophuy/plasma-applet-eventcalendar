@@ -1,8 +1,12 @@
 # Event Calendar
 
+[English](README.md) | **Русский**
+
 Plasmoid для календаря с повесткой дня, погодой и синхронизацией с Google Calendar.
 
 **Plasma 6 / KDE Frameworks 6 / Qt 6** — Работает на Wayland и X11.
+
+Этот проект — клон [исходного виджета Event Calendar от Zren](https://github.com/Zren/plasma-applet-eventcalendar), перенесённый на Plasma 6 и дополненный исправлениями ошибок и улучшениями совместимости.
 
 ## Скриншоты
 
@@ -18,7 +22,7 @@ Plasmoid для календаря с повесткой дня, погодой 
 | KDE Plasma                         | ≥ 6.0  | Окружение рабочего стола                 |
 | KDE Frameworks                     | ≥ 6.0  | Основные библиотеки KDE                  |
 | Qt                                 | ≥ 6.6  | Фреймворк Qt                             |
-| X-Plasma-API-Minimum-Version       | 6.0    | API Plasma (указано в metadata.json)     |
+| X-Plasma-API-Minimum-Version       | 6.0    | API Plasma (указано в metadata.desktop)  |
 
 ### Runtime зависимости
 
@@ -35,7 +39,7 @@ Plasmoid для календаря с повесткой дня, погодой 
 - `org.kde.plasma.core` (PlasmaCore)
 - `org.kde.plasma.components` (PlasmaComponents3)
 - `org.kde.plasma.plasma5support` (Plasma5Support) — для DataSource
-- `org.kde.plasma.calendar` (PlasmaCalendar) — **обязательно**, предоставляется пакетом `plasma-calendar-addons`
+- `org.kde.plasma.workspace.calendar` (PlasmaCalendar) — **обязательно**, предоставляется пакетом `plasma-calendar-addons`
 - `org.kde.kirigami` (Kirigami)
 - `org.kde.ksvg` (KSvg) — для SVG тем
 - `org.kde.config` (KConfig)
@@ -45,20 +49,22 @@ Plasmoid для календаря с повесткой дня, погодой 
 
 | Пакет                    | Описание                                                              |
 | ------------------------ | --------------------------------------------------------------------- |
-| `plasma-calendar-addons` | **Обязательно!** Модуль `org.kde.plasma.calendar` для работы виджета  |
+| `plasma-calendar-addons` | **Обязательно!** Модуль `org.kde.plasma.workspace.calendar` для работы виджета  |
 
 ### Инструменты установки
 
 | Пакет           | Описание                                      |
 | --------------- | --------------------------------------------- |
 | `git`           | Система контроля версий                       |
+| `python3`       | OAuth, iCalendar и генерация metadata.json    |
+| `gettext`       | Сборка переводов при установке из Git         |
 | `kpackagetool6` | Установщик пакетов KDE (входит в Plasma 6)    |
 
 ### Опциональные зависимости
 
 | Пакет              | Описание                                           |
 | ------------------ | -------------------------------------------------- |
-| `plasma-sdk`       | Инструмент `plasmoidviewer` для отладки            |
+| `plasma-sdk`       | Инструменты Plasma для локального запуска виджета  |
 | `kdeplasma-addons` | Дополнительные плагины календаря (праздники и др.) |
 | `plasma-nm`        | Мониторинг сети (NetworkMonitor)                   |
 
@@ -71,30 +77,35 @@ Plasmoid для календаря с повесткой дня, погодой 
 - `package/contents/scripts/konsolekalendar.py` — Интеграция с konsolekalendar
 - `package/contents/scripts/notification.py` — Уведомления о событиях
 
+Для чтения локальных и удалённых iCalendar (`.ics`) требуется Python-модуль `icalendar`.
+Повторяющиеся события разворачиваются только в запрошенном диапазоне дат. Поддерживаются
+`RRULE`, `RDATE`, `EXDATE`, изменённые и отменённые экземпляры `RECURRENCE-ID`, включая
+изменения `THISANDFUTURE`.
+
 ### Установка зависимостей по дистрибутивам
 
 **Arch Linux / Manjaro:**
 
 ```bash
-sudo pacman -S plasma-desktop qt6-5compat git plasma-nm kdeplasma-addons plasma-calendar-addons
+sudo pacman -S plasma-desktop qt6-5compat git gettext plasma-nm kdeplasma-addons plasma-calendar-addons python-icalendar
 ```
 
 **Debian 13 (Trixie) / Ubuntu 24.04+:**
 
 ```bash
-sudo apt install kde-plasma-desktop qml6-module-qt5compat-graphicaleffects git plasma-nm plasma-calendar-addons
+sudo apt install kde-plasma-desktop qml6-module-qt5compat-graphicaleffects git gettext plasma-nm plasma-calendar-addons python3-icalendar
 ```
 
 **Fedora:**
 
 ```bash
-sudo dnf install plasma-desktop qt6-qt5compat git kf6-kpackage plasma-nm plasma-calendar-addons
+sudo dnf install plasma-desktop qt6-qt5compat git gettext kf6-kpackage plasma-nm plasma-calendar-addons python3-icalendar
 ```
 
 **openSUSE:**
 
 ```bash
-sudo zypper install plasma6-desktop qt6-qt5compat-imports git plasma-nm plasma-calendar-addons
+sudo zypper install plasma6-desktop qt6-qt5compat-imports git gettext plasma-nm plasma-calendar-addons python3-icalendar
 ```
 
 ## Установка из GitHub
@@ -105,7 +116,7 @@ cd eventcalendar
 sh ./install
 ```
 
-Скрипт установки использует `kpackagetool6` для установки plasmoid. Если виджет уже установлен, будет выполнено обновление с автоматическим перезапуском plasmashell.
+Скрипт установки сначала собирает переводы и генерирует Plasma 6 `metadata.json` из канонического `package/metadata.desktop`, затем использует `kpackagetool6`. Если виджет уже установлен, будет выполнено обновление с автоматическим перезапуском plasmashell.
 
 ### Параметры установки
 
@@ -164,16 +175,12 @@ cd eventcalendar
 sh ./install --restart
 ```
 
-### Отладка с plasmoidviewer
+### Отладка с plasmawindowed
 
-Для отладки используйте `plasmoidviewer` из пакета `plasma-sdk`:
+Для запуска текущих исходников в отдельном окне используйте `plasmawindowed`:
 
 ```bash
-# Запуск на Wayland
-plasmoidviewer -a org.kde.plasma.eventcalendar
-
-# Запуск на X11
-plasmoidviewer -a org.kde.plasma.eventcalendar
+plasmawindowed ./package
 ```
 
 ### Просмотр логов
@@ -215,18 +222,19 @@ journalctl --user -f | grep eventcalendar
 
 **Альтернатива:** Weather Canada (для городов Канады)
 
-### iCal Calendar
+### Календари iCalendar (.ics)
 
-1. Перейдите на вкладку **Events**
-2. Добавьте URL вашего iCal календаря (поддерживаются .ics файлы)
+1. Перейдите на вкладку **Календари iCalendar (.ics)**
+2. Добавьте локальный файл `.ics` или URL календаря
+3. Интеграция работает в режиме чтения: события из источника отображаются в календаре и повестке
 
 ### Плагины календарей Plasma
 
 Виджет поддерживает плагины календаря Plasma (например, для праздников):
 
 1. Установите `kdeplasma-addons`
-2. В настройках **Events** → включите нужные плагины
-3. Доступные плагины (обычно находятся в `/usr/lib/qt/plugins/plasmacalendarplugins/` или `/usr/lib64/qt5/plugins/plasmacalendarplugins/`):
+2. В настройках **События** включите нужные плагины
+3. Доступные плагины обычно находятся в `/usr/lib/qt6/plugins/plasmacalendarplugins/` или `/usr/lib64/qt6/plugins/plasmacalendarplugins/`:
    - `holidaysevents.so` — праздники (включен по умолчанию)
 
 ## Возможности
@@ -272,8 +280,7 @@ journalctl --user -f | grep eventcalendar
 # Через systemd (рекомендуется)
 systemctl --user restart plasma-plasmashell.service
 
-# Альтернативный способ
-killall plasmashell && kstart plasmashell
+# Если служба недоступна, выйдите из сеанса Plasma и войдите снова
 ```
 
 ### Ошибки синхронизации Google Calendar
@@ -302,7 +309,8 @@ sh ./install --restart
 
 ```
 package/
-├── metadata.json              # Метаданные плагина (ID, версия, авторы)
+├── metadata.desktop           # Канонические метаданные плагина
+├── metadata.json              # Генерируется build/install, в Git не хранится
 ├── contents/
 │   ├── config/
 │   │   ├── config.qml        # Категории настроек
@@ -382,7 +390,7 @@ GoogleCalendarManager, PlasmaCalendarManager, ICalManager
 cd package/translate
 sh ./merge  # Обновить template.pot из i18n() вызовов
 sh ./build  # Скомпилировать .po → .mo файлы
-sh ./plasmoidlocaletest  # Тестирование с plasmoidviewer
+sh ./plasmoidlocaletest ru  # Тестирование русского интерфейса с plasmawindowed
 ```
 
 ## Лицензия
@@ -391,8 +399,7 @@ GPL — см. исходный код для деталей
 
 ## Авторы
 
-- **Chris Holland** — основной разработчик
-- Email: zrenfire@gmail.com
+- **Apophuy** — разработчик и сопровождающий проекта
 - GitHub: https://github.com/Apophuy/plasma-applet-eventcalendar
 
 ## Благодарности
@@ -401,6 +408,6 @@ GPL — см. исходный код для деталей
 
 ## Версия
 
-Текущая версия: **77** (см. `package/metadata.json`)
+Текущая версия: **1.00** (см. `package/metadata.desktop`)
 
 История изменений: [Changelog.md](Changelog.md)

@@ -4,8 +4,6 @@ import QtQuick.Dialogs
 import QtQuick.Layouts
 import org.kde.kirigami as Kirigami
 
-import org.kde.coreaddons as KCoreAddons
-
 import ".."
 import "../lib"
 
@@ -15,30 +13,15 @@ ConfigPage {
 	// cfg_* properties for KCM binding
 	property string cfg_icalCalendarList: ""
 
-	KCoreAddons.KUser {
-		id: kuser
-	}
-
 	Base64JsonListModel {
 		id: calendarsModel
 		configKey: 'icalCalendarList'
+		configPage: page
 
 		function addCalendar() {
 			addItem({
 				url: '',
-				name: 'Label',
-				backgroundColor: '' + Kirigami.Theme.highlightColor,
-				show: true,
-				isReadOnly: true,
-			})
-		}
-
-		function addNewCalendar() {
-			var dirPath = '/home/' + kuser.loginName + '/.local/share/plasma_org.kde.plasma.eventcalendar'
-			var icsPath = dirPath + '/calendar.ics'
-			addItem({
-				url: icsPath,
-				name: 'Label',
+				name: i18n('Calendar'),
 				backgroundColor: '' + Kirigami.Theme.highlightColor,
 				show: true,
 				isReadOnly: true,
@@ -55,11 +38,13 @@ ConfigPage {
 			text: i18n("Add Calendar")
 			onClicked: calendarsModel.addCalendar()
 		}
-		Button {
-			icon.name: "resource-calendar-insert"
-			text: i18n("New Calendar")
-			onClicked: calendarsModel.addNewCalendar()
-		}
+	}
+
+	Label {
+		Layout.fillWidth: true
+		Layout.preferredWidth: 0
+		wrapMode: Text.Wrap
+		text: i18n("Add read-only calendars from local .ics files or web links. Changes made in the source calendar will appear here after the next update.")
 	}
 
 	ColumnLayout {
@@ -76,11 +61,8 @@ ConfigPage {
 					Layout.preferredWidth: height
 					Layout.alignment: Qt.AlignTop
 					checked: show
-					style: CheckBoxStyle {}
 
-					onClicked: {
-						calendarsModel.setProperty(index, 'show', checked)
-					}
+					onClicked: calendarsModel.setItemProperty(index, 'show', checked)
 				}
 				ColumnLayout {
 					RowLayout {
@@ -94,6 +76,7 @@ ConfigPage {
 							Layout.fillWidth: true
 							text: model.name
 							placeholderText: i18n("Calendar Label")
+							onTextEdited: calendarsModel.setItemProperty(index, 'name', text)
 						}
 						Button {
 							icon.name: "trash-empty"
@@ -105,7 +88,8 @@ ConfigPage {
 							id: calendarUrlField
 							Layout.fillWidth: true
 							text: model.url
-							onTextChanged: calendarsModel.setItemProperty(index, 'url', text)
+							placeholderText: i18n("Local .ics file or web link")
+							onTextEdited: calendarsModel.setItemProperty(index, 'url', text)
 						}
 
 						Button {
@@ -120,8 +104,8 @@ ConfigPage {
 
 								nameFilters: [ i18n("iCalendar (*.ics)") ]
 
-								onFileUrlChanged: {
-									calendarUrlField.text = fileUrl
+								onAccepted: {
+									calendarsModel.setItemProperty(index, 'url', selectedFile.toString())
 								}
 							}
 						}

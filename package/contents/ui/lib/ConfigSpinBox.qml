@@ -8,7 +8,9 @@ RowLayout {
 	id: configSpinBox
 
 	property string configKey: ''
-	property var configValue: 0
+	readonly property var configValue: configPage && configKey
+		? configPage.getConfigValue(configKey)
+		: 0
 	property alias from: spinBox.from
 	property alias to: spinBox.to
 	property alias stepSize: spinBox.stepSize
@@ -27,13 +29,6 @@ RowLayout {
 	property var configPage: null
 	Component.onCompleted: {
 		configPage = findConfigPage(configSpinBox)
-		if (configPage && configKey) {
-			var val = configPage.getConfigValue(configKey)
-			if (typeof val !== "undefined") {
-				configValue = val
-				spinBox.value = val
-			}
-		}
 	}
 
 	// Helper function to find ConfigPage

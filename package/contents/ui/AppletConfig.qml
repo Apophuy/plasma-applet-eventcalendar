@@ -61,6 +61,7 @@ QtObject {
 
 	property QtObject icalCalendarList: Base64Json {
 		configKey: 'icalCalendarList'
+		configValue: Plasmoid.configuration.icalCalendarList
 	}
 
 	property ListModel icalCalendarListModel: Base64JsonListModel {

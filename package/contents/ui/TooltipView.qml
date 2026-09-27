@@ -34,10 +34,10 @@ Item {
 		// add the dataengine TZ offset to it
 		var dateTime = new Date(msUTC + (dataSource.data[zone]["Offset"] * 1000))
 
-		var formattedTime = Qt.formatTime(dateTime, timezoneTimeFormat)
+		var formattedTime = dateTime.toLocaleTimeString(Qt.locale(), timezoneTimeFormat)
 
 		if (dateTime.getDay() != dataSource.data["Local"]["DateTime"].getDay()) {
-			formattedTime += " (" + Qt.formatDate(dateTime, Locale.ShortFormat) + ")"
+			formattedTime += " (" + dateTime.toLocaleDateString(Qt.locale(), Locale.ShortFormat) + ")"
 		}
 
 		return formattedTime
@@ -82,14 +82,14 @@ Item {
 					Layout.minimumWidth: Math.min(implicitWidth, preferredTextWidth)
 					Layout.maximumWidth: preferredTextWidth
 					elide: Text.ElideRight
-					text: Qt.formatTime(timeModel.currentTime, Qt.locale().timeFormat(Locale.LongFormat))
+					text: timeModel.currentTime.toLocaleTimeString(Qt.locale(), Locale.LongFormat)
 				}
 
 				PlasmaComponents3.Label {
 					id: tooltipSubtext
 					Layout.minimumWidth: Math.min(implicitWidth, preferredTextWidth)
 					Layout.maximumWidth: preferredTextWidth
-					text: Qt.formatDate(timeModel.currentTime, Qt.locale().dateFormat(Locale.LongFormat))
+					text: timeModel.currentTime.toLocaleDateString(Qt.locale(), Locale.LongFormat)
 					opacity: 0.6
 				}
 			}

@@ -1,7 +1,15 @@
-#!/bin/bash
-# Version 4 - Plasma 6
+#!/bin/sh
+# Version 5 - Plasma 6
 
-packageServiceType="Plasma/Applet"
+set -eu
 
-# Eg: kpackagetool6 -t "Plasma/Applet" -r package
-kpackagetool6 -t "${packageServiceType}" -r package
+SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+cd "$SCRIPT_DIR"
+
+package_namespace=$(sed -n 's/^X-KDE-PluginInfo-Name=//p' package/metadata.desktop | head -n 1)
+if [ -z "$package_namespace" ]; then
+	echo "Error: Could not read plugin ID from package/metadata.desktop"
+	exit 1
+fi
+
+kpackagetool6 --type="Plasma/Applet" --remove "$package_namespace"

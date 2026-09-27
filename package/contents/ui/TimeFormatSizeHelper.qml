@@ -43,10 +43,10 @@ Item {
 	function updateMinWidth() {
 		var now = new Date(timeModel.currentTime)
 		var date = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 1, 0, 0)
-		var timeAm = Qt.formatDateTime(date, widestTimeFormat)
+		var timeAm = date.toLocaleString(Qt.locale(), widestTimeFormat)
 		var advanceWidthAm = fontMetrics.advanceWidth(timeAm)
 		date.setHours(13)
-		var timePm = Qt.formatDateTime(date, widestTimeFormat)
+		var timePm = date.toLocaleString(Qt.locale(), widestTimeFormat)
 		var advanceWidthPm = fontMetrics.advanceWidth(timePm)
 
 		if (advanceWidthAm > advanceWidthPm) {

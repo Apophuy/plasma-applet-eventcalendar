@@ -15,7 +15,7 @@ CalendarManager {
 		bindSignals(googleCalendarManager)
 		bindSignals(googleTasksManager)
 		bindSignals(plasmaCalendarManager)
-		// bindSignals(icalManager)
+		bindSignals(icalManager)
 		// bindSignals(debugCalendarManager)
 		// bindSignals(debugGoogleCalendarManager)
 	}
@@ -74,7 +74,9 @@ CalendarManager {
 	//---
 	ICalManager {
 		id: icalManager
-		calendarList: appletConfig.icalCalendarList.value
+		calendarList: Array.isArray(appletConfig.icalCalendarList.value)
+			? appletConfig.icalCalendarList.value
+			: []
 	}
 
 	DebugCalendarManager { id: debugCalendarManager }

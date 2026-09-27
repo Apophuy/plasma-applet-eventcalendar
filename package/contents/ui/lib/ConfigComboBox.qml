@@ -33,7 +33,9 @@ RowLayout {
 	property string configKey: ''
 	readonly property var currentItem: comboBox.model[comboBox.currentIndex]
 	readonly property string value: currentItem ? currentItem[valueRole] : ""
-	property string configValue: ""
+	readonly property var configValue: configPage && configKey
+		? configPage.getConfigValue(configKey)
+		: ""
 
 	property alias textRole: comboBox.textRole
 	property alias valueRole: comboBox.valueRole
@@ -50,13 +52,7 @@ RowLayout {
 	Component.onCompleted: {
 		configPage = findConfigPage(configComboBox)
 		populate()
-		if (configPage && configKey) {
-			var val = configPage.getConfigValue(configKey)
-			if (typeof val !== "undefined") {
-				configValue = val
-				selectValue(val)
-			}
-		}
+		selectValue(configValue)
 	}
 
 	// Helper function to find ConfigPage
@@ -97,7 +93,6 @@ RowLayout {
 					var val = item[configComboBox.valueRole]
 					if (configComboBox.configPage && configComboBox.configKey && (typeof val !== "undefined") && configComboBox.populated) {
 						configComboBox.configPage.setConfigValue(configComboBox.configKey, val)
-						configComboBox.configValue = val
 					}
 				}
 			}

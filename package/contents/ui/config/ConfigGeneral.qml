@@ -10,12 +10,15 @@ import "../lib/Requests.js" as Requests
 
 ConfigPage {
 	id: page
+	showAppletVersion: true
 
 	// cfg_* properties that KCM injects and Config* components use
 	// These are automatically bound to configuration by KCM
 	property bool cfg_debugging: false
 	property bool cfg_widgetShowMeteogram: true
 	property bool cfg_widgetShowTimer: true
+	property bool cfg_timerSfxEnabled: true
+	property string cfg_timerSfxFilepath: "/usr/share/sounds/freedesktop/stereo/complete.oga"
 	property bool cfg_showBackground: true
 	property string cfg_clockFontFamily: ""
 	property string cfg_clockTimeFormat1: ""
@@ -52,17 +55,19 @@ ConfigPage {
 	//---
 
 	Kirigami.FormLayout {
+		Layout.fillWidth: true
 
-	Kirigami.Separator {
-		Kirigami.FormData.isSection: true
-		Kirigami.FormData.label: i18n("Widgets")
-	}
+		Kirigami.Separator {
+			Kirigami.FormData.isSection: true
+			Kirigami.FormData.label: i18n("Widgets")
+		}
 
-	Label {
-		Layout.maximumWidth: page.width
-		wrapMode: Text.Wrap
-		text: i18n("Show/Hide widgets above the calendar. Toggle Agenda/Calendar on their respective tabs.")
-	}
+		Label {
+			Layout.fillWidth: true
+			Layout.preferredWidth: 0
+			wrapMode: Text.Wrap
+			text: i18n("Show/Hide widgets above the calendar. Toggle Agenda/Calendar on their respective tabs.")
+		}
 
 	CheckBox {
 		Kirigami.FormData.label: i18n("Meteogram")
@@ -77,23 +82,34 @@ ConfigPage {
 		onCheckedChanged: page.cfg_widgetShowTimer = checked
 	}
 
+	ConfigSound {
+		Kirigami.FormData.label: i18n("SFX:")
+		sfxEnabledKey: "timerSfxEnabled"
+		sfxPathKey: "timerSfxFilepath"
+		sfxPathDefaultValue: "/usr/share/sounds/freedesktop/stereo/complete.oga"
+		enabled: widgetShowTimer.checked
+		Layout.fillWidth: true
+	}
+
 	Kirigami.Separator {
 		Kirigami.FormData.isSection: true
 		Kirigami.FormData.label: i18n("Clock")
 	}
 
 		LinkText {
-			text: '<a href="https://doc.qt.io/qt-5/qml-qtqml-qt.html#formatDateTime-method">' + i18n("Time Format Documentation") + '</a>'
+			text: '<a href="https://doc.qt.io/qt-6/qml-qtqml-qt.html#formatDateTime-method">' + i18n("Time Format Documentation") + '</a>'
 		}
 
 		Label {
-			Layout.maximumWidth: page.width
+			Layout.fillWidth: true
+			Layout.preferredWidth: 0
 			wrapMode: Text.Wrap
 			text: i18n("The default font for the Breeze theme is Noto Sans which is hard to read with small text. Try using the Sans Serif font if you find the text too small when adding a second line.")
 		}
 
 		Label {
-			Layout.maximumWidth: page.width
+			Layout.fillWidth: true
+			Layout.preferredWidth: 0
 			wrapMode: Text.Wrap
 			text: i18n("You can also use %1 or %2 to style a section. Note the single quotes around the tags are used to bypass the time format.", "<b>\'&lt;b&gt;\'ddd\'&lt;\/b&gt;\'</b>", "<b>\'&lt;font color=\"#77aaadd\"&gt;\'ddd\'&lt;\/font&gt;\'</b>")
 		}
@@ -136,7 +152,7 @@ ConfigPage {
 					placeholderText: localeTimeFormat
 				}
 				Label {
-					text: Qt.formatDateTime(new Date(), line1TimeFormat)
+					text: new Date().toLocaleString(Qt.locale(), line1TimeFormat)
 				}
 			}
 
@@ -147,21 +163,21 @@ ConfigPage {
 					text: i18n("Preset:")
 				}
 				Button {
-					text: Qt.formatDateTime(new Date(), timeFormat12hour)
+					text: new Date().toLocaleString(Qt.locale(), timeFormat12hour)
 					onClicked: clockTimeFormat.value = timeFormat12hour
 				}
 				Button {
-					text: Qt.formatDateTime(new Date(), timeFormat24hour)
+					text: new Date().toLocaleString(Qt.locale(), timeFormat24hour)
 					onClicked: clockTimeFormat.value = timeFormat24hour
 				}
 				Button {
 					property string dateFormat: Qt.locale().timeFormat(Locale.ShortFormat).replace('mm', 'mm:ss')
-					text: Qt.formatDateTime(new Date(), dateFormat)
+					text: new Date().toLocaleString(Qt.locale(), dateFormat)
 					onClicked: clockTimeFormat.value = dateFormat
 				}
 				Button {
 					property string dateFormat: 'MMM d, ' + Qt.locale().timeFormat(Locale.ShortFormat)
-					text: Qt.formatDateTime(new Date(), dateFormat)
+					text: new Date().toLocaleString(Qt.locale(), dateFormat)
 					onClicked: clockTimeFormat.value = dateFormat
 				}
 			}
@@ -175,12 +191,12 @@ ConfigPage {
 				}
 				ColorTextButton {
 					property string dateFormat: '\'<font color="#3daee9">\'MMM d\'</font>\' ' + Qt.locale().timeFormat(Locale.ShortFormat)
-					label: Qt.formatDateTime(new Date(), dateFormat.replace())
+					label: new Date().toLocaleString(Qt.locale(), dateFormat.replace())
 					onClicked: clockTimeFormat.value = dateFormat
 				}
 				ColorTextButton {
 					property string dateFormat: '\'<font color="#888">\'ddd<>d\'</font>\' h:mm\'<font color="#888">\'AP\'</font>\''
-					label: Qt.formatDateTime(new Date(), dateFormat.replace())
+					label: new Date().toLocaleString(Qt.locale(), dateFormat.replace())
 					onClicked: clockTimeFormat.value = dateFormat
 				}
 			}
@@ -208,7 +224,7 @@ ConfigPage {
 					placeholderText: localeDateFormat
 				}
 				Label {
-					text: Qt.formatDateTime(new Date(), line2TimeFormat)
+					text: new Date().toLocaleString(Qt.locale(), line2TimeFormat)
 				}
 			}
 
@@ -229,17 +245,17 @@ ConfigPage {
 						format = format.replace(/(^dddd.?\s)|(,?\sdddd$)/, "")
 						return format
 					}
-					text: Qt.formatDate(new Date(), dateFormat)
+					text: new Date().toLocaleDateString(Qt.locale(), dateFormat)
 					onClicked: clockTimeFormat2.value = dateFormat
 				}
 				Button {
 					property string dateFormat: Qt.locale().dateFormat(Locale.ShortFormat)
-					text: Qt.formatDate(new Date(), dateFormat)
+					text: new Date().toLocaleDateString(Qt.locale(), dateFormat)
 					onClicked: clockTimeFormat2.value = dateFormat
 				}
 				Button {
 					property string dateFormat: 'MMM d'
-					text: Qt.formatDateTime(new Date(), dateFormat)
+					text: new Date().toLocaleDateString(Qt.locale(), dateFormat)
 					onClicked: clockTimeFormat2.value = dateFormat
 				}
 				Button {

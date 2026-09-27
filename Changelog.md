@@ -1,3 +1,14 @@
+## v1.00 - September 27 2026
+
+### First independent Plasma 6 release
+
+* Established the substantially reworked Plasma 6 implementation as version 1.00 rather than continuing the original numeric release sequence.
+* Restored and modernized the popup, calendar, agenda, timer, weather, and configuration interfaces for Qt 6 and KDE Frameworks 6.
+* Added modern Google Calendar and Tasks authentication using a loopback callback with PKCE.
+* Improved local and remote iCalendar support, including bounded recurrence expansion and modified or cancelled recurring instances.
+* Made packaging and installation reproducible from a clean clone, with generated Plasma 6 metadata and compiled translations.
+* Completed the Russian interface audit, localized weather tooltips, and added separate English and Russian README files.
+
 ## v77 - January 22 2026
 
 ### Plasma 6 / Qt 6 Migration
@@ -14,6 +25,8 @@
   - Updated KCMUtils integration for settings pages
 * **Build:** Updated install script to use kpackagetool6
 * **Build:** Added systemctl support for plasmashell restart
+* **Build:** Made build/install reproducible from a clean clone, including translation compilation and Plasma 6 metadata generation
+* **Build:** Updated helper scripts for POSIX `sh` and removed remaining Plasma 5 build-tool dependencies
 * **Metadata:** Migrated from metadata.desktop to metadata.json
 * **Metadata:** Set X-Plasma-API-Minimum-Version to 6.0
 * **Metadata:** Updated X-Plasma-Provides to org.kde.plasma.time and org.kde.plasma.date

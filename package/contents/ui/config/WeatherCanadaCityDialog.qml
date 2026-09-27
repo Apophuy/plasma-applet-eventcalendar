@@ -11,11 +11,21 @@ import "../weather/WeatherCanada.js" as WeatherCanada
 Dialog {
 	id: chooseCityDialog
 	title: i18n("Select city")
+	parent: Overlay.overlay
+	modal: true
+	standardButtons: Dialog.Ok | Dialog.Cancel
+	closePolicy: Popup.CloseOnEscape
 
 	implicitWidth: 500
 	implicitHeight: 600
-	width: parent && parent.width > 0 ? Math.min(implicitWidth, parent.width) : implicitWidth
-	height: parent && parent.height > 0 ? Math.min(implicitHeight, parent.height) : implicitHeight
+	width: parent && parent.width > 0
+		? Math.min(implicitWidth, parent.width - Kirigami.Units.largeSpacing * 2)
+		: implicitWidth
+	height: parent && parent.height > 0
+		? Math.min(implicitHeight, parent.height - Kirigami.Units.largeSpacing * 2)
+		: implicitHeight
+	x: parent ? Math.round((parent.width - width) / 2) : 0
+	y: parent ? Math.round((parent.height - height) / 2) : 0
 	property bool loadingCityList: false
 	property bool cityListLoaded: false
 
@@ -50,6 +60,15 @@ Dialog {
 	property int currentProvinceIndex: 0
 	property var provinceIdList: ['AB', 'BC', 'MB', 'NB', 'NL', 'NS', 'NT', 'NU', 'ON', 'PE', 'QC', 'SK', 'YT']
 
+	function updateOkButton() {
+		var button = standardButton(Dialog.Ok)
+		if (button) {
+			button.enabled = !!selectedCityId
+		}
+	}
+
+	onSelectedCityIdChanged: updateOkButton()
+
 	Timer {
 		id: debounceApplyFilter
 		interval: 300
@@ -62,6 +81,10 @@ Dialog {
 	onVisibleChanged: {
 		if (visible && !cityListLoaded && !loadingCityList) {
 			loadProvinceCityList()
+		}
+		if (visible) {
+			updateOkButton()
+			cityNameInput.forceActiveFocus()
 		}
 	}
 
@@ -92,12 +115,18 @@ Dialog {
 			}
 		}
 
-		TextField {
-			id: cityNameInput
+		RowLayout {
 			Layout.fillWidth: true
-			text: ''
-			placeholderText: i18n("Search")
-			onTextChanged: debounceApplyFilter.restart()
+			Label {
+				text: i18n("Search") + ":"
+			}
+			TextField {
+				id: cityNameInput
+				Layout.fillWidth: true
+				text: ''
+				placeholderText: i18n("Select city")
+				onTextChanged: debounceApplyFilter.restart()
+			}
 		}
 
 		// City list using ListView

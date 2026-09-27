@@ -1,4 +1,5 @@
 import QtQuick
+import org.kde.plasma.plasmoid
 
 QtObject {
 	id: base64Json
@@ -8,15 +9,30 @@ QtObject {
 
 	// ConfigPage reference - must be set by parent
 	property var configPage: null
+	readonly property var pageConfigValue: configPage && configKey
+		? configPage.getConfigValue(configKey)
+		: undefined
 
-	Component.onCompleted: {
-		if (configPage && configKey) {
-			var val = configPage.getConfigValue(configKey)
-			if (typeof val !== "undefined") {
-				configValue = val
-				deserialize()
-			}
+	Component.onCompleted: loadConfig()
+	onConfigPageChanged: loadConfig()
+	onPageConfigValueChanged: {
+		if (configPage) {
+			configValue = typeof pageConfigValue === "undefined" ? "" : pageConfigValue
 		}
+	}
+
+	function loadConfig() {
+		if (!configKey) {
+			return
+		}
+		var val
+		if (configPage) {
+			val = configPage.getConfigValue(configKey)
+		} else {
+			val = Plasmoid.configuration[configKey]
+		}
+		configValue = typeof val === "undefined" ? "" : val
+		deserialize()
 	}
 
 	onConfigValueChanged: deserialize()
@@ -38,7 +54,9 @@ QtObject {
 		var v = Qt.btoa(JSON.stringify(value))
 		if (configPage && configKey) {
 			configPage.setConfigValue(configKey, v)
-			configValue = v
+		} else if (configKey) {
+			Plasmoid.configuration[configKey] = v
 		}
+		configValue = v
 	}
 }

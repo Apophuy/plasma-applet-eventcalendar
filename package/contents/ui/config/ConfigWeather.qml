@@ -51,6 +51,7 @@ ConfigPage {
 		}
 
 		RowLayout {
+			Layout.fillWidth: true
 			visible: weatherService.value === 'OpenWeatherMap'
 			Label {
 				text: i18n("City Id:")
@@ -61,21 +62,13 @@ ConfigPage {
 				placeholderText: i18n("Eg: 5983720")
 			}
 			Button {
-				text: i18n("Find City")
+				text: i18n("Select city")
 				onClicked: openWeatherMapCityDialog.open()
-			}
-
-			OpenWeatherMapCityDialog {
-				id: openWeatherMapCityDialog
-				cfg_debugging: page.cfg_debugging
-				cfg_openWeatherMapAppId: page.cfg_openWeatherMapAppId
-				onAccepted: {
-					weatherCityId.value = selectedCityId
-				}
 			}
 		}
 
 		RowLayout {
+			Layout.fillWidth: true
 			visible: weatherService.value === 'WeatherCanada'
 			Label {
 				text: i18n("City Id:")
@@ -86,15 +79,8 @@ ConfigPage {
 				placeholderText: i18n("Eg: on-14")
 			}
 			Button {
-				text: i18n("Find City")
+				text: i18n("Select city")
 				onClicked: weatherCanadaCityDialog.open()
-			}
-
-			WeatherCanadaCityDialog {
-				id: weatherCanadaCityDialog
-				onAccepted: {
-					weatherCanadaCityId.value = selectedCityId
-				}
 			}
 		}
 	}
@@ -179,6 +165,18 @@ ConfigPage {
 			label: i18n("Icons")
 			defaultColor: config.meteogramIconColorDefault
 		}
+	}
+
+	OpenWeatherMapCityDialog {
+		id: openWeatherMapCityDialog
+		cfg_debugging: page.cfg_debugging
+		cfg_openWeatherMapAppId: page.cfg_openWeatherMapAppId
+		onAccepted: weatherCityId.value = selectedCityId
+	}
+
+	WeatherCanadaCityDialog {
+		id: weatherCanadaCityDialog
+		onAccepted: weatherCanadaCityId.value = selectedCityId
 	}
 
 }
