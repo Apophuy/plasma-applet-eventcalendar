@@ -1,48 +1,54 @@
-#!/bin/bash
-# Version 6 - Plasma 6
+#!/bin/sh
+# Version 7 - Plasma 6
 
-# This script detects if the widget is already installed.
-# If it is, it will use --upgrade instead and restart plasmashell.
+set -eu
 
-# Read plugin ID from metadata.json
-packageNamespace=$(grep -oP '"Id"\s*:\s*"\K[^"]+' "$PWD/package/metadata.json" 2>/dev/null)
-if [ -z "$packageNamespace" ]; then
-	echo "Error: Could not read Id from package/metadata.json"
+SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+cd "$SCRIPT_DIR"
+
+for command_name in python3 kpackagetool6; do
+	if ! command -v "$command_name" >/dev/null 2>&1; then
+		echo "Error: '$command_name' is required."
+		exit 1
+	fi
+done
+
+# metadata.json and compiled translations are generated artifacts and are not
+# stored in Git. Rebuild them so installation also works from a clean clone.
+sh package/translate/build
+python3 tools/generate_metadata.py
+
+package_namespace=$(sed -n 's/^X-KDE-PluginInfo-Name=//p' package/metadata.desktop | head -n 1)
+if [ -z "$package_namespace" ]; then
+	echo "Error: Could not read plugin ID from package/metadata.desktop"
 	exit 1
 fi
 
-packageServiceType="Plasma/Applet"
-restartPlasmashell=false
+package_service_type="Plasma/Applet"
+restart_plasmashell=false
 
 for arg in "$@"; do
 	case "$arg" in
-		-r) restartPlasmashell=true;;
-		--restart) restartPlasmashell=true;;
+		-r|--restart) restart_plasmashell=true ;;
 		*) ;;
 	esac
 done
 
-isAlreadyInstalled=false
-kpackagetool6 --type="${packageServiceType}" --show="$packageNamespace" &> /dev/null
-if [ $? == 0 ]; then
-	isAlreadyInstalled=true
-fi
-
-if $isAlreadyInstalled; then
-	# Eg: kpackagetool6 -t "Plasma/Applet" -u package
-	kpackagetool6 -t "${packageServiceType}" -u package
-	restartPlasmashell=true
+if kpackagetool6 --type="$package_service_type" --show="$package_namespace" >/dev/null 2>&1; then
+	echo "Upgrading package from: $SCRIPT_DIR/package"
+	kpackagetool6 --type="$package_service_type" --upgrade "$SCRIPT_DIR/package"
+	restart_plasmashell=true
 else
-	# Eg: kpackagetool6 -t "Plasma/Applet" -i package
-	kpackagetool6 -t "${packageServiceType}" -i package
+	echo "Installing package from: $SCRIPT_DIR/package"
+	kpackagetool6 --type="$package_service_type" --install "$SCRIPT_DIR/package"
 fi
 
-if $restartPlasmashell; then
-	# For Plasma 6, use systemctl to restart plasmashell
-	if command -v systemctl &> /dev/null && systemctl --user is-active plasma-plasmashell.service &> /dev/null; then
+if [ "$restart_plasmashell" = true ]; then
+	if command -v systemctl >/dev/null 2>&1 \
+		&& systemctl --user is-active plasma-plasmashell.service >/dev/null 2>&1; then
 		systemctl --user restart plasma-plasmashell.service
 	else
-		killall plasmashell
-		kstart plasmashell &
+		killall plasmashell >/dev/null 2>&1 || true
+		kstart plasmashell >/dev/null 2>&1 &
 	fi
 fi

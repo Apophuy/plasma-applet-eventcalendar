@@ -1,106 +1,77 @@
-#!/bin/bash
-# Version 18
+#!/bin/sh
+# Version 19 - Plasma 6
 
-### User Variables
-qtMinVer="5.12"
-kfMinVer="5.68"
-plasmaMinVer="5.18"
-filenameTag="-plasma${plasmaMinVer}"
-packageExt="plasmoid"
+set -eu
 
+SCRIPT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+cd "$SCRIPT_DIR"
 
-### Misc
-startDir=$PWD
+PACKAGE_EXT="plasmoid"
 
-### Colors
-# https://stackoverflow.com/questions/5947742/how-to-change-the-output-color-of-echo-in-linux
-# https://stackoverflow.com/questions/911168/how-can-i-detect-if-my-shell-script-is-running-through-a-pipe
-TC_Red='\033[31m'; TC_Orange='\033[33m';
-TC_LightGray='\033[90m'; TC_LightRed='\033[91m'; TC_LightGreen='\033[92m'; TC_Yellow='\033[93m'; TC_LightBlue='\033[94m';
-TC_Reset='\033[0m'; TC_Bold='\033[1m';
+TC_RED='\033[31m'
+TC_LIGHT_GRAY='\033[90m'
+TC_LIGHT_GREEN='\033[92m'
+TC_RESET='\033[0m'
 if [ ! -t 1 ]; then
-	TC_Red=''; TC_Orange='';
-	TC_LightGray=''; TC_LightRed=''; TC_LightGreen=''; TC_Yellow=''; TC_LightBlue='';
-	TC_Bold=''; TC_Reset='';
+	TC_RED=''
+	TC_LIGHT_GRAY=''
+	TC_LIGHT_GREEN=''
+	TC_RESET=''
 fi
-function echoTC() {
-	text="$1"
-	textColor="$2"
-	echo -e "${textColor}${text}${TC_Reset}"
+
+echo_color() {
+	text=$1
+	color=$2
+	printf '%b\n' "${color}${text}${TC_RESET}"
 }
-function echoGray { echoTC "$1" "$TC_LightGray"; }
-function echoRed { echoTC "$1" "$TC_Red"; }
-function echoGreen { echoTC "$1" "$TC_LightGreen"; }
 
+echo_gray() { echo_color "$1" "$TC_LIGHT_GRAY"; }
+echo_red() { echo_color "$1" "$TC_RED"; }
+echo_green() { echo_color "$1" "$TC_LIGHT_GREEN"; }
 
-### Check QML Versions
-# See https://zren.github.io/kde/versions/ for distro versions
+for command_name in python3 zip md5sum sha256sum; do
+	if ! command -v "$command_name" >/dev/null 2>&1; then
+		echo_red "[build] Error: '$command_name' is required."
+		exit 1
+	fi
+done
+
 if [ -f checkimports.py ]; then
-	python3 checkimports.py --qt="$qtMinVer" --kf="$kfMinVer" --plasma="$plasmaMinVer"
-	if [ $? == 1 ]; then
-		exit 1
-	fi
+	python3 checkimports.py --qt=6.6 --kf=6.0 --plasma=6.0
 fi
 
-### Translations
-if [ -d "package/translate" ]; then
-	echoGray "[build] translate dir found, running merge."
-	(cd package/translate && sh ./merge)
-	(cd package/translate && sh ./build)
-	if type "git" > /dev/null; then
-		# echo "[build] Git found, running translation diff check."
-		if [ "$(git diff --stat package/translate)" != "" ]; then
-			echoRed "[build] Changed detected. Cancelling build."
-			git diff --stat .
-			exit 1
-		fi
-	else
-		echoGray "[build] Git not found, skipping translation diff check."
-	fi
+if [ -d package/translate ]; then
+	echo_gray "[build] Updating and compiling translations."
+	sh package/translate/merge
+	sh package/translate/build
 fi
 
+python3 tools/generate_metadata.py
 
-### Variables
-packageNamespace=`kreadconfig5 --file="$PWD/package/metadata.desktop" --group="Desktop Entry" --key="X-KDE-PluginInfo-Name"`
-packageName="${packageNamespace##*.}" # Strip namespace (Eg: "org.kde.plasma.")
-packageVersion=`kreadconfig5 --file="$PWD/package/metadata.desktop" --group="Desktop Entry" --key="X-KDE-PluginInfo-Version"`
-packageAuthor=`kreadconfig5 --file="$PWD/package/metadata.desktop" --group="Desktop Entry" --key="X-KDE-PluginInfo-Author"`
-packageAuthorEmail=`kreadconfig5 --file="$PWD/package/metadata.desktop" --group="Desktop Entry" --key="X-KDE-PluginInfo-Email"`
-packageWebsite=`kreadconfig5 --file="$PWD/package/metadata.desktop" --group="Desktop Entry" --key="X-KDE-PluginInfo-Website"`
-packageComment=`kreadconfig5 --file="$PWD/package/metadata.desktop" --group="Desktop Entry" --key="Comment"`
+read_metadata_value() {
+	key=$1
+	sed -n 's/^'"${key}"'=//p' package/metadata.desktop | head -n 1
+}
 
-### metadata.desktop => metadata.json
-if command -v desktoptojson &> /dev/null ; then
-	genOutput=`desktoptojson --serviceType="plasma-applet.desktop" -i "$PWD/package/metadata.desktop" -o "$PWD/package/metadata.json"`
-	if [ "$?" != "0" ]; then
-		exit 1
-	fi
-	# Tabify metadata.json
-	sed -i '{s/ \{4\}/\t/g}' "$PWD/package/metadata.json"
-fi
-
-
-### *.plasmoid
-
-if ! type "zip" > /dev/null; then
-	echoRed "[error] 'zip' command not found."
-	if type "zypper" > /dev/null; then
-		echoRed "[error] Opensuse detected, please run: ${TC_Bold}sudo zypper install zip"
-	fi
+package_namespace=$(read_metadata_value "X-KDE-PluginInfo-Name")
+package_version=$(read_metadata_value "X-KDE-PluginInfo-Version")
+if [ -z "$package_namespace" ] || [ -z "$package_version" ]; then
+	echo_red "[build] Error: plugin ID or version is missing from metadata.desktop."
 	exit 1
 fi
-filename="${packageName}-v${packageVersion}${filenameTag}.${packageExt}"
-rm ${packageName}-v*.${packageExt} # Cleanup
-echoGray "[${packageExt}] Zipping '${filename}'"
-(cd package \
-	&& zip -r $filename * \
-	&& mv $filename $startDir/$filename \
+
+package_name=${package_namespace##*.}
+filename="${package_name}-v${package_version}-plasma6.${PACKAGE_EXT}"
+
+find "$SCRIPT_DIR" -maxdepth 1 -type f \
+	-name "${package_name}-v*.${PACKAGE_EXT}" -delete
+
+echo_gray "[${PACKAGE_EXT}] Creating '${filename}'"
+(
+	cd package
+	zip -qr "$SCRIPT_DIR/$filename" . -x 'translate/*'
 )
-cd $startDir
-echoGray "[${packageExt}] md5: $(md5sum $filename | awk '{ print $1 }')"
-echoGray "[${packageExt}] sha256: $(sha256sum $filename | awk '{ print $1 }')"
 
-
-### Done
-cd $startDir
-
+echo_gray "[${PACKAGE_EXT}] md5: $(md5sum "$filename" | awk '{ print $1 }')"
+echo_gray "[${PACKAGE_EXT}] sha256: $(sha256sum "$filename" | awk '{ print $1 }')"
+echo_green "[build] Done"

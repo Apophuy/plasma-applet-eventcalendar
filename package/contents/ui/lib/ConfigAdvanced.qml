@@ -36,15 +36,23 @@ ColumnLayout {
 			Component {
 				id: numberControl
 				SpinBox {
-					value: modelValue
-					readonly property bool isInteger: modelConfigType === 'uint' || modelConfigType === 'int' || Number.isInteger(modelValue)
-					decimals: isInteger ? 0 : 3
-					maximumValue: Number.MAX_SAFE_INTEGER
-					Component.onCompleted: {
-						valueChanged.connect(function() {
-							Plasmoid.configuration[modelKey] = value
-						})
+					readonly property bool hasConfigType: modelConfigType !== null && modelConfigType !== undefined && modelConfigType !== ''
+					readonly property bool isInteger: hasConfigType
+						? modelConfigType === 'uint' || modelConfigType === 'int'
+						: Number.isInteger(modelValue)
+					readonly property int decimals: isInteger ? 0 : 3
+					readonly property int factor: Math.pow(10, decimals)
+					from: -2147483647
+					to: 2147483647
+					value: Math.round(Number(modelValue) * factor)
+					editable: true
+					textFromValue: function(value, locale) {
+						return Number(value / factor).toLocaleString(locale, 'f', decimals)
 					}
+					valueFromText: function(text, locale) {
+						return Math.round(Number.fromLocaleString(locale, text) * factor)
+					}
+					onValueModified: Plasmoid.configuration[modelKey] = value / factor
 				}
 			}
 

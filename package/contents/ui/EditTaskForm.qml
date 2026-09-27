@@ -115,8 +115,8 @@ Loader {
 
 					Keys.onEscapePressed: editTaskItem.cancel()
 
-					Keys.onEnterPressed: _onEnterPressed(event) // ?
-					Keys.onReturnPressed: _onEnterPressed(event) // What's triggered on a US Keyboard
+					Keys.onEnterPressed: (event) => _onEnterPressed(event) // ?
+					Keys.onReturnPressed: (event) => _onEnterPressed(event) // What's triggered on a US Keyboard
 					function _onEnterPressed(event) {
 						// console.log('onEnterPressed', event.key, event.modifiers)
 						if ((event.modifiers & Qt.ShiftModifier) || (event.modifiers & Qt.ControlModifier)) {

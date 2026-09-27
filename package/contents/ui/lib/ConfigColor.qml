@@ -32,6 +32,9 @@ RowLayout {
 	property string configKey: ''
 	property string defaultColor: ''
 	property string value: ""
+	readonly property var configValue: configPage && configKey
+		? configPage.getConfigValue(configKey)
+		: ""
 
 	readonly property color defaultColorValue: defaultColor
 	readonly property color valueColor: {
@@ -48,12 +51,10 @@ RowLayout {
 	property var configPage: null
 	Component.onCompleted: {
 		configPage = findConfigPage(configColor)
-		if (configPage && configKey) {
-			var val = configPage.getConfigValue(configKey)
-			if (typeof val !== "undefined") {
-				value = val
-				textField.text = val
-			}
+	}
+	onConfigValueChanged: {
+		if (!textField.activeFocus && value !== configValue) {
+			value = configValue
 		}
 	}
 

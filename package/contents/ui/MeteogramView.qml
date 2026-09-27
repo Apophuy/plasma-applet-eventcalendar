@@ -454,13 +454,13 @@ Item {
 			if (item.precipitation) {
 				tooltipSubText += ' (' + formatPrecipitation(item.precipitation) + ')'
 			}
-			tooltipSubText += '<br>' + item.temp + '°'
+			tooltipSubText += '\n' + item.temp + '°'
 
 			return {
 				y: item.temp,
 				xTimestamp: item.dt * 1000,
 				precipitation: item.precipitation,
-				tooltipMainText: new Date(item.dt * 1000),
+				tooltipMainText: new Date(item.dt * 1000).toLocaleString(Qt.locale(), Locale.ShortFormat),
 				tooltipSubText: tooltipSubText,
 				weatherIcon: item.iconName || 'question',
 			}

@@ -8,7 +8,9 @@ RowLayout {
 	id: configSlider
 
 	property string configKey: ''
-	property var configValue: 0
+	readonly property var configValue: configPage && configKey
+		? configPage.getConfigValue(configKey)
+		: 0
 	property alias from: slider.from
 	property alias to: slider.to
 	property alias stepSize: slider.stepSize
@@ -28,13 +30,6 @@ RowLayout {
 	property var configPage: null
 	Component.onCompleted: {
 		configPage = findConfigPage(configSlider)
-		if (configPage && configKey) {
-			var val = configPage.getConfigValue(configKey)
-			if (typeof val !== "undefined") {
-				configValue = val
-				slider.value = val
-			}
-		}
 	}
 
 	// Helper function to find ConfigPage

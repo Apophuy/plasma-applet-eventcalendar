@@ -69,8 +69,8 @@ PinchArea {
 
 	property QtObject calendarBackend: calendarBackend
 
-	onPinchStarted: stack.currentItem.transformOrigin = pinch.center
-	onPinchUpdated: {
+	onPinchStarted: (pinch) => stack.currentItem.transformOrigin = pinch.center
+	onPinchUpdated: (pinch) => {
 		var item = stack.currentItem
 		if (stack.depth < 3 && pinch.scale < 1) {
 			item.transformScale = pinch.scale
@@ -80,7 +80,7 @@ PinchArea {
 			item.opacity = (2 - pinch.scale / 2)
 		}
 	}
-	onPinchFinished: {
+	onPinchFinished: (pinch) => {
 		var item = stack.currentItem
 		if (item.transformScale < 0.7) {
 			item.headerClicked()
@@ -102,7 +102,7 @@ PinchArea {
 
 	function eventDate(yearNumber,monthNumber,dayNumber) {
 		var d = new Date(yearNumber, monthNumber-1, dayNumber)
-		return Qt.formatDate(d, "dddd dd MMM yyyy")
+		return d.toLocaleDateString(Qt.locale(), "dddd dd MMM yyyy")
 	}
 
 	function setSelectedDate(d) {
@@ -374,7 +374,7 @@ PinchArea {
 						} else {
 							dateFormat = i18nc("calendar title format for current month", "MMMM d, yyyy")
 						}
-						text = Qt.formatDateTime(today, dateFormat)
+						text = today.toLocaleDateString(Qt.locale(), dateFormat)
 						return text
 					} else {
 						dateFormat = i18nc("calendar title format for other months of current year", "MMMM")
@@ -383,7 +383,7 @@ PinchArea {
 					dateFormat = i18nc("calendar title format for months not from current year", "MMMM, yyyy")
 				}
 
-				text = Qt.formatDateTime(calendarBackend.displayedDate, dateFormat)
+				text = calendarBackend.displayedDate.toLocaleDateString(Qt.locale(), dateFormat)
 				return text
 			}
 
@@ -408,7 +408,7 @@ PinchArea {
 			onHeaderClicked: {
 				stack.push(yearOverview)
 			}
-			onActivated: {
+			onActivated: (index, date) => {
 				var rowNumber = Math.floor(index / columns)
 				week = 1 + calendarBackend.weeksModel[rowNumber]
 				root.date = date
@@ -416,7 +416,7 @@ PinchArea {
 				root.setSelectedDate(dt)
 				root.dateClicked(dt)
 			}
-			onDoubleClicked: {
+			onDoubleClicked: (index, date) => {
 				root.dayDoubleClicked(date)
 			}
 		}
@@ -443,7 +443,7 @@ PinchArea {
 				updateDecadeOverview()
 				stack.push(decadeOverview)
 			}
-			onActivated: {
+			onActivated: (index, date) => {
 				calendarBackend.goToMonth(date.monthNumber)
 				stack.pop()
 			}
@@ -472,7 +472,7 @@ PinchArea {
 
 			onPrevious: calendarBackend.previousDecade()
 			onNext: calendarBackend.nextDecade()
-			onActivated: {
+			onActivated: (index, date) => {
 				calendarBackend.goToYear(date.yearNumber)
 				stack.pop()
 			}

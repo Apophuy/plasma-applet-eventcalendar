@@ -403,7 +403,7 @@ CalendarManager {
 		}
 	}
 	function createEvent_err(err, data, xhr) {
-		logger.log(calendarManagerId, 'createEvent_err', err, data, xhr)
+		logger.debug(calendarManagerId, 'createEvent_err', err, xhr && xhr.status)
 		return handleError(err, data, xhr)
 	}
 
@@ -425,7 +425,7 @@ CalendarManager {
 			},
 			data: taskData,
 		}, function(err, data, xhr) {
-			console.log('createGoogleTask.response', err, data, xhr.status)
+			logger.debug('createGoogleTask.response', err, xhr.status)
 			if (!err && data && data.error) {
 				return callback(data, null, xhr)
 			}
@@ -436,7 +436,7 @@ CalendarManager {
 
 	//--- Delete Task
 	function deleteEvent(calendarId, eventId) {
-		logger.log(calendarManagerId, 'deleteEvent', calendarId, eventId)
+		logger.debug(calendarManagerId, 'deleteEvent', calendarId, eventId)
 		if (session.accessToken) {
 			var event = getEvent(calendarId, eventId)
 			if (!event) {
@@ -476,7 +476,7 @@ CalendarManager {
 		}
 	}
 	function deleteEvent_err(err, data, xhr) {
-		logger.log(calendarManagerId, 'deleteEvent_err', err, data, xhr)
+		logger.debug(calendarManagerId, 'deleteEvent_err', err, xhr && xhr.status)
 		return handleError(err, data, xhr)
 	}
 
@@ -505,14 +505,14 @@ CalendarManager {
 
 	//--- Update Task
 	function setEventProperty(calendarId, eventId, key, value) {
-		logger.log(calendarManagerId, 'setEventProperty', calendarId, eventId, key, value)
+		logger.debug(calendarManagerId, 'setEventProperty', calendarId, eventId, key)
 		var args = {}
 		args[key] = value
 		setEventProperties(calendarId, eventId, args)
 	}
 
 	function setEventProperties(calendarId, eventId, args) {
-		logger.logJSON(calendarManagerId, 'setEventProperties', calendarId, eventId, args)
+		logger.debug(calendarManagerId, 'setEventProperties', calendarId, eventId)
 		if (session.accessToken) {
 			var event = getEvent(calendarId, eventId)
 			if (!event) {
@@ -559,7 +559,7 @@ CalendarManager {
 		eventUpdated(calendarId, eventId, event)
 	}
 	function setEventProperties_err(err, data, xhr) {
-		logger.log(calendarManagerId, 'setEventProperties_err', err, data, xhr)
+		logger.debug(calendarManagerId, 'setEventProperties_err', err, xhr && xhr.status)
 		return handleError(err, data, xhr)
 	}
 

@@ -50,7 +50,6 @@ ConfigModel {
 		name: i18n("ICalendar (.ics)")
 		icon: "text-calendar"
 		source: "config/ConfigICal.qml"
-		visible: Plasmoid.configuration.debugging
 	}
 	ConfigCategory {
 		name: i18n("Google Calendar")

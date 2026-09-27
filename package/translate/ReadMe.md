@@ -1,10 +1,10 @@
-> Version 7 of Zren's i18n scripts.
+> Plasma 6 translation workflow for Event Calendar.
 
-With KDE Frameworks v5.37 and above, translations are bundled with the `*.plasmoid` file downloaded from the store.
+Translations are compiled into `contents/locale` and bundled with the Plasma 6 package.
 
 ## Install Translations
 
-Go to `~/.local/share/plasma/plasmoids/org.kde.plasma.eventcalendar/translate/` and run `sh ./build --restartplasma`.
+From a source checkout, run `sh package/translate/build`, then reinstall with `sh ./install`.
 
 ## New Translations
 
@@ -18,7 +18,7 @@ Or if you know how to make a pull request
 
 * `sh ./merge` will parse the `i18n()` calls in the `*.qml` files and write it to the `template.pot` file. Then it will merge any changes into the `*.po` language files.
 * `sh ./build` will convert the `*.po` files to it's binary `*.mo` version and move it to `contents/locale/...` which will bundle the translations in the `*.plasmoid` without needing the user to manually install them.
-* `sh ./plasmoidlocaletest` will run `./build` then `plasmoidviewer` (part of `plasma-sdk`).
+* `sh ./plasmoidlocaletest <locale>` builds translations and starts the source package with `plasmawindowed`.
 
 ## Links
 
@@ -35,24 +35,24 @@ Or if you know how to make a pull request
 ## Status
 |  Locale  |  Lines  | % Done|
 |----------|---------|-------|
-| Template |     245 |       |
-| da       | 178/245 |   72% |
-| de       | 208/245 |   84% |
-| el       | 165/245 |   67% |
-| es       | 211/245 |   86% |
-| fi       | 208/245 |   84% |
-| fr       | 179/245 |   73% |
-| he       | 209/245 |   85% |
-| it       | 208/245 |   84% |
-| ja       | 176/245 |   71% |
-| ko       | 208/245 |   84% |
-| nl       | 212/245 |   86% |
-| pl       | 155/245 |   63% |
-| pt_BR    | 208/245 |   84% |
-| pt_PT    | 207/245 |   84% |
-| ru       | 208/245 |   84% |
-| sl       | 186/245 |   75% |
-| sv       | 172/245 |   70% |
-| tr       | 177/245 |   72% |
-| uk       | 155/245 |   63% |
-| zh_CN    | 160/245 |   65% |
+| Template |     252 |       |
+| da       | 176/252 |   69% |
+| de       | 206/252 |   81% |
+| el       | 163/252 |   64% |
+| es       | 209/252 |   82% |
+| fi       | 206/252 |   81% |
+| fr       | 177/252 |   70% |
+| he       | 207/252 |   82% |
+| it       | 206/252 |   81% |
+| ja       | 174/252 |   69% |
+| ko       | 206/252 |   81% |
+| nl       | 210/252 |   83% |
+| pl       | 153/252 |   60% |
+| pt_BR    | 206/252 |   81% |
+| pt_PT    | 205/252 |   81% |
+| ru       | 252/252 |  100% |
+| sl       | 184/252 |   73% |
+| sv       | 170/252 |   67% |
+| tr       | 175/252 |   69% |
+| uk       | 153/252 |   60% |
+| zh_CN    | 158/252 |   62% |

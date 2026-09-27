@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eventcalendar\n"
 "Report-Msgid-Bugs-To: https://github.com/Apophuy/plasma-applet-eventcalendar\n"
-"POT-Creation-Date: 2026-09-25 14:29+0300\n"
+"POT-Creation-Date: 2026-09-27 20:02+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Mathias <EMAIL@ADDRESS>\n"
 "Language-Team: Swedish <LL@li.org>\n"
@@ -56,7 +56,7 @@ msgstr "Dagordning"
 msgid "Events"
 msgstr "Händelser"
 
-#: ../contents/config/config.qml ../contents/ui/config/ConfigEvents.qml
+#: ../contents/config/config.qml
 #, kde-format
 msgid "ICalendar (.ics)"
 msgstr ""
@@ -456,6 +456,21 @@ msgstr ""
 msgid "Unknown Google Tasks error"
 msgstr ""
 
+#: ../contents/ui/calendars/ICalManager.qml
+#, kde-format
+msgid "iCalendar"
+msgstr ""
+
+#: ../contents/ui/calendars/ICalManager.qml
+#, kde-format
+msgid "Could not load iCalendar “%1”. Install the Python “icalendar” module."
+msgstr ""
+
+#: ../contents/ui/calendars/ICalManager.qml
+#, kde-format
+msgid "Could not load iCalendar “%1”."
+msgstr ""
+
 #: ../contents/ui/calendars/PlasmaCalendarManager.qml
 #, kde-format
 msgctxt "Agenda listview section title"
@@ -816,6 +831,11 @@ msgstr "Visa/dölj widgetar ovanför kalendern. Växla Agenda/Kalender på respe
 msgid "Meteogram"
 msgstr ""
 
+#: ../contents/ui/config/ConfigGeneral.qml ../contents/ui/lib/ConfigNotification.qml
+#, kde-format
+msgid "SFX:"
+msgstr ""
+
 #: ../contents/ui/config/ConfigGeneral.qml
 #, kde-format
 msgid "Clock"
@@ -1048,13 +1068,18 @@ msgstr "Lägg till kalender"
 
 #: ../contents/ui/config/ConfigICal.qml
 #, kde-format
-msgid "New Calendar"
-msgstr "Ny kalender"
+msgid "Add read-only calendars from local .ics files or web links. Changes made in the source calendar will appear here after the next update."
+msgstr ""
 
 #: ../contents/ui/config/ConfigICal.qml
 #, kde-format
 msgid "Calendar Label"
 msgstr "Kalenderetikett"
+
+#: ../contents/ui/config/ConfigICal.qml
+#, kde-format
+msgid "Local .ics file or web link"
+msgstr ""
 
 #: ../contents/ui/config/ConfigICal.qml
 #, kde-format
@@ -1106,10 +1131,10 @@ msgstr "Stad-ID:"
 msgid "Eg: 5983720"
 msgstr "T.ex: 5983720"
 
-#: ../contents/ui/config/ConfigWeather.qml
+#: ../contents/ui/config/ConfigWeather.qml ../contents/ui/config/OpenWeatherMapCityDialog.qml ../contents/ui/config/WeatherCanadaCityDialog.qml
 #, kde-format
-msgid "Find City"
-msgstr "Hitta stad"
+msgid "Select city"
+msgstr "Välj stad"
 
 #: ../contents/ui/config/ConfigWeather.qml
 #, kde-format
@@ -1195,11 +1220,6 @@ msgstr "Ikoner"
 
 #: ../contents/ui/config/OpenWeatherMapCityDialog.qml ../contents/ui/config/WeatherCanadaCityDialog.qml
 #, kde-format
-msgid "Select city"
-msgstr "Välj stad"
-
-#: ../contents/ui/config/OpenWeatherMapCityDialog.qml ../contents/ui/config/WeatherCanadaCityDialog.qml
-#, kde-format
 msgid "Fetched from <a href=\"%1\">%1</a>"
 msgstr "Hämtat från <a href=\"%1\">%1</a>"
 
@@ -1239,11 +1259,6 @@ msgctxt "Use default font"
 msgid "Default"
 msgstr "Standard"
 
-#: ../contents/ui/lib/ConfigNotification.qml
-#, kde-format
-msgid "SFX:"
-msgstr ""
-
 #: ../contents/ui/lib/ConfigSound.qml
 #, kde-format
 msgid "Choose a sound effect"
@@ -1278,6 +1293,34 @@ msgstr "Ställ in språk…"
 #, kde-format
 msgid "Set Locale…"
 msgstr "Välj språk…"
+
+#: ../contents/ui/weather/OpenWeatherMap.js
+#, kde-format
+msgid "Morning:"
+msgstr ""
+
+#: ../contents/ui/weather/OpenWeatherMap.js
+#, kde-format
+msgid "Day:"
+msgstr ""
+
+#: ../contents/ui/weather/OpenWeatherMap.js
+#, kde-format
+msgid "Evening:"
+msgstr ""
+
+#: ../contents/ui/weather/OpenWeatherMap.js
+#, kde-format
+msgid "Night:"
+msgstr ""
+
+#, kde-format
+#~ msgid "Find City"
+#~ msgstr "Hitta stad"
+
+#, kde-format
+#~ msgid "New Calendar"
+#~ msgstr "Ny kalender"
 
 #~ msgid "Time Format"
 #~ msgstr "Tidsformat"

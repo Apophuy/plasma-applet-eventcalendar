@@ -11,12 +11,23 @@ import "../lib/Requests.js" as Requests
 Dialog {
 	id: chooseCityDialog
 	title: i18n("Select city")
+	parent: Overlay.overlay
+	modal: true
+	standardButtons: Dialog.Ok | Dialog.Cancel
+	closePolicy: Popup.CloseOnEscape
 
 	implicitWidth: 500
 	implicitHeight: 600
-	width: parent && parent.width > 0 ? Math.min(implicitWidth, parent.width) : implicitWidth
-	height: parent && parent.height > 0 ? Math.min(implicitHeight, parent.height) : implicitHeight
+	width: parent && parent.width > 0
+		? Math.min(implicitWidth, parent.width - Kirigami.Units.largeSpacing * 2)
+		: implicitWidth
+	height: parent && parent.height > 0
+		? Math.min(implicitHeight, parent.height - Kirigami.Units.largeSpacing * 2)
+		: implicitHeight
+	x: parent ? Math.round((parent.width - width) / 2) : 0
+	y: parent ? Math.round((parent.height - height) / 2) : 0
 	property bool loadingCityList: false
+	property string errorMessage: ""
 
 	// Configuration properties passed from parent
 	property bool cfg_debugging: false
@@ -32,6 +43,19 @@ Dialog {
 
 	property string selectedCityId: ''
 
+	function updateOkButton() {
+		var button = standardButton(Dialog.Ok)
+		if (button) {
+			button.enabled = !!selectedCityId
+		}
+	}
+
+	onSelectedCityIdChanged: updateOkButton()
+	onOpened: {
+		updateOkButton()
+		cityNameInput.forceActiveFocus()
+	}
+
 	Timer {
 		id: debouceApplyFilter
 		interval: 1000
@@ -41,15 +65,29 @@ Dialog {
 
 	ColumnLayout {
 		anchors.fill: parent
+		spacing: Kirigami.Units.smallSpacing
 		LinkText {
 			text: i18n("Fetched from <a href=\"%1\">%1</a>", "https://openweathermap.org/find")
 		}
-		TextField {
-			id: cityNameInput
+		RowLayout {
 			Layout.fillWidth: true
-			text: ''
-			placeholderText: i18n("Search")
-			onTextChanged: debouceApplyFilter.restart()
+			Label {
+				text: i18n("Search") + ":"
+			}
+			TextField {
+				id: cityNameInput
+				Layout.fillWidth: true
+				text: ''
+				placeholderText: i18n("Select city")
+				onTextChanged: debouceApplyFilter.restart()
+			}
+		}
+
+		Kirigami.InlineMessage {
+			Layout.fillWidth: true
+			visible: !!chooseCityDialog.errorMessage
+			text: chooseCityDialog.errorMessage
+			type: Kirigami.MessageType.Error
 		}
 
 		// Header row
@@ -124,6 +162,7 @@ Dialog {
 		cityListModel.clear()
 		filteredCityListModel.clear()
 		chooseCityDialog.selectedCityId = ''
+		chooseCityDialog.errorMessage = ''
 	}
 
 	function parseCityList(data) {
@@ -151,13 +190,16 @@ Dialog {
 				appId: chooseCityDialog.cfg_openWeatherMapAppId,
 				q: q,
 			}, function(err, data, xhr) {
-				if (err) return console.log('searchCityList.err', err, xhr && xhr.status, data)
+				chooseCityDialog.loadingCityList = false
+				if (err) {
+					chooseCityDialog.errorMessage = data && data.message ? data.message : String(err)
+					console.log('searchCityList.err', err, xhr && xhr.status, data)
+					return
+				}
 				logger.debug('searchCityList.response')
 				logger.debugJSON('searchCityList.response', data)
 
 				parseCityList(data)
-
-				chooseCityDialog.loadingCityList = false
 			})
 		}
 	}
