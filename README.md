@@ -6,6 +6,8 @@ A Plasma calendar widget with an agenda, weather forecast, timer, and Google Cal
 
 **Plasma 6 / KDE Frameworks 6 / Qt 6** — works on both Wayland and X11.
 
+This project is a clone of [Zren's original Event Calendar widget](https://github.com/Zren/plasma-applet-eventcalendar), ported to Plasma 6 and extended with bug fixes and compatibility improvements.
+
 ## Screenshots
 
 ![](https://i.imgur.com/qdJ71sb.jpg)
@@ -292,8 +294,7 @@ GPL. See the source files for details.
 
 ## Authors
 
-- Chris Holland — original developer
-- Email: zrenfire@gmail.com
+- Apophuy — developer and maintainer
 - GitHub: https://github.com/Apophuy/plasma-applet-eventcalendar
 
 Thanks to all translators, contributors, and the KDE community.

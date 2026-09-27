@@ -6,6 +6,8 @@ Plasmoid для календаря с повесткой дня, погодой 
 
 **Plasma 6 / KDE Frameworks 6 / Qt 6** — Работает на Wayland и X11.
 
+Этот проект — клон [исходного виджета Event Calendar от Zren](https://github.com/Zren/plasma-applet-eventcalendar), перенесённый на Plasma 6 и дополненный исправлениями ошибок и улучшениями совместимости.
+
 ## Скриншоты
 
 ![](https://i.imgur.com/qdJ71sb.jpg)
@@ -397,8 +399,7 @@ GPL — см. исходный код для деталей
 
 ## Авторы
 
-- **Chris Holland** — основной разработчик
-- Email: zrenfire@gmail.com
+- **Apophuy** — разработчик и сопровождающий проекта
 - GitHub: https://github.com/Apophuy/plasma-applet-eventcalendar
 
 ## Благодарности
