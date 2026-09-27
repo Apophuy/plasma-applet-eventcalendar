@@ -10,7 +10,8 @@ KDE Plasma widget (plasmoid) providing calendar+agenda with weather, syncing to 
 
 - [main.qml](../package/contents/ui/main.qml) - Root `PlasmoidItem` component, initializes all models and managers
 - `Plasmoid.configuration.*` - All settings from [main.xml](../package/contents/config/main.xml)
-- [metadata.json](../package/metadata.json) - Plugin metadata (Plasma 6 uses JSON, not .desktop)
+- [metadata.desktop](../package/metadata.desktop) - Canonical plugin metadata
+- `package/metadata.json` - Generated Plasma 6 metadata; do not edit or commit it
 
 ### Data Flow
 
@@ -142,7 +143,7 @@ Add migrations in [ConfigMigration.qml](../package/contents/ui/ConfigMigration.q
 
 ## Important Files
 
-- [metadata.json](../package/metadata.json) - Plugin metadata, version, requires `X-Plasma-API-Minimum-Version: 6.0`
+- [metadata.desktop](../package/metadata.desktop) - Canonical plugin metadata and version; `build`/`install` generate `metadata.json` with `X-Plasma-API-Minimum-Version: 6.0`
 - [main.xml](../package/contents/config/main.xml) - All configuration options with defaults
 - [Shared.js](../package/contents/ui/Shared.js) - Shared utility functions
 - [ErrorType.js](../package/contents/ui/ErrorType.js) - Error type constants

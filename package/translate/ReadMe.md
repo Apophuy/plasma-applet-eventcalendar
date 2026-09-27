@@ -1,10 +1,10 @@
-> Version 7 of Zren's i18n scripts.
+> Plasma 6 translation workflow for Event Calendar.
 
-With KDE Frameworks v5.37 and above, translations are bundled with the `*.plasmoid` file downloaded from the store.
+Translations are compiled into `contents/locale` and bundled with the Plasma 6 package.
 
 ## Install Translations
 
-Go to `~/.local/share/plasma/plasmoids/org.kde.plasma.eventcalendar/translate/` and run `sh ./build --restartplasma`.
+From a source checkout, run `sh package/translate/build`, then reinstall with `sh ./install`.
 
 ## New Translations
 
@@ -18,7 +18,7 @@ Or if you know how to make a pull request
 
 * `sh ./merge` will parse the `i18n()` calls in the `*.qml` files and write it to the `template.pot` file. Then it will merge any changes into the `*.po` language files.
 * `sh ./build` will convert the `*.po` files to it's binary `*.mo` version and move it to `contents/locale/...` which will bundle the translations in the `*.plasmoid` without needing the user to manually install them.
-* `sh ./plasmoidlocaletest` will run `./build` then `plasmoidviewer` (part of `plasma-sdk`).
+* `sh ./plasmoidlocaletest <locale>` builds translations and starts the source package with `plasmawindowed`.
 
 ## Links
 

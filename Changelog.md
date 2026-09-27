@@ -14,6 +14,8 @@
   - Updated KCMUtils integration for settings pages
 * **Build:** Updated install script to use kpackagetool6
 * **Build:** Added systemctl support for plasmashell restart
+* **Build:** Made build/install reproducible from a clean clone, including translation compilation and Plasma 6 metadata generation
+* **Build:** Updated helper scripts for POSIX `sh` and removed remaining Plasma 5 build-tool dependencies
 * **Metadata:** Migrated from metadata.desktop to metadata.json
 * **Metadata:** Set X-Plasma-API-Minimum-Version to 6.0
 * **Metadata:** Updated X-Plasma-Provides to org.kde.plasma.time and org.kde.plasma.date
