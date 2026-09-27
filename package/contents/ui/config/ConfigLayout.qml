@@ -14,8 +14,8 @@ ConfigPage {
 	property bool cfg_twoColumns: true
 	property int cfg_topRowHeight: 100
 	property int cfg_bottomRowHeight: 400
-	property int cfg_leftColumnWidth: 400
-	property int cfg_rightColumnWidth: 400
+	property int cfg_leftColumnWidth: 480
+	property int cfg_rightColumnWidth: 480
 	property int cfg_monthHeightSingleColumn: 300
 
 	SystemPalette {

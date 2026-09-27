@@ -62,7 +62,7 @@ MouseArea {
 
 	Layout.minimumWidth: {
 		if (twoColumns) {
-			return Kirigami.Units.gridUnit * 28
+			return Math.min(twoColumnNaturalWidth, Kirigami.Units.gridUnit * 40)
 		} else {
 			return Kirigami.Units.gridUnit * 14
 		}
