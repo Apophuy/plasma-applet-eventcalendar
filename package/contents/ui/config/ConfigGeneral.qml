@@ -55,17 +55,19 @@ ConfigPage {
 	//---
 
 	Kirigami.FormLayout {
+		Layout.fillWidth: true
 
-	Kirigami.Separator {
-		Kirigami.FormData.isSection: true
-		Kirigami.FormData.label: i18n("Widgets")
-	}
+		Kirigami.Separator {
+			Kirigami.FormData.isSection: true
+			Kirigami.FormData.label: i18n("Widgets")
+		}
 
-	Label {
-		Layout.maximumWidth: page.width
-		wrapMode: Text.Wrap
-		text: i18n("Show/Hide widgets above the calendar. Toggle Agenda/Calendar on their respective tabs.")
-	}
+		Label {
+			Layout.fillWidth: true
+			Layout.preferredWidth: 0
+			wrapMode: Text.Wrap
+			text: i18n("Show/Hide widgets above the calendar. Toggle Agenda/Calendar on their respective tabs.")
+		}
 
 	CheckBox {
 		Kirigami.FormData.label: i18n("Meteogram")
@@ -99,13 +101,15 @@ ConfigPage {
 		}
 
 		Label {
-			Layout.maximumWidth: page.width
+			Layout.fillWidth: true
+			Layout.preferredWidth: 0
 			wrapMode: Text.Wrap
 			text: i18n("The default font for the Breeze theme is Noto Sans which is hard to read with small text. Try using the Sans Serif font if you find the text too small when adding a second line.")
 		}
 
 		Label {
-			Layout.maximumWidth: page.width
+			Layout.fillWidth: true
+			Layout.preferredWidth: 0
 			wrapMode: Text.Wrap
 			text: i18n("You can also use %1 or %2 to style a section. Note the single quotes around the tags are used to bypass the time format.", "<b>\'&lt;b&gt;\'ddd\'&lt;\/b&gt;\'</b>", "<b>\'&lt;font color=\"#77aaadd\"&gt;\'ddd\'&lt;\/font&gt;\'</b>")
 		}

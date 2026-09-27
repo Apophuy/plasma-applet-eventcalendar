@@ -74,7 +74,9 @@ CalendarManager {
 	//---
 	ICalManager {
 		id: icalManager
-		calendarList: appletConfig.icalCalendarList.value
+		calendarList: Array.isArray(appletConfig.icalCalendarList.value)
+			? appletConfig.icalCalendarList.value
+			: []
 	}
 
 	DebugCalendarManager { id: debugCalendarManager }
