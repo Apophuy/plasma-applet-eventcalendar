@@ -10,8 +10,15 @@ Plasmoid для календаря с повесткой дня, погодой 
 
 ## Скриншоты
 
-![](https://i.imgur.com/qdJ71sb.jpg)
-![](https://i.imgur.com/Ow8UlFj.jpg)
+### Окно календаря
+
+![Окно «Календаря событий» с календарём, прогнозом погоды, повесткой и таймером](docs/screenshots/event-calendar-popup.png)
+
+### Настройки
+
+| Основное | Календарь | Обзор дня |
+| :------: | :-------: | :--------: |
+| ![Основные настройки](docs/screenshots/settings-general.png) | ![Настройки календаря](docs/screenshots/settings-calendar.png) | ![Настройки обзора дня](docs/screenshots/settings-agenda.png) |
 
 ## Требования
 
