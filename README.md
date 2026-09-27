@@ -298,6 +298,6 @@ GPL. See the source files for details.
 
 Thanks to all translators, contributors, and the KDE community.
 
-Current version: **77** (see `package/metadata.desktop`).
+Current version: **1.00** (see `package/metadata.desktop`).
 
 See [Changelog.md](Changelog.md) for the change history.

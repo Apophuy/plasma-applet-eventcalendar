@@ -1,3 +1,14 @@
+## v1.00 - September 27 2026
+
+### First independent Plasma 6 release
+
+* Established the substantially reworked Plasma 6 implementation as version 1.00 rather than continuing the original numeric release sequence.
+* Restored and modernized the popup, calendar, agenda, timer, weather, and configuration interfaces for Qt 6 and KDE Frameworks 6.
+* Added modern Google Calendar and Tasks authentication using a loopback callback with PKCE.
+* Improved local and remote iCalendar support, including bounded recurrence expansion and modified or cancelled recurring instances.
+* Made packaging and installation reproducible from a clean clone, with generated Plasma 6 metadata and compiled translations.
+* Completed the Russian interface audit, localized weather tooltips, and added separate English and Russian README files.
+
 ## v77 - January 22 2026
 
 ### Plasma 6 / Qt 6 Migration

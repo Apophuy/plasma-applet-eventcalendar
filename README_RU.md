@@ -407,6 +407,6 @@ GPL — см. исходный код для деталей
 
 ## Версия
 
-Текущая версия: **77** (см. `package/metadata.desktop`)
+Текущая версия: **1.00** (см. `package/metadata.desktop`)
 
 История изменений: [Changelog.md](Changelog.md)
