@@ -10,8 +10,17 @@ This project is a clone of [Zren's original Event Calendar widget](https://githu
 
 ## Screenshots
 
-![](https://i.imgur.com/qdJ71sb.jpg)
-![](https://i.imgur.com/Ow8UlFj.jpg)
+The screenshots below show version 1.00 with the Russian localization enabled.
+
+### Calendar popup
+
+![Event Calendar popup with the calendar, weather forecast, agenda, and timer](docs/screenshots/event-calendar-popup.png)
+
+### Settings
+
+| General | Calendar | Agenda |
+| :-----: | :------: | :----: |
+| ![General settings](docs/screenshots/settings-general.png) | ![Calendar settings](docs/screenshots/settings-calendar.png) | ![Agenda settings](docs/screenshots/settings-agenda.png) |
 
 ## Requirements
 
