@@ -12,6 +12,22 @@ function openOpenWeatherMapCityUrl(cityId) {
 	Qt.openUrlExternally(url)
 }
 
+function weatherLanguageCode(localeName) {
+	localeName = (localeName || Qt.locale().name || 'en').toLowerCase().replace('-', '_')
+
+	if (localeName === 'pt_br' || localeName === 'zh_cn' || localeName === 'zh_tw') {
+		return localeName
+	}
+
+	var language = localeName.split('_')[0]
+	var aliases = {
+		'cs': 'cz',
+		'ko': 'kr',
+		'lv': 'la',
+	}
+	return aliases[language] || language
+}
+
 function fetchHourlyWeatherForecast(args, callback) {
 	if (!args.appId) return callback('OpenWeatherMap AppId not set')
 	if (!args.cityId) return callback('OpenWeatherMap CityId not set')
@@ -21,6 +37,7 @@ function fetchHourlyWeatherForecast(args, callback) {
 	var url = 'https://api.openweathermap.org/data/2.5/'
 	url += 'forecast?id=' + args.cityId
 	url += '&units=' + (args.units || 'metric')
+	url += '&lang=' + encodeURIComponent(args.lang || weatherLanguageCode())
 	url += '&appid=' + args.appId
 	Requests.getJSON(url, callback)
 }
@@ -34,6 +51,7 @@ function fetchDailyWeatherForecast(args, callback) {
 	var url = 'https://api.openweathermap.org/data/2.5/'
 	url += 'forecast/daily?id=' + args.cityId
 	url += '&units=' + (args.units || 'metric')
+	url += '&lang=' + encodeURIComponent(args.lang || weatherLanguageCode())
 	url += '&appid=' + args.appId
 	Requests.getJSON(url, callback)
 }
@@ -69,11 +87,11 @@ function parseDailyData(weatherData) {
 		forecastItem.description = forecastItem.weather[0].description
 		
 		var lines = []
-		lines.push('<b>Morning:</b> ' + Math.round(forecastItem.temp.morn) + '°')
-		lines.push('<b>Day:</b> ' + Math.round(forecastItem.temp.day) + '°')
-		lines.push('<b>Evening:</b> ' + Math.round(forecastItem.temp.eve) + '°')
-		lines.push('<b>Night:</b> ' + Math.round(forecastItem.temp.night) + '°')
-		forecastItem.notes = lines.join('<br>')
+		lines.push(i18n("Morning:") + ' ' + Math.round(forecastItem.temp.morn) + '°')
+		lines.push(i18n("Day:") + ' ' + Math.round(forecastItem.temp.day) + '°')
+		lines.push(i18n("Evening:") + ' ' + Math.round(forecastItem.temp.eve) + '°')
+		lines.push(i18n("Night:") + ' ' + Math.round(forecastItem.temp.night) + '°')
+		forecastItem.notes = lines.join('\n')
 	}
 
 	return weatherData

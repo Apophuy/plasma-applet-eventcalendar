@@ -1,5 +1,7 @@
 # Event Calendar
 
+[English](README.md) | **Русский**
+
 Plasmoid для календаря с повесткой дня, погодой и синхронизацией с Google Calendar.
 
 **Plasma 6 / KDE Frameworks 6 / Qt 6** — Работает на Wayland и X11.
@@ -35,7 +37,7 @@ Plasmoid для календаря с повесткой дня, погодой 
 - `org.kde.plasma.core` (PlasmaCore)
 - `org.kde.plasma.components` (PlasmaComponents3)
 - `org.kde.plasma.plasma5support` (Plasma5Support) — для DataSource
-- `org.kde.plasma.calendar` (PlasmaCalendar) — **обязательно**, предоставляется пакетом `plasma-calendar-addons`
+- `org.kde.plasma.workspace.calendar` (PlasmaCalendar) — **обязательно**, предоставляется пакетом `plasma-calendar-addons`
 - `org.kde.kirigami` (Kirigami)
 - `org.kde.ksvg` (KSvg) — для SVG тем
 - `org.kde.config` (KConfig)
@@ -45,7 +47,7 @@ Plasmoid для календаря с повесткой дня, погодой 
 
 | Пакет                    | Описание                                                              |
 | ------------------------ | --------------------------------------------------------------------- |
-| `plasma-calendar-addons` | **Обязательно!** Модуль `org.kde.plasma.calendar` для работы виджета  |
+| `plasma-calendar-addons` | **Обязательно!** Модуль `org.kde.plasma.workspace.calendar` для работы виджета  |
 
 ### Инструменты установки
 
@@ -218,18 +220,19 @@ journalctl --user -f | grep eventcalendar
 
 **Альтернатива:** Weather Canada (для городов Канады)
 
-### iCal Calendar
+### Календари iCalendar (.ics)
 
-1. Перейдите на вкладку **Events**
-2. Добавьте URL вашего iCal календаря (поддерживаются .ics файлы)
+1. Перейдите на вкладку **Календари iCalendar (.ics)**
+2. Добавьте локальный файл `.ics` или URL календаря
+3. Интеграция работает в режиме чтения: события из источника отображаются в календаре и повестке
 
 ### Плагины календарей Plasma
 
 Виджет поддерживает плагины календаря Plasma (например, для праздников):
 
 1. Установите `kdeplasma-addons`
-2. В настройках **Events** → включите нужные плагины
-3. Доступные плагины (обычно находятся в `/usr/lib/qt/plugins/plasmacalendarplugins/` или `/usr/lib64/qt5/plugins/plasmacalendarplugins/`):
+2. В настройках **События** включите нужные плагины
+3. Доступные плагины обычно находятся в `/usr/lib/qt6/plugins/plasmacalendarplugins/` или `/usr/lib64/qt6/plugins/plasmacalendarplugins/`:
    - `holidaysevents.so` — праздники (включен по умолчанию)
 
 ## Возможности
