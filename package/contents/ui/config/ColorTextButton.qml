@@ -13,6 +13,6 @@ Button {
 	Label {
 		id: colorTextLabel
 		anchors.centerIn: parent
-		color: Kirigami.Theme.buttonTextColor
+		color: colorTextButton.palette.buttonText
 	}
 }
