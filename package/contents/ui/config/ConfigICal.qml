@@ -21,7 +21,7 @@ ConfigPage {
 		function addCalendar() {
 			addItem({
 				url: '',
-				name: 'Label',
+				name: i18n('Calendar'),
 				backgroundColor: '' + Kirigami.Theme.highlightColor,
 				show: true,
 				isReadOnly: true,
@@ -38,6 +38,13 @@ ConfigPage {
 			text: i18n("Add Calendar")
 			onClicked: calendarsModel.addCalendar()
 		}
+	}
+
+	Label {
+		Layout.fillWidth: true
+		Layout.preferredWidth: 0
+		wrapMode: Text.Wrap
+		text: i18n("Add read-only calendars from local .ics files or web links. Changes made in the source calendar will appear here after the next update.")
 	}
 
 	ColumnLayout {
@@ -81,6 +88,7 @@ ConfigPage {
 							id: calendarUrlField
 							Layout.fillWidth: true
 							text: model.url
+							placeholderText: i18n("Local .ics file or web link")
 							onTextEdited: calendarsModel.setItemProperty(index, 'url', text)
 						}
 

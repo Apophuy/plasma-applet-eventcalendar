@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: eventcalendar\n"
 "Report-Msgid-Bugs-To: https://github.com/Apophuy/plasma-applet-"
 "eventcalendar\n"
-"POT-Creation-Date: 2026-09-26 13:27+0300\n"
+"POT-Creation-Date: 2026-09-27 12:22+0300\n"
 "PO-Revision-Date: 2019-06-02 22:28+0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -855,6 +855,12 @@ msgid "Meteogram"
 msgstr "Meteogram"
 
 #: ../contents/ui/config/ConfigGeneral.qml
+#: ../contents/ui/lib/ConfigNotification.qml
+#, kde-format
+msgid "SFX:"
+msgstr "SFX:"
+
+#: ../contents/ui/config/ConfigGeneral.qml
 #, kde-format
 msgid "Clock"
 msgstr "Saat"
@@ -1100,8 +1106,20 @@ msgstr "Takvim Ekle"
 
 #: ../contents/ui/config/ConfigICal.qml
 #, kde-format
+msgid ""
+"Add read-only calendars from local .ics files or web links. Changes made in "
+"the source calendar will appear here after the next update."
+msgstr ""
+
+#: ../contents/ui/config/ConfigICal.qml
+#, kde-format
 msgid "Calendar Label"
 msgstr "Takvim Etiketi"
+
+#: ../contents/ui/config/ConfigICal.qml
+#, kde-format
+msgid "Local .ics file or web link"
+msgstr ""
 
 #: ../contents/ui/config/ConfigICal.qml
 #, kde-format
@@ -1154,9 +1172,11 @@ msgid "Eg: 5983720"
 msgstr "Örn: 5983720"
 
 #: ../contents/ui/config/ConfigWeather.qml
+#: ../contents/ui/config/OpenWeatherMapCityDialog.qml
+#: ../contents/ui/config/WeatherCanadaCityDialog.qml
 #, kde-format
-msgid "Find City"
-msgstr "Şehir Bul"
+msgid "Select city"
+msgstr "Şehir seç"
 
 #: ../contents/ui/config/ConfigWeather.qml
 #, kde-format
@@ -1243,12 +1263,6 @@ msgstr "İkonlar"
 #: ../contents/ui/config/OpenWeatherMapCityDialog.qml
 #: ../contents/ui/config/WeatherCanadaCityDialog.qml
 #, kde-format
-msgid "Select city"
-msgstr "Şehir seç"
-
-#: ../contents/ui/config/OpenWeatherMapCityDialog.qml
-#: ../contents/ui/config/WeatherCanadaCityDialog.qml
-#, kde-format
 msgid "Fetched from <a href=\"%1\">%1</a>"
 msgstr "Bilgiler <a href=\"%1\">%1</a> sitesinden alınmaktadır."
 
@@ -1290,11 +1304,6 @@ msgctxt "Use default font"
 msgid "Default"
 msgstr "Varsayılan"
 
-#: ../contents/ui/lib/ConfigNotification.qml
-#, kde-format
-msgid "SFX:"
-msgstr "SFX:"
-
 #: ../contents/ui/lib/ConfigSound.qml
 #, kde-format
 msgid "Choose a sound effect"
@@ -1329,6 +1338,10 @@ msgstr "Dili Ayarla…"
 #, kde-format
 msgid "Set Locale…"
 msgstr "Bölgeyi Ayarla…"
+
+#, kde-format
+#~ msgid "Find City"
+#~ msgstr "Şehir Bul"
 
 #, kde-format
 #~ msgid "New Calendar"

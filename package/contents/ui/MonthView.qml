@@ -102,7 +102,7 @@ PinchArea {
 
 	function eventDate(yearNumber,monthNumber,dayNumber) {
 		var d = new Date(yearNumber, monthNumber-1, dayNumber)
-		return Qt.formatDate(d, "dddd dd MMM yyyy")
+		return d.toLocaleDateString(Qt.locale(), "dddd dd MMM yyyy")
 	}
 
 	function setSelectedDate(d) {
@@ -374,7 +374,7 @@ PinchArea {
 						} else {
 							dateFormat = i18nc("calendar title format for current month", "MMMM d, yyyy")
 						}
-						text = Qt.formatDateTime(today, dateFormat)
+						text = today.toLocaleDateString(Qt.locale(), dateFormat)
 						return text
 					} else {
 						dateFormat = i18nc("calendar title format for other months of current year", "MMMM")
@@ -383,7 +383,7 @@ PinchArea {
 					dateFormat = i18nc("calendar title format for months not from current year", "MMMM, yyyy")
 				}
 
-				text = Qt.formatDateTime(calendarBackend.displayedDate, dateFormat)
+				text = calendarBackend.displayedDate.toLocaleDateString(Qt.locale(), dateFormat)
 				return text
 			}
 

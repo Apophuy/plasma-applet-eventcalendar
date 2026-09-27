@@ -108,7 +108,7 @@ Item {
 				// onPaintedWidthChanged: console.log('timeLabel1.paintedWidth', paintedWidth)
 
 				property string timeFormat: appletConfig.line1TimeFormat // Used in TimeFormatSizeHelper
-				text: Qt.formatDateTime(clock.currentTime, timeFormat)
+				text: clock.currentTime.toLocaleString(Qt.locale(), timeFormat)
 			}
 
 			// Debugging
@@ -136,7 +136,7 @@ Item {
 				smooth: true
 
 				property string timeFormat: appletConfig.line2TimeFormat // Used in TimeFormatSizeHelper
-				text: Qt.formatDateTime(clock.currentTime, timeFormat)
+				text: clock.currentTime.toLocaleString(Qt.locale(), timeFormat)
 			}
 
 			// Debugging

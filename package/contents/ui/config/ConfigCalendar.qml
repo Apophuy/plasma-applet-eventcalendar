@@ -62,7 +62,7 @@ ConfigPage {
 				placeholderText: i18nc("calendar title format for current month", "MMMM d, yyyy")
 			}
 			Label {
-				text: Qt.formatDateTime(new Date(), monthCurrentCustomTitleFormat.value)
+				text: new Date().toLocaleDateString(Qt.locale(), monthCurrentCustomTitleFormat.value)
 			}
 		}
 

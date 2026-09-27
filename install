@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 # Version 6 - Plasma 6
 
 # This script detects if the widget is already installed.
@@ -23,8 +23,8 @@ for arg in "$@"; do
 done
 
 isAlreadyInstalled=false
-kpackagetool6 --type="${packageServiceType}" --show="$packageNamespace" &> /dev/null
-if [ $? == 0 ]; then
+kpackagetool6 --type="${packageServiceType}" --show="$packageNamespace" >/dev/null 2>&1
+if [ $? = 0 ]; then
 	isAlreadyInstalled=true
 fi
 
@@ -39,7 +39,7 @@ fi
 
 if $restartPlasmashell; then
 	# For Plasma 6, use systemctl to restart plasmashell
-	if command -v systemctl &> /dev/null && systemctl --user is-active plasma-plasmashell.service &> /dev/null; then
+	if command -v systemctl >/dev/null 2>&1 && systemctl --user is-active plasma-plasmashell.service >/dev/null 2>&1; then
 		systemctl --user restart plasma-plasmashell.service
 	else
 		killall plasmashell

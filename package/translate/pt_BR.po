@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: eventcalendar\n"
 "Report-Msgid-Bugs-To: https://github.com/Apophuy/plasma-applet-"
 "eventcalendar\n"
-"POT-Creation-Date: 2026-09-26 13:27+0300\n"
+"POT-Creation-Date: 2026-09-27 12:22+0300\n"
 "PO-Revision-Date: 2021-10-19 20:30-0300\n"
 "Last-Translator: Bernardo Barzotto Zomer <bernardobarzottoz@gmail.com>\n"
 "Language-Team: Portuguese <kde-i18n-pt_BR@kde.org>\n"
@@ -859,6 +859,12 @@ msgid "Meteogram"
 msgstr "Meteograma"
 
 #: ../contents/ui/config/ConfigGeneral.qml
+#: ../contents/ui/lib/ConfigNotification.qml
+#, kde-format
+msgid "SFX:"
+msgstr "Som de evento:"
+
+#: ../contents/ui/config/ConfigGeneral.qml
 #, kde-format
 msgid "Clock"
 msgstr "Relógio"
@@ -1104,8 +1110,20 @@ msgstr "Adicionar Calendário"
 
 #: ../contents/ui/config/ConfigICal.qml
 #, kde-format
+msgid ""
+"Add read-only calendars from local .ics files or web links. Changes made in "
+"the source calendar will appear here after the next update."
+msgstr ""
+
+#: ../contents/ui/config/ConfigICal.qml
+#, kde-format
 msgid "Calendar Label"
 msgstr "Nome do Calendário"
+
+#: ../contents/ui/config/ConfigICal.qml
+#, kde-format
+msgid "Local .ics file or web link"
+msgstr ""
 
 #: ../contents/ui/config/ConfigICal.qml
 #, kde-format
@@ -1158,9 +1176,11 @@ msgid "Eg: 5983720"
 msgstr "Ex: 5983720"
 
 #: ../contents/ui/config/ConfigWeather.qml
+#: ../contents/ui/config/OpenWeatherMapCityDialog.qml
+#: ../contents/ui/config/WeatherCanadaCityDialog.qml
 #, kde-format
-msgid "Find City"
-msgstr "Procurar por Cidade"
+msgid "Select city"
+msgstr "Selecione a cidade"
 
 #: ../contents/ui/config/ConfigWeather.qml
 #, kde-format
@@ -1247,12 +1267,6 @@ msgstr "Ícones"
 #: ../contents/ui/config/OpenWeatherMapCityDialog.qml
 #: ../contents/ui/config/WeatherCanadaCityDialog.qml
 #, kde-format
-msgid "Select city"
-msgstr "Selecione a cidade"
-
-#: ../contents/ui/config/OpenWeatherMapCityDialog.qml
-#: ../contents/ui/config/WeatherCanadaCityDialog.qml
-#, kde-format
 msgid "Fetched from <a href=\"%1\">%1</a>"
 msgstr "Dados obtidos de <a href=\"%1\">%1</a>"
 
@@ -1294,11 +1308,6 @@ msgctxt "Use default font"
 msgid "Default"
 msgstr "Padrão"
 
-#: ../contents/ui/lib/ConfigNotification.qml
-#, kde-format
-msgid "SFX:"
-msgstr "Som de evento:"
-
 #: ../contents/ui/lib/ConfigSound.qml
 #, kde-format
 msgid "Choose a sound effect"
@@ -1333,6 +1342,10 @@ msgstr "Definir idioma…"
 #, kde-format
 msgid "Set Locale…"
 msgstr "Definir Formato…"
+
+#, kde-format
+#~ msgid "Find City"
+#~ msgstr "Procurar por Cidade"
 
 #, kde-format
 #~ msgid "New Calendar"
