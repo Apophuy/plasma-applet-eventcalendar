@@ -4,6 +4,7 @@ import org.kde.plasma.plasmoid
 import org.kde.plasma.components as PlasmaComponents3
 
 import "./weather/WeatherApi.js" as WeatherApi
+import "./lib/ColorUtil.js" as ColorUtil
 
 Item {
 	id: meteogramView
@@ -18,6 +19,30 @@ Item {
 	property alias rainUnits: graph.rainUnits
 
 	property bool populated: false
+
+	function weatherAccentColor(iconName) {
+		iconName = iconName || "question"
+		if (iconName.indexOf("storm") >= 0) {
+			return "#c49aff"
+		} else if (iconName.indexOf("snow") >= 0 || iconName.indexOf("hail") >= 0 || iconName.indexOf("freezing") >= 0) {
+			return "#70d6ff"
+		} else if (iconName.indexOf("shower") >= 0 || iconName.indexOf("rain") >= 0) {
+			return "#58a6ff"
+		} else if (iconName.indexOf("clear-night") >= 0 || iconName.indexOf("-night") >= 0) {
+			return "#a9b4ff"
+		} else if (iconName.indexOf("clear") >= 0 || iconName.indexOf("few-clouds") >= 0) {
+			return "#ffc857"
+		} else if (iconName.indexOf("fog") >= 0 || iconName.indexOf("smoke") >= 0) {
+			return "#85c7c5"
+		} else if (iconName.indexOf("dust") >= 0 || iconName.indexOf("sand") >= 0) {
+			return "#e7b56a"
+		} else if (iconName.indexOf("wind") >= 0 || iconName.indexOf("tornado") >= 0) {
+			return "#63d8c6"
+		} else if (iconName.indexOf("cloud") >= 0 || iconName.indexOf("overcast") >= 0) {
+			return "#aebbd0"
+		}
+		return Kirigami.Theme.highlightColor
+	}
 
 	onClock24hChanged: {
 		graph.gridData = formatXAxisLabels(graph.gridData)
@@ -394,12 +419,18 @@ Item {
 				model: ListModel {}
 
 				delegate: Rectangle {
+					readonly property color weatherAccent: meteogramView.weatherAccentColor(modelData.aggregratedIcon)
+
 					x: modelData.areaX+modelData.areaWidth
 					y: modelData.areaY-modelData.areaHeight
 					width: modelData.areaWidth
 					height: modelData.areaHeight
-					// color: ["#880", "#008"][index % 2]
-					color: "transparent"
+					color: tooltipArea.containsMouse ? ColorUtil.setAlpha(weatherAccent, 0.08) : "transparent"
+					radius: Kirigami.Units.smallSpacing
+
+					Behavior on color {
+						ColorAnimation { duration: Kirigami.Units.shortDuration }
+					}
 
 					MouseArea {
 						id: tooltipArea
@@ -418,15 +449,61 @@ Item {
 						}
 					}
 
-					FontIcon {
-						id: weatherIcon
+					Item {
+						id: weatherBadge
 						visible: modelData.showIcon
 						anchors.centerIn: parent
-						color: appletConfig.meteogramIconColor
-						source: modelData.aggregratedIcon
-						height: appletConfig.meteogramIconSize
-						opacity: tooltipArea.containsMouse ? 0.1 : 1
-						showOutline: meteogramView.showIconOutline
+						width: Math.max(Kirigami.Units.iconSizes.medium, appletConfig.meteogramIconSize + Kirigami.Units.smallSpacing * 2)
+						height: width
+						scale: tooltipArea.containsMouse ? 1.12 : 1
+
+						Behavior on scale {
+							NumberAnimation {
+								duration: Kirigami.Units.shortDuration
+								easing.type: Easing.OutCubic
+							}
+						}
+
+						Rectangle {
+							anchors.centerIn: parent
+							width: parent.width * 1.22
+							height: width
+							radius: width / 2
+							color: ColorUtil.setAlpha(weatherAccent, tooltipArea.containsMouse ? 0.14 : 0.08)
+
+							Behavior on color {
+								ColorAnimation { duration: Kirigami.Units.shortDuration }
+							}
+						}
+
+						Rectangle {
+							id: weatherBadgeSurface
+							anchors.fill: parent
+							radius: width / 2
+							border.width: 1
+							border.color: ColorUtil.setAlpha(weatherAccent, tooltipArea.containsMouse ? 0.7 : 0.48)
+							gradient: Gradient {
+								orientation: Gradient.Vertical
+								GradientStop {
+									position: 0
+									color: ColorUtil.setAlpha(weatherAccent, tooltipArea.containsMouse ? 0.48 : 0.36)
+								}
+								GradientStop {
+									position: 1
+									color: ColorUtil.setAlpha(weatherAccent, tooltipArea.containsMouse ? 0.2 : 0.12)
+								}
+							}
+						}
+
+						FontIcon {
+							id: weatherIcon
+							anchors.centerIn: parent
+							width: height
+							height: Math.min(appletConfig.meteogramIconSize, weatherBadge.height - Kirigami.Units.smallSpacing * 2)
+							color: appletConfig.meteogramIconColor
+							source: modelData.aggregratedIcon
+							showOutline: meteogramView.showIconOutline
+						}
 					}
 
 					Component.onCompleted: {

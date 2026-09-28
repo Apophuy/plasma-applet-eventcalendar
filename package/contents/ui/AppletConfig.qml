@@ -24,9 +24,9 @@ QtObject {
 
 	property color meteogramTextColorDefault: Kirigami.Theme.textColor
 	property color meteogramScaleColorDefault: ColorUtil.lerp(Kirigami.Theme.backgroundColor, Kirigami.Theme.textColor, 0.9)
-	property color meteogramPrecipitationRawColorDefault: "#acd"
-	property color meteogramPositiveTempColorDefault: "#900"
-	property color meteogramNegativeTempColorDefault: "#369"
+	property color meteogramPrecipitationRawColorDefault: "#55bde5"
+	property color meteogramPositiveTempColorDefault: "#ff6b4a"
+	property color meteogramNegativeTempColorDefault: "#4aa8ff"
 	property color meteogramIconColorDefault: Kirigami.Theme.textColor
 
 	property color meteogramTextColor: Plasmoid.configuration.meteogramTextColor || meteogramTextColorDefault

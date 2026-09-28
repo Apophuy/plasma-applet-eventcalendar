@@ -230,19 +230,19 @@ msgstr "%1 - %2"
 #, kde-format
 msgctxt "short form for %1 hours"
 msgid "%1h"
-msgstr "%1h"
+msgstr "%1ч"
 
 #: ../contents/ui/LocaleFuncs.js
 #, kde-format
 msgctxt "short form for %1 minutes"
 msgid "%1m"
-msgstr "%1m"
+msgstr "%1м"
 
 #: ../contents/ui/LocaleFuncs.js
 #, kde-format
 msgctxt "short form for %1 seconds"
 msgid "%1s"
-msgstr "%1s"
+msgstr "%1с"
 
 #: ../contents/ui/Logic.qml ../contents/ui/calendars/GoogleCalendarManager.qml
 #: ../contents/ui/calendars/GoogleTasksManager.qml
