@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eventcalendar\n"
 "Report-Msgid-Bugs-To: https://github.com/Apophuy/plasma-applet-eventcalendar\n"
-"POT-Creation-Date: 2026-09-27 20:02+0300\n"
+"POT-Creation-Date: 2026-09-28 10:49+0300\n"
 "PO-Revision-Date: 2020-11-12 19:45+0100\n"
 "Last-Translator: Guido Mazzone <guido.mazzone93@outlook.it>\n"
 "Language-Team: Italian <guido.mazzone93@outlook.it>\n"
@@ -1103,13 +1103,53 @@ msgstr "Agenda sotto il calendario (colonna singola)"
 
 #: ../contents/ui/config/ConfigTimezones.qml
 #, kde-format
+msgid "Search Time Zones"
+msgstr ""
+
+#: ../contents/ui/config/ConfigTimezones.qml
+#, kde-format
+msgid "City"
+msgstr ""
+
+#: ../contents/ui/config/ConfigTimezones.qml
+#, kde-format
+msgid "Region"
+msgstr ""
+
+#: ../contents/ui/config/ConfigTimezones.qml
+#, kde-format
+msgid "Comment"
+msgstr ""
+
+#: ../contents/ui/config/ConfigTimezones.qml
+#, kde-format
 msgid "Tooltip"
 msgstr "Consiglio"
 
 #: ../contents/ui/config/ConfigTimezones.qml
 #, kde-format
+msgid "Local"
+msgstr ""
+
+#: ../contents/ui/config/ConfigTimezones.qml
+#, kde-format
 msgid "Cannot deselect Local time from the tooltip"
 msgstr "Non è possibile deselezionare l'orario locale dal consiglio"
+
+#: ../contents/ui/config/ConfigTimezones.qml
+#, kde-format
+msgid "Display time zone as:"
+msgstr ""
+
+#: ../contents/ui/config/ConfigTimezones.qml
+#, kde-format
+msgid "Time zone city"
+msgstr ""
+
+#: ../contents/ui/config/ConfigTimezones.qml
+#, kde-format
+msgid "Time zone code"
+msgstr ""
 
 #: ../contents/ui/config/ConfigWeather.qml
 #, kde-format

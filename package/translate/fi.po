@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eventcalendar\n"
 "Report-Msgid-Bugs-To: https://github.com/Apophuy/plasma-applet-eventcalendar\n"
-"POT-Creation-Date: 2026-09-27 20:02+0300\n"
+"POT-Creation-Date: 2026-09-28 10:49+0300\n"
 "PO-Revision-Date: 2022-03-21 23:40+ZONE\n"
 "Last-Translator: Ilpo Kantonen <ilpo@iki.fi>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1106,13 +1106,53 @@ msgstr "Agenda kalenterin alle (yksi sarake)"
 
 #: ../contents/ui/config/ConfigTimezones.qml
 #, kde-format
+msgid "Search Time Zones"
+msgstr ""
+
+#: ../contents/ui/config/ConfigTimezones.qml
+#, kde-format
+msgid "City"
+msgstr ""
+
+#: ../contents/ui/config/ConfigTimezones.qml
+#, kde-format
+msgid "Region"
+msgstr ""
+
+#: ../contents/ui/config/ConfigTimezones.qml
+#, kde-format
+msgid "Comment"
+msgstr ""
+
+#: ../contents/ui/config/ConfigTimezones.qml
+#, kde-format
 msgid "Tooltip"
 msgstr "Vihje"
 
 #: ../contents/ui/config/ConfigTimezones.qml
 #, kde-format
+msgid "Local"
+msgstr ""
+
+#: ../contents/ui/config/ConfigTimezones.qml
+#, kde-format
 msgid "Cannot deselect Local time from the tooltip"
 msgstr "Paikallista aikaa ei voi poistaa työkaluvihjeestä"
+
+#: ../contents/ui/config/ConfigTimezones.qml
+#, kde-format
+msgid "Display time zone as:"
+msgstr ""
+
+#: ../contents/ui/config/ConfigTimezones.qml
+#, kde-format
+msgid "Time zone city"
+msgstr ""
+
+#: ../contents/ui/config/ConfigTimezones.qml
+#, kde-format
+msgid "Time zone code"
+msgstr ""
 
 #: ../contents/ui/config/ConfigWeather.qml
 #, kde-format

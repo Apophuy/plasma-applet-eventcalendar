@@ -15,8 +15,10 @@ ConfigPage {
 	property var cfg_selectedTimeZones: []
 	property bool cfg_displayTimezoneAsCode: true
 
-	function digitalclock_i18n(message) {
-		return i18nd("plasma_applet_org.kde.plasma.digitalclock", message)
+	function translatedLabel(sourceText, localTranslation) {
+		return localTranslation === sourceText
+			? i18nd("plasma_applet_org.kde.plasma.digitalclock", sourceText)
+			: localTranslation
 	}
 
 	DigitalClock.TimeZoneModel {
@@ -33,7 +35,7 @@ ConfigPage {
 	TextField {
 		id: filter
 		Layout.fillWidth: true
-		placeholderText: digitalclock_i18n("Search Time Zones")
+		placeholderText: page.translatedLabel("Search Time Zones", i18n("Search Time Zones"))
 	}
 
 	// Header row
@@ -42,17 +44,17 @@ ConfigPage {
 		spacing: 10
 
 		Label {
-			text: digitalclock_i18n("City")
+			text: page.translatedLabel("City", i18n("City"))
 			Layout.preferredWidth: 150
 			font.bold: true
 		}
 		Label {
-			text: digitalclock_i18n("Region")
+			text: page.translatedLabel("Region", i18n("Region"))
 			Layout.preferredWidth: 150
 			font.bold: true
 		}
 		Label {
-			text: digitalclock_i18n("Comment")
+			text: page.translatedLabel("Comment", i18n("Comment"))
 			Layout.fillWidth: true
 			font.bold: true
 		}
@@ -92,7 +94,9 @@ ConfigPage {
 				elide: Text.ElideRight
 			}
 			Label {
-				text: model.region || ""
+				text: model.region === "Local"
+					? page.translatedLabel("Local", i18n("Local"))
+					: model.region || ""
 				Layout.preferredWidth: 150
 				elide: Text.ElideRight
 			}
@@ -127,12 +131,12 @@ ConfigPage {
 	ButtonGroup { id: timezoneDisplayType }
 	RowLayout {
 		Label {
-			text: digitalclock_i18n("Display time zone as:")
+			text: page.translatedLabel("Display time zone as:", i18n("Display time zone as:"))
 		}
 
 		RadioButton {
 			id: timezoneCityRadio
-			text: digitalclock_i18n("Time zone city")
+			text: page.translatedLabel("Time zone city", i18n("Time zone city"))
 			ButtonGroup.group: timezoneDisplayType
 			checked: !page.cfg_displayTimezoneAsCode
 			onClicked: page.cfg_displayTimezoneAsCode = false
@@ -140,7 +144,7 @@ ConfigPage {
 
 		RadioButton {
 			id: timezoneCodeRadio
-			text: digitalclock_i18n("Time zone code")
+			text: page.translatedLabel("Time zone code", i18n("Time zone code"))
 			ButtonGroup.group: timezoneDisplayType
 			checked: page.cfg_displayTimezoneAsCode
 			onClicked: page.cfg_displayTimezoneAsCode = true
