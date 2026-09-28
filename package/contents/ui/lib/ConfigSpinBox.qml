@@ -6,6 +6,7 @@ import QtQuick.Layouts
 
 RowLayout {
 	id: configSpinBox
+	Layout.fillWidth: labelAfter.visible
 
 	property string configKey: ''
 	readonly property var configValue: configPage && configKey
@@ -78,6 +79,9 @@ RowLayout {
 		id: labelAfter
 		text: ""
 		visible: text
+		Layout.fillWidth: true
+		Layout.preferredWidth: 0
+		wrapMode: Text.Wrap
 	}
 
 	Timer { // throttle

@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: eventcalendar\n"
 "Report-Msgid-Bugs-To: https://github.com/Apophuy/plasma-applet-"
 "eventcalendar\n"
-"POT-Creation-Date: 2026-09-27 20:02+0300\n"
+"POT-Creation-Date: 2026-09-28 10:49+0300\n"
 "PO-Revision-Date: 2020-01-05 22:01+0300\n"
 "Last-Translator: aliger14 <aliger14@mail.ru>\n"
 "Language-Team: ru\n"
@@ -1155,13 +1155,53 @@ msgstr "Распорядок под календарем (Одна колонк�
 
 #: ../contents/ui/config/ConfigTimezones.qml
 #, kde-format
+msgid "Search Time Zones"
+msgstr "Поиск часовых поясов"
+
+#: ../contents/ui/config/ConfigTimezones.qml
+#, kde-format
+msgid "City"
+msgstr "Город"
+
+#: ../contents/ui/config/ConfigTimezones.qml
+#, kde-format
+msgid "Region"
+msgstr "Регион"
+
+#: ../contents/ui/config/ConfigTimezones.qml
+#, kde-format
+msgid "Comment"
+msgstr "Комментарий"
+
+#: ../contents/ui/config/ConfigTimezones.qml
+#, kde-format
 msgid "Tooltip"
 msgstr "Подсказка"
 
 #: ../contents/ui/config/ConfigTimezones.qml
 #, kde-format
+msgid "Local"
+msgstr "Местный"
+
+#: ../contents/ui/config/ConfigTimezones.qml
+#, kde-format
 msgid "Cannot deselect Local time from the tooltip"
 msgstr "Невозможно отменить локальное время из всплывающей подсказки"
+
+#: ../contents/ui/config/ConfigTimezones.qml
+#, kde-format
+msgid "Display time zone as:"
+msgstr "Отображать часовой пояс как:"
+
+#: ../contents/ui/config/ConfigTimezones.qml
+#, kde-format
+msgid "Time zone city"
+msgstr "Город часового пояса"
+
+#: ../contents/ui/config/ConfigTimezones.qml
+#, kde-format
+msgid "Time zone code"
+msgstr "Код часового пояса"
 
 #: ../contents/ui/config/ConfigWeather.qml
 #, kde-format
