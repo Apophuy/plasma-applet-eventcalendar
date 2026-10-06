@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eventcalendar\n"
 "Report-Msgid-Bugs-To: https://github.com/Apophuy/plasma-applet-eventcalendar\n"
-"POT-Creation-Date: 2026-10-06 09:13+0300\n"
+"POT-Creation-Date: 2026-10-06 09:38+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: yamato kobayashi <Kb_yamato@protonmail.com>\n"
 "Language-Team: \n"
@@ -17,13 +17,13 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: ../metadata.desktop ../contents/ui/AgendaView.qml ../contents/ui/UpcomingEvents.qml
+#: ../metadata.desktop ../contents/ui/AgendaView.qml ../contents/ui/UpcomingEvents.qml ../contents/ui/config/ConfigYandexCalendar.qml
 #, kde-format
 msgid "Apophuy Calendar"
 msgstr "Apophuy Calendar"
 
 #: ../metadata.desktop
-msgid "Plasmoid for a calendar+agenda with weather that syncs to Google Calendar."
+msgid "Plasmoid for a calendar+agenda with weather that syncs with Google and Yandex calendars."
 msgstr ""
 
 #: ../contents/config/config.qml
@@ -41,7 +41,7 @@ msgstr "レイアウト"
 msgid "Timezones"
 msgstr "タイムゾーン"
 
-#: ../contents/config/config.qml ../contents/ui/UpcomingEvents.qml
+#: ../contents/config/config.qml ../contents/ui/UpcomingEvents.qml ../contents/ui/config/ConfigConnectedCalendars.qml
 #, kde-format
 msgid "Calendar"
 msgstr "カレンダー"
@@ -61,10 +61,20 @@ msgstr "イベント"
 msgid "ICalendar (.ics)"
 msgstr "ICalendar (.ics)"
 
-#: ../contents/config/config.qml ../contents/ui/config/ConfigEvents.qml
+#: ../contents/config/config.qml ../contents/ui/config/ConfigConnectedCalendars.qml ../contents/ui/config/ConfigEvents.qml
 #, kde-format
 msgid "Google Calendar"
 msgstr "Google Calendar"
+
+#: ../contents/config/config.qml ../contents/ui/calendars/YandexCalendarManager.qml ../contents/ui/config/ConfigConnectedCalendars.qml
+#, kde-format
+msgid "Yandex Calendar"
+msgstr ""
+
+#: ../contents/config/config.qml
+#, kde-format
+msgid "Connected Calendars"
+msgstr ""
 
 #: ../contents/config/config.qml
 #, kde-format
@@ -456,7 +466,7 @@ msgstr ""
 msgid "Unknown Google Tasks error"
 msgstr ""
 
-#: ../contents/ui/calendars/ICalManager.qml
+#: ../contents/ui/calendars/ICalManager.qml ../contents/ui/config/ConfigConnectedCalendars.qml
 #, kde-format
 msgid "iCalendar"
 msgstr ""
@@ -493,6 +503,21 @@ msgstr ""
 #, kde-format
 msgctxt "Means 'Other calendar items'"
 msgid "Other"
+msgstr ""
+
+#: ../contents/ui/calendars/YandexCalendarManager.qml
+#, kde-format
+msgid "Could not update Yandex Calendar account “%1”. Install the Python “icalendar” module."
+msgstr ""
+
+#: ../contents/ui/calendars/YandexCalendarManager.qml
+#, kde-format
+msgid "Could not update Yandex Calendar account “%1”: %2"
+msgstr ""
+
+#: ../contents/ui/calendars/YandexCalendarManager.qml ../contents/ui/config/ConfigYandexCalendar.qml
+#, kde-format
+msgid "Yandex Calendar returned invalid data."
 msgstr ""
 
 #: ../contents/ui/config/ConfigAgenda.qml
@@ -775,6 +800,36 @@ msgstr "ソリッドカラー (反転)"
 msgid "Big Number"
 msgstr "大きい数字"
 
+#: ../contents/ui/config/ConfigConnectedCalendars.qml
+#, kde-format
+msgid "Connected calendars"
+msgstr ""
+
+#: ../contents/ui/config/ConfigConnectedCalendars.qml
+#, kde-format
+msgid "Choose event and text colors independently for every connected calendar. Resetting a calendar restores the color supplied by its service."
+msgstr ""
+
+#: ../contents/ui/config/ConfigConnectedCalendars.qml
+#, kde-format
+msgid "No connected calendars."
+msgstr ""
+
+#: ../contents/ui/config/ConfigConnectedCalendars.qml
+#, kde-format
+msgid "Event color"
+msgstr ""
+
+#: ../contents/ui/config/ConfigConnectedCalendars.qml
+#, kde-format
+msgid "Text color"
+msgstr ""
+
+#: ../contents/ui/config/ConfigConnectedCalendars.qml
+#, kde-format
+msgid "Use source colors"
+msgstr ""
+
 #: ../contents/ui/config/ConfigEvents.qml
 #, kde-format
 msgid "Apophuy Calendar Plugins"
@@ -1028,7 +1083,7 @@ msgstr ""
 msgid "Calendars"
 msgstr "カレンダー"
 
-#: ../contents/ui/config/ConfigGoogleCalendar.qml
+#: ../contents/ui/config/ConfigGoogleCalendar.qml ../contents/ui/config/ConfigYandexCalendar.qml
 #, kde-format
 msgid "Refresh"
 msgstr "更新"
@@ -1258,6 +1313,102 @@ msgstr "0以下の温度"
 #, kde-format
 msgid "Icons"
 msgstr "アイコン"
+
+#: ../contents/ui/config/ConfigYandexCalendar.qml
+#, kde-format
+msgid "Enter a new Yandex application password in the dialog."
+msgstr ""
+
+#: ../contents/ui/config/ConfigYandexCalendar.qml
+#, kde-format
+msgid "Enter the Yandex application password in the dialog."
+msgstr ""
+
+#: ../contents/ui/config/ConfigYandexCalendar.qml
+#, kde-format
+msgid "Enter the Yandex Calendar application password:"
+msgstr ""
+
+#: ../contents/ui/config/ConfigYandexCalendar.qml
+#, kde-format
+msgid "Could not connect the Yandex account."
+msgstr ""
+
+#: ../contents/ui/config/ConfigYandexCalendar.qml
+#, kde-format
+msgid "Connected. Found %1 calendar."
+msgid_plural "Connected. Found %1 calendars."
+msgstr[0] ""
+
+#: ../contents/ui/config/ConfigYandexCalendar.qml
+#, kde-format
+msgid "Enter the Yandex account login."
+msgstr ""
+
+#: ../contents/ui/config/ConfigYandexCalendar.qml
+#, kde-format
+msgid "Refreshing Yandex calendars…"
+msgstr ""
+
+#: ../contents/ui/config/ConfigYandexCalendar.qml
+#, kde-format
+msgid "Could not refresh the Yandex account."
+msgstr ""
+
+#: ../contents/ui/config/ConfigYandexCalendar.qml
+#, kde-format
+msgid "Yandex calendar list updated."
+msgstr ""
+
+#: ../contents/ui/config/ConfigYandexCalendar.qml
+#, kde-format
+msgid "Yandex accounts"
+msgstr ""
+
+#: ../contents/ui/config/ConfigYandexCalendar.qml
+#, kde-format
+msgid "Create a Yandex application password for Calendar, then add the account here. Passwords are stored in KWallet and are not saved in the widget configuration."
+msgstr ""
+
+#: ../contents/ui/config/ConfigYandexCalendar.qml
+#, kde-format
+msgid "Create an application password at <a href=\"%1\">Yandex ID</a>."
+msgstr ""
+
+#: ../contents/ui/config/ConfigYandexCalendar.qml
+#, kde-format
+msgid "Add account"
+msgstr ""
+
+#: ../contents/ui/config/ConfigYandexCalendar.qml
+#, kde-format
+msgid "Account name"
+msgstr ""
+
+#: ../contents/ui/config/ConfigYandexCalendar.qml
+#, kde-format
+msgid "Yandex login or email"
+msgstr ""
+
+#: ../contents/ui/config/ConfigYandexCalendar.qml
+#, kde-format
+msgid "Connect account"
+msgstr ""
+
+#: ../contents/ui/config/ConfigYandexCalendar.qml
+#, kde-format
+msgid "Enable this account"
+msgstr ""
+
+#: ../contents/ui/config/ConfigYandexCalendar.qml
+#, kde-format
+msgid "Change password"
+msgstr ""
+
+#: ../contents/ui/config/ConfigYandexCalendar.qml
+#, kde-format
+msgid "Remove"
+msgstr ""
 
 #: ../contents/ui/config/OpenWeatherMapCityDialog.qml ../contents/ui/config/WeatherCanadaCityDialog.qml
 #, kde-format

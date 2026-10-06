@@ -2,7 +2,7 @@
 
 **English** | [Русский](README_RU.md)
 
-A Plasma calendar widget with an agenda, weather forecast, timer, and Google Calendar synchronization.
+A Plasma calendar widget with an agenda, weather forecast, timer, and Google and Yandex Calendar synchronization.
 
 **Plasma 6 / KDE Frameworks 6 / Qt 6** — works on both Wayland and X11.
 
@@ -10,7 +10,7 @@ This project is a clone of [Zren's original Event Calendar widget](https://githu
 
 ## Screenshots
 
-The screenshots below show version 1.01 with the Russian localization enabled.
+The screenshots below show version 1.02 with the Russian localization enabled.
 
 ### Calendar popup
 
@@ -62,6 +62,8 @@ The screenshots below show version 1.01 with the Russian localization enabled.
 | `python3`       | OAuth, iCalendar support, and metadata generation         |
 | `gettext`       | Translation building when installing from Git            |
 | `kpackagetool6` | KDE package installer included with Plasma 6              |
+| `kdialog`       | Secure Yandex application-password prompt                  |
+| `kwallet-query` | Storage for Yandex application passwords in KWallet        |
 
 ### Optional dependencies
 
@@ -75,6 +77,7 @@ The screenshots below show version 1.01 with the Russian localization enabled.
 
 - `package/contents/scripts/icsjson.py` — parses iCalendar sources
 - `package/contents/scripts/google_oauth.py` — Google OAuth using a local loopback callback and PKCE
+- `package/contents/scripts/yandex_caldav.py` — Yandex CalDAV discovery and synchronization
 - `package/contents/scripts/konsolekalendar.py` — konsolekalendar integration
 - `package/contents/scripts/notification.py` — event notifications
 
@@ -184,6 +187,19 @@ Authentication uses a loopback callback on `127.0.0.1` with PKCE. It requires `p
 1. Open the same **Google Calendar** settings page.
 2. Select the task lists you want to display.
 
+### Yandex Calendar
+
+1. In Yandex ID, create an application password for **Calendar**.
+2. Open **Apophuy Calendar Settings → Yandex Calendar**.
+3. Enter an account label and the Yandex login or email address, then select **Connect account**.
+4. Enter the application password in the secure dialog and select the calendars to display.
+
+Multiple Yandex accounts can be connected. Passwords are stored in KWallet and are not written to the widget configuration. The current CalDAV integration is read-only.
+
+### Calendar colors
+
+Open **Apophuy Calendar Settings → Connected Calendars** to choose an event color and a text color independently for every Google, Yandex, or iCalendar calendar. Resetting a calendar restores the color supplied by its service.
+
 ### Weather (OpenWeatherMap)
 
 1. Open the **Weather** settings page.
@@ -211,6 +227,8 @@ The widget supports Plasma calendar plugins such as holiday events:
 - Monthly calendar with event indicators
 - Agenda for upcoming events
 - Google Calendar events and Google Tasks
+- Multiple Yandex Calendar accounts through CalDAV
+- Per-calendar event and text colors
 - Local and remote iCalendar (`.ics`) sources
 - Plasma calendar plugins such as holidays
 - Current weather and forecasts from OpenWeatherMap or Weather Canada
@@ -236,6 +254,12 @@ If this service is unavailable, log out of Plasma and sign in again.
 1. Check the network connection.
 2. Sign out and sign in again on the **Google Calendar** settings page.
 3. Update the widget to the latest version.
+
+### Yandex Calendar does not synchronize
+
+1. Make sure the password was created as a Yandex **Calendar** application password.
+2. Open the **Yandex Calendar** settings page and select **Change password**.
+3. Make sure KWallet is available and unlocked.
 
 ### Weather does not update
 

@@ -11,24 +11,26 @@ Item {
 		anchors.left: eventColorsBarColor.left
 		anchors.right: eventColorsBarColor.right
 		anchors.bottom: eventColorsBarColor.bottom
-		height: parent.height / 8
+		height: Math.min(parent.height / 3, Math.max(1, dayStyle.calendarBars.length) * parent.height / 8)
 		
 		property bool usePadding: !Plasmoid.configuration.monthShowBorder
 		anchors.leftMargin: usePadding ? parent.width/8 : 0
 		anchors.rightMargin: usePadding ? parent.width/8 : 0
 		anchors.bottomMargin: usePadding ? parent.height/16 : 0
 
-		RowLayout {
+		Column {
 			anchors.fill: parent
 			spacing: 0
 
 			Repeater {
-				model: dayStyle.useHightlightColor ? [Kirigami.Theme.highlightColor] : dayStyle.eventColors
+				model: dayStyle.useHightlightColor
+					? [{ color: "" + Kirigami.Theme.highlightColor }]
+					: dayStyle.calendarBars
 
 				Rectangle {
-					Layout.fillHeight: true
-					Layout.fillWidth: true
-					color: modelData
+					width: parent.width
+					height: parent.height / Math.max(1, dayStyle.calendarBars.length)
+					color: modelData.color
 
 					Rectangle {
 						anchors.fill: parent

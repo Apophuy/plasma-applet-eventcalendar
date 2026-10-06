@@ -450,6 +450,11 @@ class CalendarManager:
             data = response.read(MAX_CALENDAR_BYTES + 1)
         if len(data) > MAX_CALENDAR_BYTES:
             raise ValueError("The iCalendar file is larger than 10 MiB.")
+        self.read_data(data)
+
+    def read_data(self, data):
+        if len(data) > MAX_CALENDAR_BYTES:
+            raise ValueError("The iCalendar data is larger than 10 MiB.")
         self.calendar = Calendar.from_ical(data)
 
     @property

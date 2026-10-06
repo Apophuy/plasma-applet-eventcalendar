@@ -88,6 +88,10 @@
 		<entry name="v72Migration" type="bool">
 			<default>false</default>
 		</entry>
+		<!-- Added in: v73 -->
+		<entry name="v73Migration" type="bool">
+			<default>false</default>
+		</entry>
 		<!-- Deprecated in: v71 -->
 		<entry name="v71Migration" type="bool">
 			<default>false</default>
@@ -341,6 +345,18 @@
 			<!-- Previously stored entire filepath before v72 migration -->
 			<label>A list of plugins where additional calendar event data can be sourced.</label>
 			<default>holidaysevents.so</default>
+		</entry>
+	</group>
+
+	<group name="Connected Calendars">
+		<entry name="calendarAppearanceOverrides" type="string" stringType="base64json">
+			<default></default>
+		</entry>
+	</group>
+
+	<group name="Yandex Calendar">
+		<entry name="yandexAccounts" type="string" stringType="base64json">
+			<default></default>
 		</entry>
 	</group>
 

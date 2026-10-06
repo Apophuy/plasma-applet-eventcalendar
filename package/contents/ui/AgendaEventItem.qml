@@ -50,6 +50,7 @@ LinkRect {
 	})
 	readonly property bool isAllDay: eventTimestamp === i18n("All Day") // TODO: Remove string comparison.
 	readonly property bool isCondensed: Plasmoid.configuration.agendaCondensedAllDayEvent && isAllDay
+	readonly property color calendarTextColor: model.foregroundColor || Kirigami.Theme.textColor
 
 
 	//---
@@ -130,7 +131,7 @@ LinkRect {
 						return model.summary
 					}
 				}
-				color: eventItemInProgress ? inProgressColor : Kirigami.Theme.textColor
+				color: eventItemInProgress ? inProgressColor : calendarTextColor
 				font.pointSize: -1
 				font.pixelSize: appletConfig.agendaFontSize
 				font.weight: eventItemInProgress ? inProgressFontWeight : Font.Normal
@@ -152,7 +153,7 @@ LinkRect {
 						return eventTimestamp
 					}
 				}
-				color: eventItemInProgress ? inProgressColor : Kirigami.Theme.textColor
+				color: eventItemInProgress ? inProgressColor : calendarTextColor
 				opacity: eventItemInProgress ? 1 : 0.75
 				font.pointSize: -1
 				font.pixelSize: appletConfig.agendaFontSize
@@ -171,7 +172,7 @@ LinkRect {
 				readonly property bool showProperty: Plasmoid.configuration.agendaShowEventDescription && text
 				visible: showProperty && !editEventForm.visible
 				text: Shared.renderText(model.description)
-				color: Kirigami.Theme.textColor
+				color: calendarTextColor
 				opacity: 0.75
 				font.pointSize: -1
 				font.pixelSize: appletConfig.agendaFontSize

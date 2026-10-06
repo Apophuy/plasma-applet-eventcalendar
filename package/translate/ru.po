@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: eventcalendar\n"
 "Report-Msgid-Bugs-To: https://github.com/Apophuy/plasma-applet-"
 "eventcalendar\n"
-"POT-Creation-Date: 2026-10-06 09:13+0300\n"
+"POT-Creation-Date: 2026-10-06 09:38+0300\n"
 "PO-Revision-Date: 2020-01-05 22:01+0300\n"
 "Last-Translator: aliger14 <aliger14@mail.ru>\n"
 "Language-Team: ru\n"
@@ -24,14 +24,18 @@ msgstr ""
 
 #: ../metadata.desktop ../contents/ui/AgendaView.qml
 #: ../contents/ui/UpcomingEvents.qml
+#: ../contents/ui/config/ConfigYandexCalendar.qml
 #, kde-format
 msgid "Apophuy Calendar"
 msgstr "Календарь Apophuy"
 
 #: ../metadata.desktop
 msgid ""
-"Plasmoid for a calendar+agenda with weather that syncs to Google Calendar."
-msgstr "Календарь событий с погодой и синхронизацией с Google Calendar."
+"Plasmoid for a calendar+agenda with weather that syncs with Google and "
+"Yandex calendars."
+msgstr ""
+"Календарь с повесткой дня, погодой и синхронизацией с календарями Google и "
+"Яндекса."
 
 #: ../contents/config/config.qml
 #, kde-format
@@ -49,6 +53,7 @@ msgid "Timezones"
 msgstr "Часовые пояса"
 
 #: ../contents/config/config.qml ../contents/ui/UpcomingEvents.qml
+#: ../contents/ui/config/ConfigConnectedCalendars.qml
 #, kde-format
 msgid "Calendar"
 msgstr "Календарь"
@@ -68,10 +73,24 @@ msgstr "События"
 msgid "ICalendar (.ics)"
 msgstr "Календари iCalendar (.ics)"
 
-#: ../contents/config/config.qml ../contents/ui/config/ConfigEvents.qml
+#: ../contents/config/config.qml
+#: ../contents/ui/config/ConfigConnectedCalendars.qml
+#: ../contents/ui/config/ConfigEvents.qml
 #, kde-format
 msgid "Google Calendar"
 msgstr "Google календарь"
+
+#: ../contents/config/config.qml
+#: ../contents/ui/calendars/YandexCalendarManager.qml
+#: ../contents/ui/config/ConfigConnectedCalendars.qml
+#, kde-format
+msgid "Yandex Calendar"
+msgstr "Яндекс Календарь"
+
+#: ../contents/config/config.qml
+#, kde-format
+msgid "Connected Calendars"
+msgstr "Подключённые календари"
 
 #: ../contents/config/config.qml
 #, kde-format
@@ -474,6 +493,7 @@ msgid "Unknown Google Tasks error"
 msgstr "Неизвестная ошибка Google Tasks"
 
 #: ../contents/ui/calendars/ICalManager.qml
+#: ../contents/ui/config/ConfigConnectedCalendars.qml
 #, kde-format
 msgid "iCalendar"
 msgstr "iCalendar"
@@ -512,6 +532,26 @@ msgstr "Задачи"
 msgctxt "Means 'Other calendar items'"
 msgid "Other"
 msgstr "Прочее"
+
+#: ../contents/ui/calendars/YandexCalendarManager.qml
+#, kde-format
+msgid ""
+"Could not update Yandex Calendar account “%1”. Install the Python "
+"“icalendar” module."
+msgstr ""
+"Не удалось обновить учётную запись Яндекс Календаря «%1». Установите модуль "
+"Python «icalendar»."
+
+#: ../contents/ui/calendars/YandexCalendarManager.qml
+#, kde-format
+msgid "Could not update Yandex Calendar account “%1”: %2"
+msgstr "Не удалось обновить аккаунт Яндекс Календаря «%1»: %2"
+
+#: ../contents/ui/calendars/YandexCalendarManager.qml
+#: ../contents/ui/config/ConfigYandexCalendar.qml
+#, kde-format
+msgid "Yandex Calendar returned invalid data."
+msgstr "Яндекс Календарь вернул некорректные данные."
 
 #: ../contents/ui/config/ConfigAgenda.qml
 #, kde-format
@@ -798,6 +838,40 @@ msgstr "Светлая (на тёмном)"
 msgid "Big Number"
 msgstr "Жирный шрифт"
 
+#: ../contents/ui/config/ConfigConnectedCalendars.qml
+#, kde-format
+msgid "Connected calendars"
+msgstr "Подключённые календари"
+
+#: ../contents/ui/config/ConfigConnectedCalendars.qml
+#, kde-format
+msgid ""
+"Choose event and text colors independently for every connected calendar. "
+"Resetting a calendar restores the color supplied by its service."
+msgstr ""
+"Выберите цвет событий и текста отдельно для каждого подключённого календаря. "
+"Сброс возвращает цвета, полученные от сервиса."
+
+#: ../contents/ui/config/ConfigConnectedCalendars.qml
+#, kde-format
+msgid "No connected calendars."
+msgstr "Нет подключённых календарей."
+
+#: ../contents/ui/config/ConfigConnectedCalendars.qml
+#, kde-format
+msgid "Event color"
+msgstr "Цвет события"
+
+#: ../contents/ui/config/ConfigConnectedCalendars.qml
+#, kde-format
+msgid "Text color"
+msgstr "Цвет текста"
+
+#: ../contents/ui/config/ConfigConnectedCalendars.qml
+#, kde-format
+msgid "Use source colors"
+msgstr "Использовать цвета источника"
+
 #: ../contents/ui/config/ConfigEvents.qml
 #, kde-format
 msgid "Apophuy Calendar Plugins"
@@ -1073,6 +1147,7 @@ msgid "Calendars"
 msgstr "Календари"
 
 #: ../contents/ui/config/ConfigGoogleCalendar.qml
+#: ../contents/ui/config/ConfigYandexCalendar.qml
 #, kde-format
 msgid "Refresh"
 msgstr "Обновить"
@@ -1313,6 +1388,109 @@ msgstr "Температура « - »"
 msgid "Icons"
 msgstr "Значок"
 
+#: ../contents/ui/config/ConfigYandexCalendar.qml
+#, kde-format
+msgid "Enter a new Yandex application password in the dialog."
+msgstr "Введите новый пароль приложения Яндекса в диалоговом окне."
+
+#: ../contents/ui/config/ConfigYandexCalendar.qml
+#, kde-format
+msgid "Enter the Yandex application password in the dialog."
+msgstr "Введите пароль приложения Яндекса в диалоговом окне."
+
+#: ../contents/ui/config/ConfigYandexCalendar.qml
+#, kde-format
+msgid "Enter the Yandex Calendar application password:"
+msgstr "Введите пароль приложения для Яндекс Календаря:"
+
+#: ../contents/ui/config/ConfigYandexCalendar.qml
+#, kde-format
+msgid "Could not connect the Yandex account."
+msgstr "Не удалось подключить аккаунт Яндекса."
+
+#: ../contents/ui/config/ConfigYandexCalendar.qml
+#, kde-format
+msgid "Connected. Found %1 calendar."
+msgid_plural "Connected. Found %1 calendars."
+msgstr[0] "Подключено. Найден %1 календарь."
+msgstr[1] "Подключено. Найдено %1 календаря."
+msgstr[2] "Подключено. Найдено %1 календарей."
+
+#: ../contents/ui/config/ConfigYandexCalendar.qml
+#, kde-format
+msgid "Enter the Yandex account login."
+msgstr "Введите логин аккаунта Яндекса."
+
+#: ../contents/ui/config/ConfigYandexCalendar.qml
+#, kde-format
+msgid "Refreshing Yandex calendars…"
+msgstr "Обновление календарей Яндекса…"
+
+#: ../contents/ui/config/ConfigYandexCalendar.qml
+#, kde-format
+msgid "Could not refresh the Yandex account."
+msgstr "Не удалось обновить аккаунт Яндекса."
+
+#: ../contents/ui/config/ConfigYandexCalendar.qml
+#, kde-format
+msgid "Yandex calendar list updated."
+msgstr "Список календарей Яндекса обновлён."
+
+#: ../contents/ui/config/ConfigYandexCalendar.qml
+#, kde-format
+msgid "Yandex accounts"
+msgstr "Аккаунты Яндекса"
+
+#: ../contents/ui/config/ConfigYandexCalendar.qml
+#, kde-format
+msgid ""
+"Create a Yandex application password for Calendar, then add the account "
+"here. Passwords are stored in KWallet and are not saved in the widget "
+"configuration."
+msgstr ""
+"Создайте пароль приложения Яндекса для Календаря, затем добавьте аккаунт "
+"здесь. Пароли хранятся в KWallet и не сохраняются в конфигурации виджета."
+
+#: ../contents/ui/config/ConfigYandexCalendar.qml
+#, kde-format
+msgid "Create an application password at <a href=\"%1\">Yandex ID</a>."
+msgstr "Создайте пароль приложения в <a href=\"%1\">Яндекс ID</a>."
+
+#: ../contents/ui/config/ConfigYandexCalendar.qml
+#, kde-format
+msgid "Add account"
+msgstr "Добавить аккаунт"
+
+#: ../contents/ui/config/ConfigYandexCalendar.qml
+#, kde-format
+msgid "Account name"
+msgstr "Название аккаунта"
+
+#: ../contents/ui/config/ConfigYandexCalendar.qml
+#, kde-format
+msgid "Yandex login or email"
+msgstr "Логин или почта Яндекса"
+
+#: ../contents/ui/config/ConfigYandexCalendar.qml
+#, kde-format
+msgid "Connect account"
+msgstr "Подключить аккаунт"
+
+#: ../contents/ui/config/ConfigYandexCalendar.qml
+#, kde-format
+msgid "Enable this account"
+msgstr "Использовать этот аккаунт"
+
+#: ../contents/ui/config/ConfigYandexCalendar.qml
+#, kde-format
+msgid "Change password"
+msgstr "Изменить пароль"
+
+#: ../contents/ui/config/ConfigYandexCalendar.qml
+#, kde-format
+msgid "Remove"
+msgstr "Удалить"
+
 #: ../contents/ui/config/OpenWeatherMapCityDialog.qml
 #: ../contents/ui/config/WeatherCanadaCityDialog.qml
 #, kde-format
@@ -1411,6 +1589,10 @@ msgstr "Вечер:"
 #, kde-format
 msgid "Night:"
 msgstr "Ночь:"
+
+#~ msgid ""
+#~ "Plasmoid for a calendar+agenda with weather that syncs to Google Calendar."
+#~ msgstr "Календарь событий с погодой и синхронизацией с Google Calendar."
 
 #, kde-format
 #~ msgid "Find City"
