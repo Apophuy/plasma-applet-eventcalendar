@@ -1,4 +1,4 @@
-# Event Calendar
+# Календарь Apophuy
 
 [English](README.md) | **Русский**
 
@@ -193,7 +193,7 @@ plasmawindowed ./package
 ### Просмотр логов
 
 Включите отладку в настройках виджета:
-- Правый клик на Calendar → **Event Calendar Settings** → **General** → `debugging = true`
+- Правый клик на календаре → **Настроить «Календарь Apophuy»** → **Основное** → `debugging = true`
 
 Логи будут отображаться в журнале:
 
@@ -209,7 +209,7 @@ journalctl --user -f | grep eventcalendar
 
 ### Google Calendar
 
-1. Правый клик на Calendar → **Event Calendar Settings** → **Google Calendar**
+1. Правый клик на календаре → **Настроить «Календарь Apophuy»** → **Google Календарь**
 2. Нажмите **Login with Google** — браузер откроется автоматически
 3. Войдите в Google и разрешите доступ к Calendar и Tasks; после локального перенаправления вернитесь в настройки виджета
 4. После того, как окно настроек покажет статус синхронизации, нажмите **Apply**

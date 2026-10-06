@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eventcalendar\n"
 "Report-Msgid-Bugs-To: https://github.com/Apophuy/plasma-applet-eventcalendar\n"
-"POT-Creation-Date: 2026-09-28 10:49+0300\n"
+"POT-Creation-Date: 2026-10-06 09:13+0300\n"
 "PO-Revision-Date: 2020-11-12 19:45+0100\n"
 "Last-Translator: Guido Mazzone <guido.mazzone93@outlook.it>\n"
 "Language-Team: Italian <guido.mazzone93@outlook.it>\n"
@@ -19,8 +19,8 @@ msgstr ""
 
 #: ../metadata.desktop ../contents/ui/AgendaView.qml ../contents/ui/UpcomingEvents.qml
 #, kde-format
-msgid "Event Calendar"
-msgstr "Calendario Eventi"
+msgid "Apophuy Calendar"
+msgstr "Apophuy Calendar"
 
 #: ../metadata.desktop
 msgid "Plasmoid for a calendar+agenda with weather that syncs to Google Calendar."
@@ -777,8 +777,8 @@ msgstr "Numero grande"
 
 #: ../contents/ui/config/ConfigEvents.qml
 #, kde-format
-msgid "Event Calendar Plugins"
-msgstr "Lista plugin calendario eventi"
+msgid "Apophuy Calendar Plugins"
+msgstr "Apophuy Calendar Plugins"
 
 #: ../contents/ui/config/ConfigEvents.qml
 #, kde-format

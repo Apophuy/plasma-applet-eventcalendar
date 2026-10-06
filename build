@@ -60,11 +60,13 @@ if [ -z "$package_namespace" ] || [ -z "$package_version" ]; then
 	exit 1
 fi
 
-package_name=${package_namespace##*.}
+legacy_package_name=${package_namespace##*.}
+package_name="apophuy-calendar"
 filename="${package_name}-v${package_version}-plasma6.${PACKAGE_EXT}"
 
 find "$SCRIPT_DIR" -maxdepth 1 -type f \
-	-name "${package_name}-v*.${PACKAGE_EXT}" -delete
+	\( -name "${legacy_package_name}-v*.${PACKAGE_EXT}" \
+	-o -name "${package_name}-v*.${PACKAGE_EXT}" \) -delete
 
 echo_gray "[${PACKAGE_EXT}] Creating '${filename}'"
 (

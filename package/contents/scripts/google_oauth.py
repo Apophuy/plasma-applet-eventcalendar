@@ -64,9 +64,9 @@ class CallbackHandler(http.server.BaseHTTPRequestHandler):
         success = bool(self.server.oauth_result["code"])
         title = "Login complete" if success else "Login failed"
         message = (
-            "You can close this window and return to the Event Calendar settings."
+            "You can close this window and return to the Apophuy Calendar settings."
             if success
-            else "Return to the Event Calendar settings and try again."
+            else "Return to the Apophuy Calendar settings and try again."
         )
         body = (
             "<!doctype html><html><head><meta charset='utf-8'>"

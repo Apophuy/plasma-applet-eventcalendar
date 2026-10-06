@@ -1,4 +1,4 @@
-> Plasma 6 translation workflow for Event Calendar.
+> Plasma 6 translation workflow for Apophuy Calendar.
 
 Translations are compiled into `contents/locale` and bundled with the Plasma 6 package.
 
@@ -47,12 +47,12 @@ Or if you know how to make a pull request
 | ja       | 174/260 |   66% |
 | ko       | 206/260 |   79% |
 | nl       | 210/260 |   80% |
-| pl       | 153/260 |   58% |
+| pl       | 154/260 |   59% |
 | pt_BR    | 206/260 |   79% |
 | pt_PT    | 205/260 |   78% |
 | ru       | 260/260 |  100% |
 | sl       | 184/260 |   70% |
-| sv       | 170/260 |   65% |
+| sv       | 172/260 |   66% |
 | tr       | 175/260 |   67% |
-| uk       | 153/260 |   58% |
-| zh_CN    | 158/260 |   60% |
+| uk       | 154/260 |   59% |
+| zh_CN    | 159/260 |   61% |

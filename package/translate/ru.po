@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: eventcalendar\n"
 "Report-Msgid-Bugs-To: https://github.com/Apophuy/plasma-applet-"
 "eventcalendar\n"
-"POT-Creation-Date: 2026-09-28 10:49+0300\n"
+"POT-Creation-Date: 2026-10-06 09:13+0300\n"
 "PO-Revision-Date: 2020-01-05 22:01+0300\n"
 "Last-Translator: aliger14 <aliger14@mail.ru>\n"
 "Language-Team: ru\n"
@@ -25,8 +25,8 @@ msgstr ""
 #: ../metadata.desktop ../contents/ui/AgendaView.qml
 #: ../contents/ui/UpcomingEvents.qml
 #, kde-format
-msgid "Event Calendar"
-msgstr "Календарь событий"
+msgid "Apophuy Calendar"
+msgstr "Календарь Apophuy"
 
 #: ../metadata.desktop
 msgid ""
@@ -800,8 +800,8 @@ msgstr "Жирный шрифт"
 
 #: ../contents/ui/config/ConfigEvents.qml
 #, kde-format
-msgid "Event Calendar Plugins"
-msgstr "Плагины календаря событий"
+msgid "Apophuy Calendar Plugins"
+msgstr "Плагины Календаря Apophuy"
 
 #: ../contents/ui/config/ConfigEvents.qml
 #, kde-format

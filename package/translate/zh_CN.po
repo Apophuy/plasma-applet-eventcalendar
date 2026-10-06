@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: eventcalendar\n"
 "Report-Msgid-Bugs-To: https://github.com/Apophuy/plasma-applet-"
 "eventcalendar\n"
-"POT-Creation-Date: 2026-09-28 10:49+0300\n"
+"POT-Creation-Date: 2026-10-06 09:13+0300\n"
 "PO-Revision-Date: 2019-04-17 16:43+0800\n"
 "Last-Translator: Core小睿 <i@coreja.com>\n"
 "Language-Team: \n"
@@ -22,8 +22,8 @@ msgstr ""
 #: ../metadata.desktop ../contents/ui/AgendaView.qml
 #: ../contents/ui/UpcomingEvents.qml
 #, kde-format
-msgid "Event Calendar"
-msgstr ""
+msgid "Apophuy Calendar"
+msgstr "Apophuy Calendar"
 
 #: ../metadata.desktop
 msgid ""
@@ -794,8 +794,8 @@ msgstr "放大数字"
 
 #: ../contents/ui/config/ConfigEvents.qml
 #, kde-format
-msgid "Event Calendar Plugins"
-msgstr "Event Calendar 插件"
+msgid "Apophuy Calendar Plugins"
+msgstr "Apophuy Calendar Plugins"
 
 #: ../contents/ui/config/ConfigEvents.qml
 #, kde-format

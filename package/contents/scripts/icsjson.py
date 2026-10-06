@@ -442,7 +442,7 @@ class CalendarManager:
     def read(self):
         request = urllib.request.Request(
             self.url,
-            headers={"User-Agent": "KDE Event Calendar iCalendar reader"},
+            headers={"User-Agent": "KDE Apophuy Calendar iCalendar reader"},
         )
         with urllib.request.urlopen(
             request, timeout=REQUEST_TIMEOUT_SECONDS

@@ -1,4 +1,4 @@
-# Event Calendar
+# Apophuy Calendar
 
 **English** | [Русский](README_RU.md)
 
@@ -10,11 +10,11 @@ This project is a clone of [Zren's original Event Calendar widget](https://githu
 
 ## Screenshots
 
-The screenshots below show version 1.00 with the Russian localization enabled.
+The screenshots below show version 1.01 with the Russian localization enabled.
 
 ### Calendar popup
 
-![Event Calendar popup with the calendar, weather forecast, agenda, and timer](docs/screenshots/event-calendar-popup.png)
+![Apophuy Calendar popup with the calendar, weather forecast, agenda, and timer](docs/screenshots/event-calendar-popup.png)
 
 ### Settings
 
@@ -160,7 +160,7 @@ To launch the current source tree in a separate window:
 plasmawindowed ./package
 ```
 
-Enable debugging in **Event Calendar Settings → General**, then inspect the journal:
+Enable debugging in **Apophuy Calendar Settings → General**, then inspect the journal:
 
 ```bash
 journalctl --user -f | grep eventcalendar
@@ -172,7 +172,7 @@ When testing a development checkout, remove any distribution-packaged version fi
 
 ### Google Calendar
 
-1. Right-click the widget and open **Event Calendar Settings → Google Calendar**.
+1. Right-click the widget and open **Apophuy Calendar Settings → Google Calendar**.
 2. Select **Log in with Google**. Your browser opens automatically.
 3. Sign in and allow Calendar and Tasks access. Return to the widget settings after the local redirect.
 4. Once synchronization is confirmed, select **Apply**.
