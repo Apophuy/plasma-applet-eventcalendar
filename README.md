@@ -1,8 +1,8 @@
-# Event Calendar
+# Apophuy Calendar
 
 **English** | [Русский](README_RU.md)
 
-A Plasma calendar widget with an agenda, weather forecast, timer, and Google Calendar synchronization.
+A Plasma calendar widget with an agenda, weather forecast, timer, and Google and Yandex Calendar synchronization.
 
 **Plasma 6 / KDE Frameworks 6 / Qt 6** — works on both Wayland and X11.
 
@@ -10,11 +10,11 @@ This project is a clone of [Zren's original Event Calendar widget](https://githu
 
 ## Screenshots
 
-The screenshots below show version 1.00 with the Russian localization enabled.
+The screenshots below show version 1.03 with the Russian localization enabled.
 
 ### Calendar popup
 
-![Event Calendar popup with the calendar, weather forecast, agenda, and timer](docs/screenshots/event-calendar-popup.png)
+![Apophuy Calendar popup with the calendar, weather forecast, agenda, and timer](docs/screenshots/event-calendar-popup.png)
 
 ### Settings
 
@@ -62,6 +62,7 @@ The screenshots below show version 1.00 with the Russian localization enabled.
 | `python3`       | OAuth, iCalendar support, and metadata generation         |
 | `gettext`       | Translation building when installing from Git            |
 | `kpackagetool6` | KDE package installer included with Plasma 6              |
+| `kdialog`       | Secure Yandex application-password prompt                  |
 
 ### Optional dependencies
 
@@ -75,6 +76,7 @@ The screenshots below show version 1.00 with the Russian localization enabled.
 
 - `package/contents/scripts/icsjson.py` — parses iCalendar sources
 - `package/contents/scripts/google_oauth.py` — Google OAuth using a local loopback callback and PKCE
+- `package/contents/scripts/yandex_caldav.py` — Yandex CalDAV discovery and synchronization
 - `package/contents/scripts/konsolekalendar.py` — konsolekalendar integration
 - `package/contents/scripts/notification.py` — event notifications
 
@@ -160,7 +162,7 @@ To launch the current source tree in a separate window:
 plasmawindowed ./package
 ```
 
-Enable debugging in **Event Calendar Settings → General**, then inspect the journal:
+Enable debugging in **Apophuy Calendar Settings → General**, then inspect the journal:
 
 ```bash
 journalctl --user -f | grep eventcalendar
@@ -172,7 +174,7 @@ When testing a development checkout, remove any distribution-packaged version fi
 
 ### Google Calendar
 
-1. Right-click the widget and open **Event Calendar Settings → Google Calendar**.
+1. Right-click the widget and open **Apophuy Calendar Settings → Google Calendar**.
 2. Select **Log in with Google**. Your browser opens automatically.
 3. Sign in and allow Calendar and Tasks access. Return to the widget settings after the local redirect.
 4. Once synchronization is confirmed, select **Apply**.
@@ -183,6 +185,19 @@ Authentication uses a loopback callback on `127.0.0.1` with PKCE. It requires `p
 
 1. Open the same **Google Calendar** settings page.
 2. Select the task lists you want to display.
+
+### Yandex Calendar
+
+1. In Yandex ID, create an application password for **Calendar**.
+2. Open **Apophuy Calendar Settings → Yandex Calendar**.
+3. Enter an account label and the Yandex login or email address, then select **Connect account**.
+4. Enter the application password in the secure dialog and select the calendars to display.
+
+Multiple Yandex accounts can be connected. Passwords are stored in user-only files under `$XDG_DATA_HOME/apophuy-calendar/yandex-credentials/` (or `~/.local/share/apophuy-calendar/yandex-credentials/`) with `0600` permissions and are not written to the widget configuration. The current CalDAV integration is read-only.
+
+### Calendar colors
+
+Open **Apophuy Calendar Settings → Connected Calendars** to choose an event color and a text color independently for every Google, Yandex, or iCalendar calendar. Resetting a calendar restores the color supplied by its service.
 
 ### Weather (OpenWeatherMap)
 
@@ -211,6 +226,8 @@ The widget supports Plasma calendar plugins such as holiday events:
 - Monthly calendar with event indicators
 - Agenda for upcoming events
 - Google Calendar events and Google Tasks
+- Multiple Yandex Calendar accounts through CalDAV
+- Per-calendar event and text colors
 - Local and remote iCalendar (`.ics`) sources
 - Plasma calendar plugins such as holidays
 - Current weather and forecasts from OpenWeatherMap or Weather Canada
@@ -236,6 +253,12 @@ If this service is unavailable, log out of Plasma and sign in again.
 1. Check the network connection.
 2. Sign out and sign in again on the **Google Calendar** settings page.
 3. Update the widget to the latest version.
+
+### Yandex Calendar does not synchronize
+
+1. Make sure the password was created as a Yandex **Calendar** application password.
+2. Open the **Yandex Calendar** settings page and select **Change password**.
+3. Reconnect the account if its locally stored password was removed.
 
 ### Weather does not update
 

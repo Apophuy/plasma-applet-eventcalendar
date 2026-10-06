@@ -129,7 +129,11 @@ CalendarManager {
 	}
 	function fetchGoogleAccountEvents_done(results) {
 		for (var i = 0; i < results.length; i++) {
-			var calendarId = results[i].calendarId
+			var requestedCalendarId = results[i].calendarId
+			var calendar = getCalendar(requestedCalendarId)
+			// Google accepts the special "primary" alias, but the calendar's
+			// actual ID is stable and is also used by the configuration UI.
+			var calendarId = calendar ? calendar.id : requestedCalendarId
 			var calendarData = results[i].data
 			setCalendarData(calendarId, calendarData)
 		}
@@ -280,6 +284,7 @@ CalendarManager {
 	function parseEvent(calendar, event) {
 		event.description = event.description || ""
 		event.backgroundColor = parseColor(calendar, event)
+		event.foregroundColor = calendar.foregroundColor || ""
 		event.canEdit = (calendar.accessRole == 'writer' || calendar.accessRole == 'owner') && !event.recurringEventId // We cannot currently edit repeating events.
 		if (Plasmoid.configuration.googleHideGoalsDesc
 			&& event.organizer.email == "unknownorganizer@calendar.google.com"
@@ -358,7 +363,10 @@ CalendarManager {
 	}
 	function createEvent_done(calendarId, data) {
 		logger.debugJSON(calendarManagerId, 'createEvent_done', calendarId, data)
-		if (googleCalendarManager.calendarIdList.indexOf(calendarId) >= 0) {
+		var calendar = getCalendar(calendarId)
+		var isSelected = googleCalendarManager.calendarIdList.indexOf(calendarId) >= 0
+			|| (calendar && calendar.primary && googleCalendarManager.calendarIdList.indexOf('primary') >= 0)
+		if (isSelected) {
 			parseSingleEvent(calendarId, data)
 			addEvent(calendarId, data)
 			eventCreated(calendarId, data)

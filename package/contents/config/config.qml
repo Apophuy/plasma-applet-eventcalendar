@@ -57,6 +57,16 @@ ConfigModel {
 		source: "config/ConfigGoogleCalendar.qml"
 	}
 	ConfigCategory {
+		name: i18n("Yandex Calendar")
+		icon: "view-calendar-day"
+		source: "config/ConfigYandexCalendar.qml"
+	}
+	ConfigCategory {
+		name: i18n("Connected Calendars")
+		icon: "preferences-desktop-color"
+		source: "config/ConfigConnectedCalendars.qml"
+	}
+	ConfigCategory {
 		name: i18n("Weather")
 		icon: "weather-clear"
 		source: "config/ConfigWeather.qml"

@@ -16,6 +16,37 @@ QtObject {
 
 	Component.onCompleted: migrate()
 	onMigrate: {
+		// Added in: v73. Empty values mean that every calendar keeps the
+		// provider color until the user chooses an override.
+		if (!Plasmoid.configuration.v73Migration) {
+			if (!Plasmoid.configuration.calendarAppearanceOverrides) {
+				Plasmoid.configuration.calendarAppearanceOverrides = Qt.btoa("[]")
+			}
+			if (!Plasmoid.configuration.yandexAccounts) {
+				Plasmoid.configuration.yandexAccounts = Qt.btoa("[]")
+			}
+			// Stable IDs keep per-calendar appearance settings attached to the
+			// right iCalendar entry when another entry is removed or reordered.
+			if (Plasmoid.configuration.icalCalendarList) {
+				try {
+					var icalCalendars = JSON.parse(Qt.atob(Plasmoid.configuration.icalCalendarList))
+					var updatedICalendars = false
+					for (var i = 0; i < icalCalendars.length; i++) {
+						if (!icalCalendars[i].id) {
+							icalCalendars[i].id = "ical-migrated-" + i + "-" + Date.now()
+							updatedICalendars = true
+						}
+					}
+					if (updatedICalendars) {
+						Plasmoid.configuration.icalCalendarList = Qt.btoa(JSON.stringify(icalCalendars))
+					}
+				} catch (error) {
+					console.warn('[eventcalendar:migrate] could not assign stable iCalendar IDs:', error)
+				}
+			}
+			Plasmoid.configuration.v73Migration = true
+		}
+
 		// Modified in: v72
 		if (!Plasmoid.configuration.v72Migration) {
 			var oldValue = Plasmoid.configuration.enabledCalendarPlugins

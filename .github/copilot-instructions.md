@@ -82,6 +82,10 @@ Plasmoid.contextualActions: [
 
 ## Development Workflow
 
+### Versioning
+
+For every completed task that changes widget behavior, UI, settings, translations, or packaged contents, automatically increment `X-KDE-PluginInfo-Version` in the canonical `package/metadata.desktop` by `0.01`, preserving two decimal places (`1.00` → `1.01` → `1.02`). Bump the version before reinstalling and include it in the same commit as the task. Do not bump the widget version for documentation-only or agent-instruction-only changes. If user-facing documentation explicitly duplicates the current version, update it at the same time.
+
 ### Install/Test (Plasma 6)
 
 ```bash
