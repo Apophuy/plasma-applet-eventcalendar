@@ -20,9 +20,11 @@ ConfigPage {
 
 		function addCalendar() {
 			addItem({
+				id: 'ical-' + Date.now() + '-' + Math.floor(Math.random() * 1000000),
 				url: '',
 				name: i18n('Calendar'),
 				backgroundColor: '' + Kirigami.Theme.highlightColor,
+				foregroundColor: '',
 				show: true,
 				isReadOnly: true,
 			})

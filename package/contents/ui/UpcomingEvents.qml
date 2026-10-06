@@ -141,7 +141,7 @@ CalendarManager {
 			bodyText = bodyText
 
 			notificationManager.notify({
-				appName: i18n("Event Calendar"),
+				appName: i18n("Apophuy Calendar"),
 				appIcon: "view-calendar-upcoming-events",
 				summary: summary,
 				body: bodyText,
@@ -166,7 +166,7 @@ CalendarManager {
 			clock24h: appletConfig.clock24h,
 		})
 		notificationManager.notify({
-			appName: i18n("Event Calendar"),
+			appName: i18n("Apophuy Calendar"),
 			appIcon: "view-calendar-upcoming-events",
 			// expireTimeout: (minutes*60 - 1) * 1000, // timeout resets on hover so may last longer than event starts.
 			summary: summaryText,
@@ -177,7 +177,7 @@ CalendarManager {
 
 	function sendEventStartingNotification(eventItem) {
 		notificationManager.notify({
-			appName: i18n("Event Calendar"),
+			appName: i18n("Apophuy Calendar"),
 			appIcon: "view-calendar-upcoming-events",
 			// expireTimeout: 10000,
 			summary: eventItem.summary,

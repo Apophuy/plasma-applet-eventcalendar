@@ -28,7 +28,7 @@ ConfigPage {
 	}
 
 	HeaderText {
-		text: i18n("Event Calendar Plugins")
+		text: i18n("Apophuy Calendar Plugins")
 	}
 
 	ConfigSection {

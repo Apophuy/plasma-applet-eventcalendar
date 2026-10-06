@@ -2,6 +2,8 @@
 *.qmlc
 *.jsc
 *.mo
+__pycache__/
+*.py[cod]
 /dist
 /package/metadata.json
 

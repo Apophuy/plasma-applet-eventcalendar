@@ -162,6 +162,8 @@ Item {
 		//--- Events
 		function onAccessTokenChanged() { logic.updateEvents() }
 		function onCalendarIdListChanged() { logic.updateEvents() }
+		function onYandexAccountsChanged() { logic.updateEvents() }
+		function onCalendarAppearanceOverridesChanged() { logic.updateEvents() }
 		function onEnabledCalendarPluginsChanged() { logic.updateEvents() }
 		function onTasklistIdListChanged() { logic.updateEvents() }
 		function onGoogleEventClickActionChanged() { logic.updateEvents() }

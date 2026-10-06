@@ -168,7 +168,7 @@ def main():
 	parser.add_argument('summary')
 	parser.add_argument('message')
 	parser.add_argument('--icon', default='')
-	parser.add_argument('--app-name', dest='appName', default='Event Calendar')
+	parser.add_argument('--app-name', dest='appName', default='Apophuy Calendar')
 	parser.add_argument('--sound')
 	parser.add_argument('--loop')
 	parser.add_argument('--timeout', type=int, default=Notify.EXPIRES_DEFAULT)
@@ -202,5 +202,4 @@ def test():
 if __name__ == '__main__':
 	main()
 	# test()
-
 

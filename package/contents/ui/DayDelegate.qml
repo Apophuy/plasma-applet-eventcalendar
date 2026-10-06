@@ -121,19 +121,30 @@ MouseArea {
 
 
 	property int eventCount: model.events ? model.events.count : 0
-	property var eventColors: []
-	property bool useHightlightColor: eventColors.length === 0
+	property var calendarBars: []
+	property bool useHightlightColor: calendarBars.length === 0
 
 	onEventCountChanged: updateEventColors()
+	Connections {
+		target: model.events || null
+		function onDataChanged() { dayStyle.updateEventColors() }
+		function onCountChanged() { dayStyle.updateEventColors() }
+	}
 	function updateEventColors() {
-		var set = {}
+		var calendarSet = {}
+		var bars = []
 		for (var i = 0; i < eventCount; i++) {
 			var eventItem = model.events.get(i)
-			if (eventItem.backgroundColor) {
-				set[eventItem.backgroundColor] = true
+			var calendarKey = eventItem.calendarKey || eventItem.calendarManagerId + ":" + eventItem.calendarId
+			if (!calendarSet[calendarKey]) {
+				calendarSet[calendarKey] = true
+				bars.push({
+					calendarKey: calendarKey,
+					color: eventItem.backgroundColor || "" + Kirigami.Theme.highlightColor,
+				})
 			}
 		}
-		eventColors = Object.keys(set)
+		calendarBars = bars
 	}
 
 

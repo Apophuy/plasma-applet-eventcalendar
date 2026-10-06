@@ -1,4 +1,4 @@
-> Plasma 6 translation workflow for Event Calendar.
+> Plasma 6 translation workflow for Apophuy Calendar.
 
 Translations are compiled into `contents/locale` and bundled with the Plasma 6 package.
 
@@ -35,24 +35,24 @@ Or if you know how to make a pull request
 ## Status
 |  Locale  |  Lines  | % Done|
 |----------|---------|-------|
-| Template |     260 |       |
-| da       | 176/260 |   67% |
-| de       | 206/260 |   79% |
-| el       | 163/260 |   62% |
-| es       | 209/260 |   80% |
-| fi       | 206/260 |   79% |
-| fr       | 177/260 |   68% |
-| he       | 207/260 |   79% |
-| it       | 206/260 |   79% |
-| ja       | 174/260 |   66% |
-| ko       | 206/260 |   79% |
-| nl       | 210/260 |   80% |
-| pl       | 153/260 |   58% |
-| pt_BR    | 206/260 |   79% |
-| pt_PT    | 205/260 |   78% |
-| ru       | 260/260 |  100% |
-| sl       | 184/260 |   70% |
-| sv       | 170/260 |   65% |
-| tr       | 175/260 |   67% |
-| uk       | 153/260 |   58% |
-| zh_CN    | 158/260 |   60% |
+| Template |     291 |       |
+| da       | 176/291 |   60% |
+| de       | 205/291 |   70% |
+| el       | 163/291 |   56% |
+| es       | 208/291 |   71% |
+| fi       | 205/291 |   70% |
+| fr       | 177/291 |   60% |
+| he       | 206/291 |   70% |
+| it       | 205/291 |   70% |
+| ja       | 174/291 |   59% |
+| ko       | 205/291 |   70% |
+| nl       | 209/291 |   71% |
+| pl       | 154/291 |   52% |
+| pt_BR    | 205/291 |   70% |
+| pt_PT    | 204/291 |   70% |
+| ru       | 291/291 |  100% |
+| sl       | 183/291 |   62% |
+| sv       | 171/291 |   58% |
+| tr       | 175/291 |   60% |
+| uk       | 154/291 |   52% |
+| zh_CN    | 159/291 |   54% |

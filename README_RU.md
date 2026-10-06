@@ -1,8 +1,8 @@
-# Event Calendar
+# Календарь Apophuy
 
 [English](README.md) | **Русский**
 
-Plasmoid для календаря с повесткой дня, погодой и синхронизацией с Google Calendar.
+Плазмоид календаря с повесткой дня, погодой и синхронизацией с Google и Яндекс Календарём.
 
 **Plasma 6 / KDE Frameworks 6 / Qt 6** — Работает на Wayland и X11.
 
@@ -66,6 +66,7 @@ Plasmoid для календаря с повесткой дня, погодой 
 | `python3`       | OAuth, iCalendar и генерация metadata.json    |
 | `gettext`       | Сборка переводов при установке из Git         |
 | `kpackagetool6` | Установщик пакетов KDE (входит в Plasma 6)    |
+| `kdialog`       | Безопасный ввод пароля приложения Яндекса     |
 
 ### Опциональные зависимости
 
@@ -81,6 +82,7 @@ Plasmoid для календаря с повесткой дня, погодой 
 
 - `package/contents/scripts/icsjson.py` — Парсинг iCal календарей
 - `package/contents/scripts/google_oauth.py` — OAuth-вход в Google через локальный loopback callback и PKCE
+- `package/contents/scripts/yandex_caldav.py` — Обнаружение и синхронизация календарей Яндекса через CalDAV
 - `package/contents/scripts/konsolekalendar.py` — Интеграция с konsolekalendar
 - `package/contents/scripts/notification.py` — Уведомления о событиях
 
@@ -193,7 +195,7 @@ plasmawindowed ./package
 ### Просмотр логов
 
 Включите отладку в настройках виджета:
-- Правый клик на Calendar → **Event Calendar Settings** → **General** → `debugging = true`
+- Правый клик на календаре → **Настроить «Календарь Apophuy»** → **Основное** → `debugging = true`
 
 Логи будут отображаться в журнале:
 
@@ -209,12 +211,25 @@ journalctl --user -f | grep eventcalendar
 
 ### Google Calendar
 
-1. Правый клик на Calendar → **Event Calendar Settings** → **Google Calendar**
+1. Правый клик на календаре → **Настроить «Календарь Apophuy»** → **Google Календарь**
 2. Нажмите **Login with Google** — браузер откроется автоматически
 3. Войдите в Google и разрешите доступ к Calendar и Tasks; после локального перенаправления вернитесь в настройки виджета
 4. После того, как окно настроек покажет статус синхронизации, нажмите **Apply**
 
 Авторизация использует loopback callback на `127.0.0.1` и PKCE. Для запуска локального callback требуется `python3`; вход одинаково работает в сеансах Wayland и X11.
+
+### Яндекс Календарь
+
+1. В Яндекс ID создайте пароль приложения типа **Календарь**.
+2. Откройте **Настроить «Календарь Apophuy» → Яндекс Календарь**.
+3. Укажите название аккаунта и логин или почту Яндекса, затем нажмите **Подключить аккаунт**.
+4. Введите пароль приложения в защищённом диалоге и отметьте нужные календари.
+
+Можно подключить несколько аккаунтов Яндекса. Пароли сохраняются в отдельных файлах с правами `0600` в `$XDG_DATA_HOME/apophuy-calendar/yandex-credentials/` (или `~/.local/share/apophuy-calendar/yandex-credentials/`) и не записываются в конфигурацию виджета. Текущая интеграция CalDAV работает в режиме чтения.
+
+### Цвета календарей
+
+Во вкладке **Подключённые календари** можно отдельно настроить цвет события и текста каждого календаря Google, Яндекса и iCalendar. Сброс возвращает цвет, полученный от сервиса.
 
 ### Google Tasks
 
@@ -415,6 +430,6 @@ GPL — см. исходный код для деталей
 
 ## Версия
 
-Текущая версия: **1.00** (см. `package/metadata.desktop`)
+Текущая версия: **1.03** (см. `package/metadata.desktop`)
 
 История изменений: [Changelog.md](Changelog.md)

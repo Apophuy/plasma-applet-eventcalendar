@@ -25,7 +25,7 @@ Item {
 		target: eventModel
 		function onEventCreated(calendarId, data) {
 			notificationManager.notify({
-				appName: i18n("Event Calendar"),
+				appName: i18n("Apophuy Calendar"),
 				appIcon: "resource-calendar-insert",
 				// expireTimeout: 10000,
 				summary: data.summary,
@@ -38,7 +38,7 @@ Item {
 		function onEventDeleted(calendarId, eventId, data) {
 			logger.logJSON('AgendaView.onEventDeleted', data)
 			notificationManager.notify({
-				appName: i18n("Event Calendar"),
+				appName: i18n("Apophuy Calendar"),
 				appIcon: "user-trash-symbolic",
 				// expireTimeout: 10000,
 				summary: data.summary,

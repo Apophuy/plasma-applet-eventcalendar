@@ -142,6 +142,7 @@ Item {
 		// logger.debug('CalendarManager.defaultEventParsing')
 		event.calendarManagerId = calendarManagerId
 		event.calendarId = calendarId
+		event.calendarKey = calendarManagerId + ":" + calendarId
 
 		event._summary = event.summary
 		event.summary = event.summary || i18nc("event with no summary", "(No title)")

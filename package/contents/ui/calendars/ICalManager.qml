@@ -34,6 +34,7 @@ CalendarManager {
 				id: calendarId(calendarData, i),
 				summary: displayName(calendarData),
 				backgroundColor: calendarData.backgroundColor,
+				foregroundColor: calendarData.foregroundColor || "",
 				accessRole: "reader",
 				isTasklist: false,
 			})
@@ -120,6 +121,7 @@ CalendarManager {
 
 	function parseEvent(calendar, event) {
 		event.backgroundColor = calendar.backgroundColor
+		event.foregroundColor = calendar.foregroundColor || ""
 		event.canEdit = false
 	}
 
