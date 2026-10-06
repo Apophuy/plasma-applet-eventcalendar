@@ -59,37 +59,49 @@ MouseArea {
 		+ (showCalendar ? (showAgenda ? singleColumnMonthViewHeight : bottomRowHeight) : 0)
 		+ (showAgenda ? bottomRowHeight : 0)
 		+ Math.max(0, singleColumnWidgetCount - 1) * spacing
-
-	Layout.minimumWidth: {
-		if (twoColumns) {
-			return Math.min(twoColumnNaturalWidth, Kirigami.Units.gridUnit * 44)
-		} else {
-			return Kirigami.Units.gridUnit * 14
-		}
-	}
-	Layout.preferredWidth: {
-		var naturalWidth = calendarOnly ? 378 : (twoColumns ? twoColumnNaturalWidth : singleColumnNaturalWidth)
-		return Math.min(naturalWidth, availableScreenWidth)
-	}
-	Layout.maximumWidth: isDesktopContainment ? Number.POSITIVE_INFINITY : availableScreenWidth
-
-	Layout.minimumHeight: Kirigami.Units.gridUnit * 14
-	Layout.preferredHeight: {
-		var naturalHeight
+	readonly property int singleColumnFixedHeight: (showMeteogram ? meteogramPreferredHeight : 0)
+		+ (showTimer ? effectiveTimerHeight : 0)
+		+ Math.max(0, singleColumnWidgetCount - 1) * spacing
+	readonly property real singleColumnMainHeight: Math.max(0,
+		popup.height - padding * 2 - singleColumnFixedHeight)
+	readonly property int singleColumnAgendaMinimumHeight: singleColumn && bothMainWidgetsVisible
+		? Math.round(singleColumnMainHeight * 0.4)
+		: 0
+	readonly property int effectiveSingleColumnMonthHeight: singleColumn && bothMainWidgetsVisible
+		? Math.min(singleColumnMonthViewHeight,
+			Math.max(0, singleColumnMainHeight - singleColumnAgendaMinimumHeight))
+		: bottomRowHeight
+	readonly property real naturalPopupWidth: calendarOnly
+		? 378
+		: (twoColumns ? twoColumnNaturalWidth : singleColumnNaturalWidth)
+	readonly property real naturalPopupHeight: {
 		if (calendarOnly) {
-			naturalHeight = 378
+			return 378
 		} else if (singleColumn) {
-			naturalHeight = singleColumnContentHeight + padding * 2
-		} else { // twoColumns
-			naturalHeight = bottomRowHeight // showAgenda || showCalendar
-			if (showMeteogram || showTimer) {
-				naturalHeight += spacing + effectiveTwoColumnTopHeight
-			}
-			naturalHeight += padding * 2
+			return singleColumnContentHeight + padding * 2
 		}
-		return Math.min(naturalHeight, availableScreenHeight)
+
+		var height = bottomRowHeight
+		if (showMeteogram || showTimer) {
+			height += spacing + effectiveTwoColumnTopHeight
+		}
+		return height + padding * 2
 	}
-	Layout.maximumHeight: isDesktopContainment ? Number.POSITIVE_INFINITY : availableScreenHeight
+	readonly property real constrainedPopupWidth: Math.min(
+		Math.max(naturalPopupWidth, Kirigami.Units.gridUnit * 14), availableScreenWidth)
+	readonly property real constrainedPopupHeight: Math.min(
+		Math.max(naturalPopupHeight, Kirigami.Units.gridUnit * 14), availableScreenHeight)
+
+	// Plasma persists popupWidth/popupHeight, so preferred sizes alone do not
+	// apply later changes from the Layout settings page. Matching the minimum
+	// and maximum constraints to the configured size keeps those controls live.
+	Layout.minimumWidth: constrainedPopupWidth
+	Layout.preferredWidth: constrainedPopupWidth
+	Layout.maximumWidth: isDesktopContainment ? Number.POSITIVE_INFINITY : constrainedPopupWidth
+
+	Layout.minimumHeight: constrainedPopupHeight
+	Layout.preferredHeight: constrainedPopupHeight
+	Layout.maximumHeight: isDesktopContainment ? Number.POSITIVE_INFINITY : constrainedPopupHeight
 
 	property var eventModel
 	property var agendaModel
@@ -218,15 +230,15 @@ MouseArea {
 
 			Layout.preferredWidth: popup.leftColumnWidth
 			Layout.minimumHeight: popup.singleColumn && popup.bothMainWidgetsVisible
-				? popup.singleColumnMonthViewHeight
+				? popup.effectiveSingleColumnMonthHeight
 				: 0
 			Layout.preferredHeight: popup.calendarOnly
 				? 378
 				: (popup.singleColumn && popup.bothMainWidgetsVisible
-					? popup.singleColumnMonthViewHeight
+					? popup.effectiveSingleColumnMonthHeight
 					: popup.bottomRowHeight)
 			Layout.maximumHeight: popup.singleColumn && popup.bothMainWidgetsVisible
-				? popup.singleColumnMonthViewHeight
+				? popup.effectiveSingleColumnMonthHeight
 				: Infinity
 			Layout.fillWidth: true
 			Layout.fillHeight: true
@@ -299,6 +311,9 @@ MouseArea {
 			Layout.rowSpan: popup.twoColumns && popup.showTimer && !popup.showMeteogram ? 2 : 1
 
 			Layout.preferredWidth: popup.twoColumns ? popup.rightColumnWidth : popup.leftColumnWidth
+			Layout.minimumHeight: popup.singleColumn && popup.bothMainWidgetsVisible
+				? popup.singleColumnAgendaMinimumHeight
+				: 0
 			Layout.preferredHeight: popup.bottomRowHeight
 			Layout.fillWidth: true
 			Layout.fillHeight: true

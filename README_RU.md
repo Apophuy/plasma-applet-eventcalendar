@@ -430,6 +430,6 @@ GPL — см. исходный код для деталей
 
 ## Версия
 
-Текущая версия: **1.03** (см. `package/metadata.desktop`)
+Текущая версия: **1.04** (см. `package/metadata.desktop`)
 
 История изменений: [Changelog.md](Changelog.md)
