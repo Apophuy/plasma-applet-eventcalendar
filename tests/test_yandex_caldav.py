@@ -1,7 +1,9 @@
 import importlib.util
 import datetime
 import pathlib
+import stat
 import sys
+import tempfile
 import unittest
 from unittest import mock
 
@@ -68,6 +70,21 @@ END:VCALENDAR
 
 
 class DiscoveryTests(unittest.TestCase):
+    def test_local_credentials_are_private_and_removable(self):
+        with tempfile.TemporaryDirectory() as data_home:
+            with mock.patch.dict("os.environ", {"XDG_DATA_HOME": data_home}):
+                CALDAV.write_password("account-1", "test-value")
+                path = CALDAV.credential_path("account-1")
+
+                self.assertEqual(CALDAV.read_password("account-1"), "test-value")
+                self.assertEqual(stat.S_IMODE(path.stat().st_mode), 0o600)
+                self.assertEqual(stat.S_IMODE(path.parent.stat().st_mode), 0o700)
+
+                CALDAV.forget_password("account-1")
+                self.assertFalse(path.exists())
+                with self.assertRaises(CALDAV.CredentialMissingError):
+                    CALDAV.read_password("account-1")
+
     def test_rejects_caldav_urls_outside_yandex(self):
         with self.assertRaises(CALDAV.CalDavError):
             CALDAV.validate_caldav_url("https://example.com/calendar/")

@@ -10,7 +10,7 @@ This project is a clone of [Zren's original Event Calendar widget](https://githu
 
 ## Screenshots
 
-The screenshots below show version 1.02 with the Russian localization enabled.
+The screenshots below show version 1.03 with the Russian localization enabled.
 
 ### Calendar popup
 
@@ -63,7 +63,6 @@ The screenshots below show version 1.02 with the Russian localization enabled.
 | `gettext`       | Translation building when installing from Git            |
 | `kpackagetool6` | KDE package installer included with Plasma 6              |
 | `kdialog`       | Secure Yandex application-password prompt                  |
-| `kwallet-query` | Storage for Yandex application passwords in KWallet        |
 
 ### Optional dependencies
 
@@ -194,7 +193,7 @@ Authentication uses a loopback callback on `127.0.0.1` with PKCE. It requires `p
 3. Enter an account label and the Yandex login or email address, then select **Connect account**.
 4. Enter the application password in the secure dialog and select the calendars to display.
 
-Multiple Yandex accounts can be connected. Passwords are stored in KWallet and are not written to the widget configuration. The current CalDAV integration is read-only.
+Multiple Yandex accounts can be connected. Passwords are stored in user-only files under `$XDG_DATA_HOME/apophuy-calendar/yandex-credentials/` (or `~/.local/share/apophuy-calendar/yandex-credentials/`) with `0600` permissions and are not written to the widget configuration. The current CalDAV integration is read-only.
 
 ### Calendar colors
 
@@ -259,7 +258,7 @@ If this service is unavailable, log out of Plasma and sign in again.
 
 1. Make sure the password was created as a Yandex **Calendar** application password.
 2. Open the **Yandex Calendar** settings page and select **Change password**.
-3. Make sure KWallet is available and unlocked.
+3. Reconnect the account if its locally stored password was removed.
 
 ### Weather does not update
 

@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: eventcalendar\n"
 "Report-Msgid-Bugs-To: https://github.com/Apophuy/plasma-applet-"
 "eventcalendar\n"
-"POT-Creation-Date: 2026-10-06 09:38+0300\n"
+"POT-Creation-Date: 2026-10-06 10:17+0300\n"
 "PO-Revision-Date: 2020-01-05 22:01+0300\n"
 "Last-Translator: aliger14 <aliger14@mail.ru>\n"
 "Language-Team: ru\n"
@@ -532,6 +532,15 @@ msgstr "Задачи"
 msgctxt "Means 'Other calendar items'"
 msgid "Other"
 msgstr "Прочее"
+
+#: ../contents/ui/calendars/YandexCalendarManager.qml
+#, kde-format
+msgid ""
+"The application password for Yandex account “%1” is not saved. Open Yandex "
+"Calendar settings and select Change password."
+msgstr ""
+"Пароль приложения для учётной записи Яндекса «%1» не сохранён. Откройте "
+"настройки Яндекс Календаря и нажмите «Изменить пароль»."
 
 #: ../contents/ui/calendars/YandexCalendarManager.qml
 #, kde-format
@@ -1428,6 +1437,11 @@ msgstr "Обновление календарей Яндекса…"
 
 #: ../contents/ui/config/ConfigYandexCalendar.qml
 #, kde-format
+msgid "The application password is not saved. Select Change password."
+msgstr "Пароль приложения не сохранён. Нажмите «Изменить пароль»."
+
+#: ../contents/ui/config/ConfigYandexCalendar.qml
+#, kde-format
 msgid "Could not refresh the Yandex account."
 msgstr "Не удалось обновить аккаунт Яндекса."
 
@@ -1445,11 +1459,12 @@ msgstr "Аккаунты Яндекса"
 #, kde-format
 msgid ""
 "Create a Yandex application password for Calendar, then add the account "
-"here. Passwords are stored in KWallet and are not saved in the widget "
-"configuration."
+"here. Passwords are stored in a user-only local file and are not saved in "
+"the widget configuration."
 msgstr ""
 "Создайте пароль приложения Яндекса для Календаря, затем добавьте аккаунт "
-"здесь. Пароли хранятся в KWallet и не сохраняются в конфигурации виджета."
+"здесь. Пароли хранятся в локальном файле, доступном только вашему "
+"пользователю, и не сохраняются в конфигурации виджета."
 
 #: ../contents/ui/config/ConfigYandexCalendar.qml
 #, kde-format
@@ -1589,6 +1604,15 @@ msgstr "Вечер:"
 #, kde-format
 msgid "Night:"
 msgstr "Ночь:"
+
+#, kde-format
+#~ msgid ""
+#~ "Create a Yandex application password for Calendar, then add the account "
+#~ "here. Passwords are stored in KWallet and are not saved in the widget "
+#~ "configuration."
+#~ msgstr ""
+#~ "Создайте пароль приложения Яндекса для Календаря, затем добавьте аккаунт "
+#~ "здесь. Пароли хранятся в KWallet и не сохраняются в конфигурации виджета."
 
 #~ msgid ""
 #~ "Plasmoid for a calendar+agenda with weather that syncs to Google Calendar."

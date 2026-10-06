@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: eventcalendar\n"
 "Report-Msgid-Bugs-To: https://github.com/Apophuy/plasma-applet-eventcalendar\n"
-"POT-Creation-Date: 2026-10-06 09:38+0300\n"
+"POT-Creation-Date: 2026-10-06 10:17+0300\n"
 "PO-Revision-Date: 2018-09-03 HO:MI+ZONE\n"
 "Last-Translator: Jakub Starzyk <jstarzyk98@gmail.com>\n"
 "Language-Team: Jakub Starzyk <jstarzyk98@gmail.com>\n"
@@ -502,6 +502,11 @@ msgstr ""
 #, kde-format
 msgctxt "Means 'Other calendar items'"
 msgid "Other"
+msgstr ""
+
+#: ../contents/ui/calendars/YandexCalendarManager.qml
+#, kde-format
+msgid "The application password for Yandex account “%1” is not saved. Open Yandex Calendar settings and select Change password."
 msgstr ""
 
 #: ../contents/ui/calendars/YandexCalendarManager.qml
@@ -1353,6 +1358,11 @@ msgstr ""
 
 #: ../contents/ui/config/ConfigYandexCalendar.qml
 #, kde-format
+msgid "The application password is not saved. Select Change password."
+msgstr ""
+
+#: ../contents/ui/config/ConfigYandexCalendar.qml
+#, kde-format
 msgid "Could not refresh the Yandex account."
 msgstr ""
 
@@ -1368,7 +1378,7 @@ msgstr ""
 
 #: ../contents/ui/config/ConfigYandexCalendar.qml
 #, kde-format
-msgid "Create a Yandex application password for Calendar, then add the account here. Passwords are stored in KWallet and are not saved in the widget configuration."
+msgid "Create a Yandex application password for Calendar, then add the account here. Passwords are stored in a user-only local file and are not saved in the widget configuration."
 msgstr ""
 
 #: ../contents/ui/config/ConfigYandexCalendar.qml

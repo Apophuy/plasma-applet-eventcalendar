@@ -1,7 +1,6 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
-import org.kde.kirigami as Kirigami
 
 import ".."
 import "../lib"
@@ -94,7 +93,9 @@ ConfigPage {
 		], function(cmd, exitCode, exitStatus, stdout, stderr) {
 			page.connecting = false
 			if (exitCode !== 0) {
-				messageLabel.text = (stderr || i18n("Could not refresh the Yandex account.")).trim()
+				messageLabel.text = exitCode === 5
+					? i18n("The application password is not saved. Select Change password.")
+					: (stderr || i18n("Could not refresh the Yandex account.")).trim()
 				return
 			}
 			var response
@@ -141,7 +142,7 @@ ConfigPage {
 		Layout.fillWidth: true
 		Layout.preferredWidth: 0
 		wrapMode: Text.Wrap
-		text: i18n("Create a Yandex application password for Calendar, then add the account here. Passwords are stored in KWallet and are not saved in the widget configuration.")
+		text: i18n("Create a Yandex application password for Calendar, then add the account here. Passwords are stored in a user-only local file and are not saved in the widget configuration.")
 	}
 
 	LinkText {

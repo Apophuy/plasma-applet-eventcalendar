@@ -86,6 +86,14 @@ CalendarManager {
 			"--end", dateString(dateMax),
 		], function(cmd, exitCode, exitStatus, stdout, stderr) {
 			if (exitCode !== 0) {
+				if (exitCode === 5) {
+					yandexCalendarManager.error(
+						i18n("The application password for Yandex account “%1” is not saved. Open Yandex Calendar settings and select Change password.", account.name || account.login),
+						ErrorType.ClientError
+					)
+					yandexCalendarManager.asyncRequestsDone += 1
+					return
+				}
 				if (exitCode === 3) {
 					yandexCalendarManager.error(
 						i18n("Could not update Yandex Calendar account “%1”. Install the Python “icalendar” module.", account.name || account.login),
